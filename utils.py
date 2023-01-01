@@ -1,4 +1,3 @@
-from django.urls import path
 from pymongo import MongoClient
 
 def get_db_handle():
