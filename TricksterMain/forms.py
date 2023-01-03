@@ -7,13 +7,20 @@ class TrickForm(ModelForm):
     class Meta:
         model = Trick
         fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickImg')
-
-        #Getting errors with the 'attrs' tag. will try and fix ltr.
+        labels = {
+            'TrickName': 'Enter the Trick Name:',
+            'TrickRecLevel':'Reccomended Level for this Trick:',
+            'TrickDifficulty':'Trick Difficulty (Scale 1-10):',
+            'TrickDiscription':'Enter the discription of this trick:',
+            'TrickHowTo':'Enter a How To for this trick:',
+            'TrickImg':'Upload a cover image for this trick:',
+        }
+        
         widgets = {
-            'TrickName': forms.TextInput(widget=forms.FileInput(attrs={'class':'form-control'})),
-            'TrickRecLevel': forms.RadioSelect(widget=forms.FileInput(attrs={'class':'form-control'})),
-            'TrickDifficulty': forms.TextInput(widget=forms.FileInput(attrs={'class':'form-control'})),
-            'TrickDiscription': forms.TextInput(widget=forms.FileInput(attrs={'class':'form-control'})),
-            'TrickHowTo': forms.TextInput(widget=forms.FileInput(attrs={'class':'form-control'})),
-            'TrickImg': forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control'})),
+            'TrickName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Ollie'}),
+            'TrickRecLevel': forms.Select(attrs={'class':'form-control', 'placeholder':'Select a skill level'}),
+            'TrickDifficulty': forms.TextInput(attrs={'class':'form-control', 'placeholder':'1'}),
+            'TrickDiscription': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter discription here.'}),
+            'TrickHowTo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter How To here.'}),
+            'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
         }

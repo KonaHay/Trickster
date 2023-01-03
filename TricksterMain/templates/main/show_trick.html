@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+
+    <h1>How To {{ trick }}:</h1>
+    <br/>
+    <img src="{{ trick.TrickImg.url }}" class="card-img-top" alt="trick cover image"><br/>
+    <Strong>How To {{ trick.TrickName }}:</Strong><br/>
+    Trick Discription: <br/>{{ trick.TrickDiscription }}<br/>
+    Trick How To: <br/>{{ trick.TrickHowTo }}<br/>
+    Reccomended Level for this Trick: {{ trick.TrickRecLevel }}<br/>
+    Trick Difficulty: {{ trick.TrickDifficulty }}<br/>
+
+{% endblock %}
