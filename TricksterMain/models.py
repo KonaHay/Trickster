@@ -32,5 +32,5 @@ class User (models.Model):
     LearnedTricks  = models.ManyToManyField(Trick, blank=True)
 
     def __str__(self):
-        return self.FirstName + ' ' + self.LastName + ' - ' + self.Username
+        return self.FirstName + ' ' + self.LastName
 
