@@ -1,14 +1,48 @@
 {% extends 'main/base.html' %}
 
 {% block content  %}
+    <!--Adding style to create an image container -->
+    <style>   
+        .imgContainer {
+            max-width: 500px;
+            max-height: 700px;
+            overflow: hidden;
+        }
+        
+        .imgContainer img {
+            width: 100%;
+            min-height: 100%;
+        }
+    </style>
 
-    <h1>How To {{ trick }}:</h1>
-    <br/>
-    <img src="{{ trick.TrickImg.url }}" class="card-img-top" alt="trick cover image"><br/>
-    <Strong>How To {{ trick.TrickName }}:</Strong><br/>
-    Trick Discription: <br/>{{ trick.TrickDiscription }}<br/>
-    Trick How To: <br/>{{ trick.TrickHowTo }}<br/>
-    Reccomended Level for this Trick: {{ trick.TrickRecLevel }}<br/>
-    Trick Difficulty: {{ trick.TrickDifficulty }}<br/>
+    <div class="container-md">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="container">
+
+                    <!--Trick content and information-->
+                    <h1 class="display-6"><strong>How To {{ trick }}:</strong></h1>
+                    <div class="imgContainer">
+                        <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
+                    </div></br>
+                    <p class="h6">Trick Discription: </p>
+                    <p>{{ trick.TrickDiscription }}</p>
+                    <p class="h6">Trick How To: </p>
+                    <p>{{ trick.TrickHowTo }}</p>
+                    <dl class="row">
+                        <dt class="col-sm-9">Trick Difficulty:</dt>
+                        <dd class="col-sm-3">{{ trick.TrickDifficulty }}</dd>
+                        <dt class="col-sm-9">Reccomended Level for this Trick:</dt>
+                        <dd class="col-sm-3">{{ trick.TrickRecLevel }}</dd>                       
+                    </dl>
+
+                </div>
+            </div>
+            <!--Unsure of what will be displayed in the sidebar for now.-->
+            <div class="col-md-3">
+                Sidebar
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
