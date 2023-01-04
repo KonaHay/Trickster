@@ -20,7 +20,7 @@
             <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
             <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
           </ul>
-          <div class="card-body-dark gap-3">
+          <div class="card-body-dark text-center gap-3" style="height: 3rem">
             <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
             <a href="#" class="btn btn-primary">Save This Trick</a>
           </div>
