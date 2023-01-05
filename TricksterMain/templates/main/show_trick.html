@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content  %}
     <!--Adding style to create an image container -->
@@ -23,7 +24,11 @@
                     <!--Trick content and information-->
                     <h1 class="display-6"><strong>How To {{ trick }}:</strong></h1>
                     <div class="imgContainer">
+                    {% if trick.TrickImg %}
                         <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
+                    {% else %}    
+                        <img src="{% static 'tricklist/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
+                    {% endif %}
                     </div></br>
                     <p class="h6">Trick Discription: </p>
                     <p>{{ trick.TrickDiscription }}</p>

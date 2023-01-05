@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content  %}
 
@@ -11,7 +12,11 @@
 
       <div class="col-sm">
         <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
-          <img src="{{ trick.TrickImg.url }}" class="card-img-top" alt="...">
+          {% if trick.TrickImg %}
+            <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
+          {% else %}    
+            <img src="{% static 'tricklist/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
+          {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{ trick }}</h5>
             <p class="card-text">{{ trick.TrickDiscription }}</p>
