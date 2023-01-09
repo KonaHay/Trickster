@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+
+    <div class="shadow  p-4 mb-5 bg-body rounded">
+        <h1>Update Trick: {{ trick }}</h1>
+        </br>
+
+        <form action="" method=POST>
+        {% csrf_token %}
+        {{ form.as_p }}
+        </br>
+        <input type="submit" value="Update" class="btn btn-primary">
+
+        <!-- Only if hass delete permissions -->
+        <a href="{% url 'delete-trick' trick.TrickID %}" class="btn btn-danger">Delete</a>
+        
+        </form>
+    
+    </div>
+
+{% endblock %}

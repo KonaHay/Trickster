@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+
+  {% if trick_searched %}
+    <h1>Tricks Found Under: {{ trick_searched }}</h1>
+    </br>
+
+    <div class="container-md">
+      <div class="row">
+        {% for trick in tricks %}
+
+          <div class="col-sm">
+
+            <!-- Edit so if not admin view then height: 30rem;  -->
+            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+              {% if trick.TrickImg %}
+                <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
+              {% else %}    
+                <img src="{% static 'tricklist/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ trick }}</h5>
+                <p class="card-text">{{ trick.TrickDiscription }}</p>
+              </div>
+              <ul class="list-group-dark list-group-flush">
+                <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+              </ul>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                <a href="#" class="btn btn-primary">Save This Trick</a>
+              </div>
+
+              <!-- Only if admin user then: -->
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success">Update Trick</a>
+              </div>
+
+            </div>
+          </div>
+
+        {% endfor %}
+      </div>
+    </div>
+
+  {% else %}
+    <h1>Nothing was searched for!</h1>
+  {% endif %}
+        
+{% endblock %}

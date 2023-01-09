@@ -1,39 +1,67 @@
-import pymongo
 from django.shortcuts import render
-#from pymongo import MongoClient
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+
+#--- for if using MongoDB database ---
+#import pymongo
+#from pymongo import MongoClient
 
 from .models import Trick
 from .forms import TrickForm
 
 
 def home(request):
-    return render(request, 'main/home.html', {})
+  return render(request, 'main/home.html', {})
 
 def all_tricks(request):
-    trick_list = Trick.objects.all()
-    return render(request, 'main/trick_list.html', {'trick_list': trick_list})
+  trick_list = Trick.objects.all()
+  return render(request, 'main/trick_list.html', {'trick_list': trick_list})
 
 def add_trick(request):
-    submitted = False
-    if request.method == "POST":
-        form = TrickForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_trick?submitted=True')
-    else:
-        form = TrickForm
-        if 'submitted' in request.GET:
-            submitted = True
+  submitted = False
+  if request.method == "POST":
+    form = TrickForm(request.POST, request.FILES)
+    if form.is_valid():
+      form.save()
+      return HttpResponseRedirect('/add_trick?submitted=True')
+  else:
+    form = TrickForm
+    if 'submitted' in request.GET:
+      submitted = True
 
-    return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
+  return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
 
 def show_trick(request, trick_id):
-    trick = Trick.objects.get(pk=trick_id)
-    return render(request, 'main/show_trick.html', {'trick' : trick})
+  trick = Trick.objects.get(pk=trick_id)
+  return render(request, 'main/show_trick.html', {'trick' : trick})
+
+def update_trick(request, trick_id):
+  trick = Trick.objects.get(pk=trick_id)
+  form = TrickForm(request.POST or None, instance=trick)
+  if form.is_valid():
+    form.save()
+    messages.success(request, ("Trick Updated Successfuly!"))
+    return HttpResponseRedirect('/trick_list')
+  return render(request, 'main/update_trick.html', {'trick':trick, 'form':form})
+
+def search_trick(request):
+  if request.method == "POST":
+    trick_searched = request.POST['trick_searched']
+    tricks =  Trick.objects.filter(TrickName__contains=trick_searched)
+
+    return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks})
+  else:
+    return render(request, 'main/search_trick.html', {})
+
+def delete_trick(request, trick_id):
+  trick = Trick.objects.get(pk=trick_id)
+  trick.delete()
+  return HttpResponseRedirect('/trick_list')
 
 
-# #Connecting to Tricksters MongoDB Database
+
+
+# --- For connecting to MongoDB Database ---
 # client = pymongo.MongoClient('mongodb+srv://admin:admin@trickster.v1hgxhs.mongodb.net/?retryWrites=true&w=majority')
 
 # #Define the DB Name
