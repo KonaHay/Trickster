@@ -19,8 +19,8 @@ class TrickForm(ModelForm):
         widgets = {
             'TrickName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Ollie'}),
             'TrickRecLevel': forms.Select(attrs={'class':'form-control', 'placeholder':'Select a skill level'}),
-            'TrickDifficulty': forms.TextInput(attrs={'class':'form-control', 'placeholder':'1'}),
-            'TrickDiscription': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter discription here.'}),
-            'TrickHowTo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter How To here.'}),
+            'TrickDifficulty': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
+            'TrickDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
+            'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
             'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
         }
