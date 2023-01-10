@@ -6,6 +6,7 @@
   <h1> Trickster Trick Database </h1>
   <br/>
   
+  <!-- I will aim to put this section of code into its own function as it's also used in search_trick -->
   <div class="container-md">
     <div class="row">
       {% for trick in trick_list %}
@@ -21,7 +22,7 @@
             {% endif %}
             <div class="card-body">
               <h5 class="card-title">{{ trick }}</h5>
-              <p class="card-text">{{ trick.TrickDiscription }}</p>
+              <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
             </div>
             <ul class="list-group-dark list-group-flush">
               <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
@@ -44,5 +45,5 @@
       {% endfor %}
     </div>
   </div>
-
+  <!-- -------------------------------------------------------------------------------------------- -->
 {% endblock %}

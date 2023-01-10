@@ -14,7 +14,7 @@ def home(request):
   return render(request, 'main/home.html', {})
 
 def all_tricks(request):
-  trick_list = Trick.objects.all()
+  trick_list = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   return render(request, 'main/trick_list.html', {'trick_list': trick_list})
 
 def add_trick(request):
@@ -47,7 +47,7 @@ def update_trick(request, trick_id):
 def search_trick(request):
   if request.method == "POST":
     trick_searched = request.POST['trick_searched']
-    tricks =  Trick.objects.filter(TrickName__contains=trick_searched)
+    tricks =  Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
     return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks})
   else:
