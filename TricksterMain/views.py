@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
+# Imports for Pagination
+from django.core.paginator import Paginator
+
 #--- for if using MongoDB database ---
 #import pymongo
 #from pymongo import MongoClient
@@ -14,8 +17,15 @@ def home(request):
   return render(request, 'main/home.html', {})
 
 def all_tricks(request):
-  trick_list = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
-  return render(request, 'main/trick_list.html', {'trick_list': trick_list})
+  tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+
+  #Pagination setup
+  p = Paginator(tricks, 6)
+  page = request.GET.get('page')
+  trick_list = p.get_page(page)
+  num_pages = "T" * trick_list.paginator.num_pages
+
+  return render(request, 'main/trick_list.html', {'trick_list': trick_list, "num_pages":num_pages})
 
 def add_trick(request):
   submitted = False

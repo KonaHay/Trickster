@@ -8,7 +8,7 @@
     </br>
 
     <div class="container-md">
-      <div class="row">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         {% for trick in tricks %}
 
           <div class="col-sm">
@@ -18,7 +18,7 @@
               {% if trick.TrickImg %}
                 <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
               {% else %}    
-                <img src="{% static 'tricklist/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
+                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
               {% endif %}
               <div class="card-body">
                 <h5 class="card-title">{{ trick }}</h5>

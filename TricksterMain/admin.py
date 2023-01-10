@@ -12,7 +12,7 @@ from .models import User
 class TrickAdmin(admin.ModelAdmin):
     fields = ('TrickName', 'TrickRecLevel', 'TrickDifficulty','TrickDiscription', 'TrickHowTo', 'TrickImg',)
     list_display = ('TrickName', 'TrickRecLevel', 'TrickDifficulty',)
-    ordering = ('TrickDifficulty',)
+    ordering = ('TrickRecLevel', 'TrickDifficulty', 'TrickName')
     search_fields = ('TrickName',)
     
 @admin.register(User)

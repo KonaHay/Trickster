@@ -1,0 +1,31 @@
+// Custom Variables
+$primary: #2184f7;
+
+//Pagination colours
+$pagination-bg: #262a31;
+$pagination-color: #dfdfdf;
+$pagination-border-color: #262a31;
+
+$pagination-hover-color: #b3d3f7;
+$pagination-hover-bg: #2184f7;
+$pagination-hover-border-color: #2184f7;
+
+$pagination-disabled-color: #323232;
+$pagination-disabled-bg: #dcdfe0;
+$pagination-disabled-border-color: #b6b6b6;
+
+
+// Import Functions & Variables
+@import '../../../node_modules/bootstrap/scss/_functions';
+@import '../../../node_modules/bootstrap/scss/_variables';
+
+$custom-theme-colors: (
+  "tricksterdark": #262a31
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+
+// import bootstrap
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+
