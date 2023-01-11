@@ -6,8 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KonaHay/Trickster.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KonaHay/Trickster/issues"
+  },
+  "homepage": "https://github.com/KonaHay/Trickster#readme",
   "dependencies": {
     "bootstrap": "^5.2.3"
   }
