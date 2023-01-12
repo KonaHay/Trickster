@@ -6,10 +6,13 @@ class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
+    SkillLevel = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
+    DifficultyLevel = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
+    LearnedTricks = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = User
-        fields = ('username','first_name',  'last_name', 'email', 'password1', 'password2')
+        fields = ('username','first_name', 'last_name', 'email', 'password1', 'password2')
 
     def __init__(self,  *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
@@ -18,3 +21,4 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
 
+# 'SkillLevel', 'DifficultyLevel', 'LearnedTricks',

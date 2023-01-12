@@ -90,6 +90,16 @@ def search_trick(request):
   else:
     return render(request, 'main/search_trick.html', {})
 
+# View for recommending tricks to users
+def recommend_trick(request):
+  if request.method == "POST":
+    recommended_trick = request.POST['recommended_trick']
+    tricks =  Trick.objects.filter(TrickName__contains=recommended_trick).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+
+    return render(request, 'main/search_trick.html', {'recommended_trick':recommended_trick, 'tricks':tricks})
+  else:
+    return render(request, 'main/search_trick.html', {})
+
 @permission_required('trick.delete_trick', login_url='home')
 def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
