@@ -11,3 +11,8 @@ urlpatterns = [
     path('Users/', include('Users.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Configure Admin Titles
+admin.site.site_header = "Trickster Administration"
+admin.site.site_title = "Trickster Admin"
+admin.site.index_title = "Welcome to the Trickster Admin Panel"

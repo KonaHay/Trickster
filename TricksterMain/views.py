@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.views import View
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Imports for Pagination
 from django.core.paginator import Paginator
@@ -16,16 +18,40 @@ from .forms import TrickForm
 def home(request):
   return render(request, 'main/home.html', {})
 
-def all_tricks(request):
-  tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+# ----------------------------------------------------------------------
+# Attempt at a view based pagination setup
+# class t_paginator(View):
+#   tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+#   page_amount = 6
+#   p = Paginator(tricks, page_amount)
+  
+#   def paginator_pages(self, request):   
+#     page = request.GET.get('page')
+#     trick_list = self.p.get_page(page)
+#     num_pages = "T" * trick_list.paginator.num_pages
+#     return HttpResponse({"num_pages":num_pages})
+
+#   def paginator_tricks(self, request):
+#     page = request.GET.get('page')
+#     trick_list = self.p.get_page(page)
+
+#     return HttpResponse({'trick_list': trick_list})
+# ----------------------------------------------------------------------
+
+def trick_list(request):
+  #------ For view based paginator ---------
+  #num_pages = t_paginator.paginator_pages
+  #tricks = t_paginator.paginator_tricks
+  #-----------------------------------------
 
   #Pagination setup
-  p = Paginator(tricks, 6)
+  all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  p = Paginator(all_tricks, 6)
   page = request.GET.get('page')
-  trick_list = p.get_page(page)
-  num_pages = "T" * trick_list.paginator.num_pages
+  tricks = p.get_page(page)
+  num_pages = "T" * tricks.paginator.num_pages
 
-  return render(request, 'main/trick_list.html', {'trick_list': trick_list, "num_pages":num_pages})
+  return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages})
 
 def add_trick(request):
   submitted = False
@@ -68,7 +94,13 @@ def delete_trick(request, trick_id):
   trick.delete()
   return HttpResponseRedirect('/trick_list')
 
-
+@login_required(login_url='/login')
+def admin_db(request):
+  # An Extra Level Security for the Admin Panel
+  if request.user.is_superuser :
+    return HttpResponseRedirect('/admin')
+  else:
+    return HttpResponseRedirect('/home')
 
 
 # --- For connecting to MongoDB Database ---

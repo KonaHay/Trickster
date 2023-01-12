@@ -5,11 +5,11 @@
 
   <h1> Trickster Trick Database </h1>
   <br/>
-  
+  {{tricks}}
   <!-- I will aim to put this section of code into its own function as it's also used in search_trick -->
   <div class="container-md">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-      {% for trick in trick_list %}
+      {% for trick in tricks %}
 
         <div class="col">
 
@@ -56,13 +56,13 @@
   <nav aria-label="Paginator">
     <ul class="pagination pagination-dark justify-content-center">
 
-      {% if trick_list.has_previous %}
+      {% if tricks.has_previous %}
       <li class="page-item">
         <a class="page-link" href="?page=1" aria-label="First">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li class="page-item"><a class="page-link" href="?page={{ trick_list.previous_page_number }}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ tricks.previous_page_number }}">Previous</a></li>
       {% else %}
       <li class="page-item disabled">
         <a class="page-link" href="" aria-label="First">
@@ -78,10 +78,10 @@
 
       {% endfor %}
 
-      {% if trick_list.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ trick_list.next_page_number }}">Next</a></li>
+      {% if tricks.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ tricks.next_page_number }}">Next</a></li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ trick_list.paginator.num_pages }}" aria-label="Last">
+        <a class="page-link" href="?page={{ tricks.paginator.num_pages }}" aria-label="Last">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
