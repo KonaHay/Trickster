@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 # Imports for Pagination
 from django.core.paginator import Paginator
@@ -53,24 +53,25 @@ def trick_list(request):
 
   return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages})
 
+@permission_required('trick.add_trick', login_url='home')
 def add_trick(request):
-  submitted = False
-  if request.method == "POST":
-    form = TrickForm(request.POST, request.FILES)
-    if form.is_valid():
-      form.save()
-      return HttpResponseRedirect('/add_trick?submitted=True')
-  else:
-    form = TrickForm
-    if 'submitted' in request.GET:
-      submitted = True
-
-  return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
+    submitted = False
+    if request.method == "POST":
+      form = TrickForm(request.POST, request.FILES)
+      if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/add_trick?submitted=True')
+    else:
+      form = TrickForm
+      if 'submitted' in request.GET:
+        submitted = True
+    return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
 
 def show_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   return render(request, 'main/show_trick.html', {'trick' : trick})
 
+@permission_required('trick.change_trick', login_url='home')
 def update_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   form = TrickForm(request.POST or None, instance=trick)
@@ -89,6 +90,7 @@ def search_trick(request):
   else:
     return render(request, 'main/search_trick.html', {})
 
+@permission_required('trick.delete_trick', login_url='home')
 def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   trick.delete()

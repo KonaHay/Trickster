@@ -5,7 +5,6 @@
 
   <h1> Trickster Trick Database </h1>
   <br/>
-  {{tricks}}
   <!-- I will aim to put this section of code into its own function as it's also used in search_trick -->
   <div class="container-md">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
@@ -14,7 +13,11 @@
         <div class="col">
 
           <!-- Edit so if not admin view then height: 30rem;  -->
+          {% if user.is_superuser %}
           <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+          {% else %}
+          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+          {% endif %}
             {% if trick.TrickImg %}
               <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
             {% else %}    
@@ -38,10 +41,11 @@
             </div>
 
             <!-- Only if admin user then: -->
-            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+            {% if user.is_superuser %}
+            <div class="card-footer-dark text-center gap-3" style="height: 3rem">
               <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success">Update Trick</a>
             </div>
-
+            {% endif %}
 
           </div>
         </div>

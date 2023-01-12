@@ -16,7 +16,7 @@
     <form action="{% url 'register_user' %}" method=POST enctype="multipart/form-data">
       {% csrf_token %}
 
-      <table>
+      <!-- <table>
         <tr>
           <td>{{ form.username.label_tag }}</td>
           <td>{{ form.username }}</td>
@@ -37,22 +37,9 @@
           <td>{{ form.password.label_tag }}</td>
           <td>{{ form.password }}</td>
         </tr>
-        </table>
-
-
-      <!-- <div class="mb-3">
-        <label for="registerEmail" class="form-label">Email address</label>
-        {{ form.email }}
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-      </div>
-
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-      </div> -->
+        </table> -->
         
-      <!-- {{ form.as_p }} -->
+      {{ form.as_p }}
 
     </br></br>
       <input type="submit" value="Submit" class="btn btn-primary">

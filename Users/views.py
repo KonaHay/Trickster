@@ -23,6 +23,8 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     messages.success(request, ("User Logged Out!"))
+    
+    # change to redirect to page user logged out on
     return redirect('home')
 
 def register_user(request):
