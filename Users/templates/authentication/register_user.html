@@ -13,38 +13,76 @@
     <h1> Register </h1>
     <br/><br/>
 
-    <form action="{% url 'register_user' %}" method=POST enctype="multipart/form-data">
+    <form action="{% url 'register_user' %}" method=POST enctype="multipart/form-data"> 
       {% csrf_token %}
+      {% for feild in UserRegistrationForm %}
+        <p>
+          {{ feild.label_tag }}
+          {{ feild}}
 
-      <!-- <table>
-        <tr>
-          <td>{{ form.username.label_tag }}</td>
-          <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.first_name.label_tag }}</td>
-          <td>{{ form.first_name }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.last_name.label_tag }}</td>
-          <td>{{ form.last_name }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.email.label_tag }}</td>
-          <td>{{ form.email }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.password.label_tag }}</td>
-          <td>{{ form.password }}</td>
-        </tr>
-        </table> -->
-        
+          {% if feild.help_text %}
+            <small style="color: grey">{{ feild.help_text }}</small>
+          {% endif %}
+
+          {% for errors in field.errors %}
+            <p style="color: red">{{ feild.errors }}</p>
+          {% endfor %}
+        </p>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+
+
+
+    <!-- <form action="{% url 'register_user' %}" method=POST enctype="multipart/form-data">
+      {% csrf_token %}
+      
+        <div class="mb-3">
+          <label for="userEmail" class="form-label">{{ form.email.label_tag }}</label>
+          <p> {{ form.email }} </p>
+          <input type="email" class="form-control" id="userEmail">
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">{{ form.username.label_tag }}</label>
+          <p> {{ form.usernamme }} </p>
+          <input type="text" class="form-control" id="username">
+        </div>
+        <div class="mb-3">
+          <label for="firstName" class="form-label">{{ form.first_name.label_tag }}</label>
+          <p> {{ form.first_name }} </p>
+          <input type="text" class="form-control" id="firstName">
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">{{ form.last_name.label_tag }}</label>
+          <p> {{ form.last_name }} </p>
+          <input type="text" class="form-control" id="lastName">
+        </div>
+        <div class="mb-3">
+          <label for="inputPassword1" class="form-label" aria-describedby="passwordHelpBlock">{{ form.password1.label_tag }}</label>
+          <p> {{ form.password1 }} </p>
+          <input type="password" class="form-control" id="inputPassword1">
+        </div>
+        <div id="passwordHelpBlock" class="form-text">
+          Your password must be 8-20 characters long and contain both letters and numbers.
+        </div>
+        <div class="mb-3">
+          <label for="inputPassword2" class="form-label">{{ form.password2.label_tag }}</label>
+          <p> {{ form.password2 }} </p>
+          <input type="password" class="form-control" id="inputPassword2">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form> -->
+    <!--
       {{ form.as_p }}
-
+    
     </br></br>
       <input type="submit" value="Submit" class="btn btn-primary">
 
-    </form>
+    </form> -->
+    
 </div>
 
 {% endblock %}
