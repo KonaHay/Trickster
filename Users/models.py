@@ -61,7 +61,7 @@ class Trickster_User(AbstractBaseUser, PermissionsMixin):
 class User_Profile(models.Model):
 
   User = models.OneToOneField(Trickster_User, on_delete=models.CASCADE)
-  ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/")
+  ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/profile")
   SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
   LearnedTricks  = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])

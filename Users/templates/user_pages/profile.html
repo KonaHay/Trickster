@@ -9,6 +9,7 @@
       <div  class="col-8">
         <h1>{{ profile.User.FirstName }}'s Profile</h1>
         </br>
+        <img class="rounded-circle article-img" src="{{ profile.ProfilePhoto.url }}" href="{%url 'profile' request.user.UserID %}">
       </div>
       <div class="col-4">
         <div class="card text-white bg-dark">
