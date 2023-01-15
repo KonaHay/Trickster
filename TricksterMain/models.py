@@ -20,17 +20,4 @@ class Trick (models.Model):
     def __str__(self):
         return self.TrickName
 
-# class Trickster_User (models.Model):
-#     UserID = models.AutoField(primary_key=True)
-#     Username = models.CharField(max_length=25)
-#     FirstName = models.CharField(max_length=25)
-#     LastName = models.CharField(max_length=25)
-#     Email = models.EmailField()
-#     DateOfJoining = models.DateField()
-#     ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/")
-#     SkillLevel = models.ForeignKey(SkillLevel, default=1, blank=True, null=True, on_delete=models.CASCADE)
-#     LearnedTricks  = models.ManyToManyField(Trick, blank=True)
-
-#     def __str__(self):
-#         return self.FirstName + ' ' + self.LastName
 

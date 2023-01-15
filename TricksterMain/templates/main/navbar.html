@@ -25,10 +25,13 @@
           {% endif %}
           {% if request.user.is_authenticated %}
             <li class="nav-item">
+              <a class="nav-link" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{%url 'logout'%}">Logout</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Wecome {{ request.user.FirstName }}</a>
+              <a class="nav-link" href="{%url 'profile' request.user.UserID %}">Profile</a>
             </li>
           {% else %}
             <li class="nav-item">

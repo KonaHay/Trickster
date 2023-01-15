@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.signals import post_save
 from django.utils import timezone
 
 from TricksterMain.models import Trick, SkillLevel
+
+
 
 class CustomUserManager(BaseUserManager):
 
@@ -60,9 +63,16 @@ class User_Profile(models.Model):
   User = models.OneToOneField(Trickster_User, on_delete=models.CASCADE)
   ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/")
   SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
-  LearnedTricks  = models.ManyToManyField(Trick, blank=True)
+  LearnedTricks  = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
 
   def __str__(self):
      return self.User.Username
+
+def create_profile(sender, instance, created, **kwargs):
+  if created:
+    New_Profile = User_Profile(User=instance)
+    New_Profile.save()
+
+post_save.connect(create_profile, sender=Trickster_User)

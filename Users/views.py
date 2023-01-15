@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import UserRegistrationForm,  UserAuthenticationForm
-from django.contrib.auth import get_user_model
-User = get_user_model()
+from django.http import HttpResponseRedirect
 
+from .models import  Trickster_User, User_Profile
+from .forms import UserRegistrationForm,  UserAuthenticationForm
+from TricksterMain.models import Trick, SkillLevel
+
+# ======================================================================================================================================
 
 def user_login(request):
   context = {}
   user = request.user
   if user.is_authenticated:
-    return redirect('home')
+    return HttpResponseRedirect('home')
 
   if request.method == "POST":
     form = UserAuthenticationForm(request.POST)
@@ -18,8 +21,6 @@ def user_login(request):
       Email = request.POST['Email']
       password = request.POST['password']
       user = authenticate(Email=Email, password=password)
-      messages.success(request, (Email, password))
-      messages.success(request, (user))
 
       if user is not None:
         login(request, user)
@@ -31,6 +32,7 @@ def user_login(request):
   context['user_login'] = form
   return render(request, 'authentication/login.html', context)
 
+# ======================================================================================================================================
 
 def user_logout(request):
     logout(request)
@@ -38,6 +40,8 @@ def user_logout(request):
     
     # change to redirect to page user logged out on
     return redirect('home')
+
+# ======================================================================================================================================
 
 def register_user(request):
     context = {}
@@ -62,3 +66,15 @@ def register_user(request):
       context['UserRegistrationForm'] = form
 
     return render(request, 'authentication/register_user.html', context)
+
+# ======================================================================================================================================
+
+def profile(request, pk):
+  if request.user.is_authenticated:
+
+    profile = User_Profile.objects.get(User_id=pk)
+
+    return render(request, 'user_pages/profile.html', {'profile': profile})
+  else:
+    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    return redirect('home')

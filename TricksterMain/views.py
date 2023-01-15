@@ -1,22 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.db import models
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-
-# Imports for Pagination
 from django.core.paginator import Paginator
 
-#--- for if using MongoDB database ---
-#import pymongo
-#from pymongo import MongoClient
 
-from .models import Trick
+from .models import Trick, SkillLevel
 from .forms import TrickForm
+from Users.models import Trickster_User, User_Profile
 
 
 def home(request):
   return render(request, 'main/home.html', {})
+
+# ======================================================================================================================================
 
 # ----------------------------------------------------------------------
 # Attempt at a view based pagination setup
@@ -38,6 +38,8 @@ def home(request):
 #     return HttpResponse({'trick_list': trick_list})
 # ----------------------------------------------------------------------
 
+# ======================================================================================================================================
+
 def trick_list(request):
   #------ For view based paginator ---------
   #num_pages = t_paginator.paginator_pages
@@ -53,6 +55,50 @@ def trick_list(request):
 
   return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages})
 
+# ======================================================================================================================================
+
+# View for recommending tricks to users
+def recommend_trick(request, pk):
+  if request.user.is_authenticated:
+
+    profile = User_Profile.objects.get(User_id=pk)
+    user_skill_level = profile.SkillLevel
+    user_ability = profile.UserDifficultyLevel
+    user_learned_tricks = profile.LearnedTricks
+
+    filters = models.Q()
+
+    #Trying to filter by if the user has NOT learned the trick (~models.Q used to get Non Learned Tricks)
+    #if user_learned_tricks:
+    #  filters &= ~models.Q(Trick__LearnedTricks=user_learned_tricks,)
+
+    filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
+
+    recommend_tricks = Trick.objects.filter(filters).order_by('TrickName')
+
+
+    return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile,})
+  else:
+    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    return HttpResponseRedirect('/home')
+
+# ======================================================================================================================================
+
+def learned_trick(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+  learned = False
+  if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
+    profile.LearnedTricks.remove(trick)
+    learned = False
+  else:
+    profile.LearnedTricks.add(trick)
+    learned = True
+
+  return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+
+# ======================================================================================================================================
+
 @permission_required('trick.add_trick', login_url='home')
 def add_trick(request):
     submitted = False
@@ -65,11 +111,16 @@ def add_trick(request):
       form = TrickForm
       if 'submitted' in request.GET:
         submitted = True
+        messages.success(request, ("Trick Added Successfuly!"))
     return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
+
+# ======================================================================================================================================
 
 def show_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   return render(request, 'main/show_trick.html', {'trick' : trick})
+
+# ======================================================================================================================================
 
 @permission_required('trick.change_trick', login_url='home')
 def update_trick(request, trick_id):
@@ -81,6 +132,8 @@ def update_trick(request, trick_id):
     return HttpResponseRedirect('/trick_list')
   return render(request, 'main/update_trick.html', {'trick':trick, 'form':form})
 
+# ======================================================================================================================================
+
 def search_trick(request):
   if request.method == "POST":
     trick_searched = request.POST['trick_searched']
@@ -90,21 +143,15 @@ def search_trick(request):
   else:
     return render(request, 'main/search_trick.html', {})
 
-# View for recommending tricks to users
-def recommend_trick(request):
-  if request.method == "POST":
-    recommended_trick = request.POST['recommended_trick']
-    tricks =  Trick.objects.filter(TrickName__contains=recommended_trick).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
-
-    return render(request, 'main/search_trick.html', {'recommended_trick':recommended_trick, 'tricks':tricks})
-  else:
-    return render(request, 'main/search_trick.html', {})
+# ======================================================================================================================================
 
 @permission_required('trick.delete_trick', login_url='home')
 def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   trick.delete()
   return HttpResponseRedirect('/trick_list')
+
+# ======================================================================================================================================
 
 @login_required(login_url='/login')
 def admin_db(request):
@@ -114,23 +161,5 @@ def admin_db(request):
   else:
     return HttpResponseRedirect('/home')
 
+# ======================================================================================================================================
 
-# --- For connecting to MongoDB Database ---
-# client = pymongo.MongoClient('mongodb+srv://admin:admin@trickster.v1hgxhs.mongodb.net/?retryWrites=true&w=majority')
-
-# #Define the DB Name
-# dbname = client['TricksterDB']
-
-# #Define the Collection
-# cl = dbname['Trickster']
-
-# #Testing
-# trickster_test={
-#     "name":"Kona",
-#     "age":"22",
-#     "skillLevel":"2"
-# }
-
-# cl.insert_one(trickster_test)
-
-# Trickster_Details = cl.find({})

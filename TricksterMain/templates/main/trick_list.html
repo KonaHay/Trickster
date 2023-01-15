@@ -5,52 +5,49 @@
 
   <h1> Trickster Trick Database </h1>
   <br/>
-  <!-- I will aim to put this section of code into its own function as it's also used in search_trick -->
+  <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
   <div class="container-md">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
       {% for trick in tricks %}
-
-        <div class="col">
-
-          <!-- Edit so if not admin view then height: 30rem;  -->
-          {% if user.is_superuser %}
-          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-          {% else %}
-          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
-          {% endif %}
-            {% if trick.TrickImg %}
-              <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
-            {% else %}    
-              <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
-              <div class="card-img-overlay">
-              </br></br>
-                <h5 class="card-title text-primary fw-bold">How To: {{ trick }}</h5>
+          <div class="col-sm">
+            {% if user.is_authenticated %}
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+            {% else %}
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+            {% endif %}
+              {% if trick.TrickImg %}
+                <img src="{{ trick.TrickImg.url }}" class="img-fluid" alt="trick cover image">
+              {% else %}    
+                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="default trick cover image">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ trick }} 
+                  {% if user.is_superuser %}
+                  <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
+                  {% endif %}
+                </h5>
+                <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
               </div>
-            {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ trick }}</h5>
-              <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
+              <ul class="list-group-dark list-group-flush">
+                <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+              </ul>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                <a href="#" class="btn btn-primary">Save This Trick</a>
+              </div>
+              {% if user.is_authenticated %}
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
+                  {%  csrf_token %}
+                  <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-success btn-sm">Trick Learned</button>
+                </form>
+              </div>
+              {% endif %}
             </div>
-            <ul class="list-group-dark list-group-flush">
-              <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
-              <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
-            </ul>
-            <div class="card-footer-dark text-center gap-3" style="height: 3rem">
-              <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-              <a href="#" class="btn btn-primary">Save This Trick</a>
-            </div>
-
-            <!-- Only if admin user then: -->
-            {% if user.is_superuser %}
-            <div class="card-footer-dark text-center gap-3" style="height: 3rem">
-              <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success">Update Trick</a>
-            </div>
-            {% endif %}
-
           </div>
-        </div>
-
-      {% endfor %}
+        {% endfor %}
     </div>
   </div>
   <!-- -------------------------------------------------------------------------------------------- -->
