@@ -18,6 +18,8 @@ def user_login(request):
       Email = request.POST['Email']
       password = request.POST['password']
       user = authenticate(Email=Email, password=password)
+      messages.success(request, (Email, password))
+      messages.success(request, (user))
 
       if user is not None:
         login(request, user)
@@ -41,7 +43,6 @@ def register_user(request):
     context = {}
     if request.method == "POST":
       form = UserRegistrationForm(request.POST)
-      messages.success(request, ("I Got to here 1"))
       if form.is_valid():
         #user = form.save()
         #user.set_password(user.password)
@@ -50,11 +51,9 @@ def register_user(request):
         Email = form.cleaned_data.get('Email')
         raw_password = form.cleaned_data.get('password1')
         user = authenticate(Email=Email, password=raw_password)
-        messages.success(request, (Email, raw_password))
-        messages.success(request, (user))
         login(request, user)
 
-        messages.success(request, ("Registration Successful! Password"))
+        messages.success(request, ("Registration Successful!"))
         return redirect('home')
       else:
         context['UserRegistrationForm'] = form

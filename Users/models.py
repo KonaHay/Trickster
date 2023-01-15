@@ -44,10 +44,6 @@ class Trickster_User(AbstractBaseUser, PermissionsMixin):
   FirstName = models.CharField(('First Name'),max_length=25)
   LastName = models.CharField(('Last Name'),max_length=25)
   DateOfJoining = models.DateField(default=timezone.now)
-  ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/")
-  SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
-  LearnedTricks  = models.ManyToManyField(Trick, blank=True)
-  UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   is_staff = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
 
@@ -59,6 +55,14 @@ class Trickster_User(AbstractBaseUser, PermissionsMixin):
   def __str__(self):
       return self.FirstName + ' ' + self.LastName
 
+class User_Profile(models.Model):
 
-  # class Meta:
-  #     db_table = 'auth_user'
+  User = models.OneToOneField(Trickster_User, on_delete=models.CASCADE)
+  ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/")
+  SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
+  LearnedTricks  = models.ManyToManyField(Trick, blank=True)
+  UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
+  Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
+
+  def __str__(self):
+     return self.User.Username
