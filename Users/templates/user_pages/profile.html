@@ -3,26 +3,57 @@
 
 {% block content  %}
 {% if profile %}
+<!--Try and fix in trickster.scss-->
+<style>
+  .text-underline-hover {
+    text-decoration: none;
+  }
+
+  .text-underline-hover:hover {
+      text-decoration: underline;
+  }
+
+  a:not([class]) {
+      text-decoration: none;
+  }
+
+  a:not([class]):hover {
+      text-decoration: underline;
+  }
+</style>
 
   <div class="container text-center">
     <div class="row">
       <div  class="col-8">
         <h1>{{ profile.User.FirstName }}'s Profile</h1>
         </br>
-        <img class="rounded-circle article-img" src="{{ profile.ProfilePhoto.url }}" href="{%url 'profile' request.user.UserID %}">
+        {% if profile.ProfilePhoto %}
+          <img 
+          class="rounded-circle" 
+          height="150" 
+          src="{{ profile.ProfilePhoto.url }}" 
+          alt="User Profile Image" 
+          />
+        {% else %}    
+          <img 
+          class="rounded-circle" 
+          height="150" 
+          src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+          alt="Default User Profile Image" 
+          />
+        {% endif %}
       </div>
       <div class="col-4">
         <div class="card text-white bg-dark">
           <div class="card-header">
-            Tricks Learned:
+            {{ profile.User.FirstName }}'s Learned Tricks:
           </div>
           <div class="card-body">
 
             <p class="card-text">
               {% for trick in profile.LearnedTricks.all %}
-                <a href="{% url 'show-trick' trick.TrickID %}"> {{ trick.TrickName }}</br>
+                <a class="text-light text-underline-hover" href="{% url 'show-trick' trick.TrickID %}"> {{ trick.TrickName }}</br>
               {% endfor %}
-
             </p>
             <a href="{%url 'trick-list'%}" class="btn btn-primary">All Tricks</a>
           </div>

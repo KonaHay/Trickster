@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 
+from random import shuffle
 
 from .models import Trick, SkillLevel
 from .forms import TrickForm
@@ -60,7 +61,6 @@ def trick_list(request):
 # View for recommending tricks to users
 def recommend_trick(request, pk):
   if request.user.is_authenticated:
-
     profile = User_Profile.objects.get(User_id=pk)
     user_skill_level = profile.SkillLevel
     user_ability = profile.UserDifficultyLevel
@@ -76,8 +76,44 @@ def recommend_trick(request, pk):
 
     recommend_tricks = Trick.objects.filter(filters).order_by('TrickName')
 
+    #Try to use paginator to put tricks into a carosel.
+
 
     return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile,})
+  else:
+    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    return HttpResponseRedirect('/home')
+
+# ======================================================================================================================================
+
+def random_trick(request):
+  if request.method == "POST":
+
+    randomised_tricks = Trick.objects.all().order_by('?')
+
+    return render(request, 'main/random_trick.html', {'randomised_tricks':randomised_tricks,})
+  else:
+    return render(request, 'main/random_trick.html', {})
+
+# ======================================================================================================================================
+
+def random_trick_skill_based(request, pk):
+  if request.user.is_authenticated:
+    if request.method == "POST":
+      profile = User_Profile.objects.get(User_id=pk)
+      user_skill_level = profile.SkillLevel
+      user_ability = profile.UserDifficultyLevel
+      user_learned_tricks = profile.LearnedTricks
+
+      filters = models.Q()
+
+      filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
+
+      random_trick = Trick.objects.filter(filters).order_by('?')
+
+      return render(request, 'main/random_trick_skill_based.html', {'random_trick': random_trick, 'profile': profile,})
+    else:
+      return render(request, 'main/random_trick_skill_based.html', {})
   else:
     messages.success(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')

@@ -29,3 +29,20 @@ $theme-colors: map-merge($custom-theme-colors, $theme-colors);
 // import bootstrap
 @import '../../../node_modules/bootstrap/scss/bootstrap';
 
+// Currently Not Working.
+.text-underline-hover {
+  text-decoration: none;
+}
+
+.text-underline-hover:hover {
+  text-decoration: underline;
+}
+
+a:not([class]) {
+  text-decoration: none;
+}
+
+a:not([class]):hover {
+  text-decoration: underline;
+}
+

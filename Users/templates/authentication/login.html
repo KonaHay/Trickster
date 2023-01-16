@@ -28,23 +28,14 @@
           {% endif %}
         </p>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Login</button>
+      <div class="row">
+        <div class="col-sm-1">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <div class="col-sm-11">
+          Dont have an account? <a href="{% url 'register_user' %}" class="card-link me-md-4">Register Here</a>
+        </div>
+      </div>
     </form>
-    <!-- <form action="" method=POST enctype="multipart/form-data">
-      {% csrf_token %}
-
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" class="form-control" name="email">
-      </div>
-
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" name="password">
-      </div>
-
-      <input type="submit" value="Submit" class="btn btn-primary">
-
-    </form> -->
   </div>
 {% endblock %}
