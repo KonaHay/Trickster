@@ -1,85 +1,138 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-tricksterdark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{%url 'home'%}">Trickster</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{%url 'trick-list'%}">Trick List</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="randomDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Random Trick Wheels
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="randomDropdown">
-                <li><a class="dropdown-item" href="{% url 'random-trick' %}">Random Trick</a></li>
-                <li><a class="dropdown-item" href="{%url 'random-trick-skill-based' request.user.UserID %}">Random Trick (Skill Based)</a></li>
-                <li><a class="dropdown-item" href="{%url 'random-trick-skill-based' request.user.UserID %}">Random Trick (Learned)</a></li>
-              </ul>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{%url 'trick-list'%}">Trick List</a>
-            </li>
-            <li class="nav-item">
-              <a class="dropdown-item" href="{%url 'random-trick' %}">Random Trick</a>
-            </li>
-          {% endif %}
-        </ul>
-        <div class="navbar-nav ml-auto gap-2">
-          <form class="d-flex" method="POST" action="{% url 'search-trick' %}">
-            {% csrf_token %}
-            <input class="form-control me-2 input-sm" type="search" placeholder="Search For Tricks" aria-label="Search" name="trick_searched">
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-          </form>
-          {% if user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if profile.ProfilePhoto %}
-                <img 
-                class="rounded-circle" 
-                height="30" 
-                src="{{ profile.ProfilePhoto.url }}" 
-                alt="User Profile Image" 
-                />
-              {% else %}    
-                <img 
-                class="rounded-circle" 
-                height="30" 
-                src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
-                alt="Default User Profile Image" 
-                />
-              {% endif %}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarScrollingDropdown">
-              <li><a class="dropdown-item" href="{%url 'profile' request.user.UserID %}">My profile</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <!-- Only If Admin User -->
-              {% if request.user.is_superuser %}
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{%url 'add-trick'%}">Add Trick</a></li>
-                <li>
-                  <a class="dropdown-item" href="{%url 'admin-db'%}">Admin Panel</a>
-                </li>
-              {% endif %}
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{%url 'home'%}">Trickster</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- My skills Dropdown Tab -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="mySkillsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            My Skills
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="mySkillsDropdown">
+            <li><a class="dropdown-item disabled" href="">Find My Skill Level</a></li>
+            {% if request.user.is_authenticated %}
+            <!-- If user has obtained their skill level -->
+            <li><a class="dropdown-item disabled" href="">My Skill Level</a></li>
+            <!-- else -->
+            <!-- <li><a class="dropdown-item disabled" href="">Find My Skill Level</a></li> -->
+            <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
+            <li><a class="dropdown-item disabled" href="">Learned Tricks</a></li>
+            <li><a class="dropdown-item disabled" href="">Saved Tricks</a></li>
+            <li><a class="dropdown-item disabled" href="">Glossary</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <!-- =================== -->
+        <!-- Tricks Dropdown Tab -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tricksDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tricks
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tricksDropdown">
+            <li><a class="dropdown-item" href="{%url 'trick-list'%}">Trick List</a></li>
+            <li><a class="dropdown-item disabled" href="">Trick Categories</a></li>
+            <li><a class="dropdown-item disabled" href="">Glossary</a></li>
+          </ul>
+        </li>
+        <!-- =================== -->
+        <!-- Random Trick Dropdown Tab -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="randomDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Random Trick Wheels
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="randomDropdown">
+            <li><a class="dropdown-item" href="{% url 'random-trick' %}">Random Trick</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a class="dropdown-item" href="{%url 'random-trick-skill-based' request.user.UserID %}">Random Trick (Skill Based)</a></li>
+              <li><a class="dropdown-item disabled" href="#">Random Trick (Learned)</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <!-- ========================= -->
+        <!-- Skill Programs Dropdown Tab -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tricksDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Skill Programmes
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tricksDropdown">
+            <li><a class="dropdown-item disabled" href="">Programme List</a></li>
+            <li><a class="dropdown-item disabled" href="">Beginners Guide</a></li>
+            <li><a class="dropdown-item disabled" href="">Obstical Starter Kit</a></li>
+            <li><a class="dropdown-item disabled" href="">Mastering Spin Tricks</a></li>
+            <li><a class="dropdown-item disabled" href="">Mastering Flip Tricks</a></li>
+            <li><a class="dropdown-item disabled" href="">My Saved Programmes</a></li>
+          </ul>
+        </li>
+        <!-- =================== -->
+      </ul>
+      <div class="navbar-nav ml-auto gap-2">
+        <!-- Search Bar -->
+        <form class="d-flex" method="POST" action="{% url 'search-trick' %}">
+          {% csrf_token %}
+          <input class="form-control me-2 input-sm" type="search" placeholder="Search For Tricks" aria-label="Search" name="trick_searched">
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+        <!-- ========== -->
+        <!-- Skill Programs Dropdown Tab -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tricksDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            About
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="tricksDropdown">
+            <li><a class="dropdown-item disabled" href="">What Is Trickster?</a></li>
+            <li><a class="dropdown-item disabled" href="">Services</a></li>
+            <li><a class="dropdown-item disabled" href="">Help/FAQ</a></li>
+            <li><a class="dropdown-item disabled" href="">Contact Us</a></li>
+          </ul>
+        </li>
+        <!-- =================== -->
+        <!-- User Profile & Setting Tab -->
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if profile.ProfilePhoto %}
+              <img 
+              class="rounded-circle" 
+              height="30" 
+              src="{{ profile.ProfilePhoto.url }}" 
+              alt="User Profile Image" 
+              />
+            {% else %}    
+              <img 
+              class="rounded-circle" 
+              height="30" 
+              src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+              alt="Default User Profile Image" 
+              />
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarScrollingDropdown">
+            <li><a class="dropdown-item" href="{%url 'profile' request.user.UserID %}">My profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <!-- Only If Admin User -->
+            {% if request.user.is_superuser %}
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{%url 'logout'%}">Logout</a></li>
-            </ul>
-          </li>
-          {% else %}
+              <li><a class="dropdown-item" href="{%url 'add-trick'%}">Add Trick</a></li>
+              <li>
+                <a class="dropdown-item" href="{%url 'admin-db'%}">Admin Panel</a>
+              </li>
+            {% endif %}
+            <!-- ================== -->
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{%url 'logout'%}">Logout</a></li>
+          </ul>
+        </li>
+        {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{%url 'login'%}">Login</a>
           </li>
-          {% endif %}
-
-        </div>
+        {% endif %}
+        <!-- =========================== -->
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

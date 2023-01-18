@@ -55,6 +55,7 @@ def trick_list(request):
   num_pages = "T" * tricks.paginator.num_pages
 
   return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages})
+   # -- Try replacing this link ^ to the paginator.html instead! --
 
 # ======================================================================================================================================
 
