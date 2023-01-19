@@ -78,3 +78,14 @@ def profile(request, pk):
   else:
     messages.success(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
+
+
+def my_tricks(request, pk):
+  if request.user.is_authenticated:
+
+    profile = User_Profile.objects.get(User_id=pk)
+
+    return render(request, 'user_pages/my_tricks.html', {'profile': profile})
+  else:
+    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    return redirect('home')

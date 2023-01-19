@@ -58,7 +58,7 @@
                 <a class="text-light text-underline-hover" href="{% url 'show-trick' trick.TrickID %}"> {{ trick.TrickName }}</br>
               {% endfor %}
             </p>
-            <a href="{%url 'trick-list'%}" class="btn btn-primary">All Tricks</a>
+            <a href="{%url 'my-tricks' request.user.UserID %}" class="btn btn-primary">All {{ profile.User.FirstName }}'s Tricks</a>
           </div>
         </div>
       </div>
