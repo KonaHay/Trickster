@@ -37,14 +37,8 @@
               <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
               <a href="#" class="btn btn-primary">Save This Trick</a>
             </div>
-            {% if user.is_authenticated %}
-            <div class="card-body-dark text-center gap-3" style="height: 3rem">
-              <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
-                {%  csrf_token %}
-                <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-success btn-sm">Trick Learned</button>
-              </form>
-            </div>
-            {% endif %}
+              <!-- Trick Learned Button -->
+              {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick %}
           </div>
         </div>
       {% endfor %}

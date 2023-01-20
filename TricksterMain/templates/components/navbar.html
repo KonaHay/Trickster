@@ -1,4 +1,5 @@
 {% load static %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-tricksterdark">
   <div class="container-fluid">
     <a class="navbar-brand" href="{%url 'home'%}">Trickster</a>
@@ -94,11 +95,11 @@
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {% if profile.ProfilePhoto %}
+            {% if request.user.user_profile.ProfilePhoto.url %}
               <img 
               class="rounded-circle" 
               height="30" 
-              src="{{ profile.ProfilePhoto.url }}" 
+              src="{{ request.user.user_profile.ProfilePhoto.url }}" 
               alt="User Profile Image" 
               />
             {% else %}    

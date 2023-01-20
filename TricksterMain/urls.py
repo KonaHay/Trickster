@@ -12,6 +12,7 @@ urlpatterns = [
     path('delete_trick/<trick_id>', views.delete_trick, name='delete-trick'),
     path('recommend_trick/<int:pk>', views.recommend_trick, name='recommend-trick'),
     path('learned_trick/<int:pk>', views.learned_trick, name='learned-trick'),
+    path('unlearn_trick/<int:pk>', views.unlearn_trick, name='unlearn-trick'),
     path('random_trick', views.random_trick, name='random-trick'),
     path('random_trick_skill_based/<int:pk>', views.random_trick_skill_based, name='random-trick-skill-based'),
     path('admin_db', views.admin_db, name='admin-db'),

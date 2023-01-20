@@ -124,13 +124,20 @@ def random_trick_skill_based(request, pk):
 def learned_trick(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
-  learned = False
+  profile.LearnedTricks.add(trick)
+
+
+  return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+
+# ======================================================================================================================================
+
+def unlearn_trick(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
-    learned = False
-  else:
-    profile.LearnedTricks.add(trick)
-    learned = True
+
 
   return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
