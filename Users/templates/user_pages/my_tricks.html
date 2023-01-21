@@ -3,99 +3,94 @@
 
 {% block content  %}
 {% if profile %}
-<!--Try and fix in trickster.scss-->
-<style>
-  .text-underline-hover {
-    text-decoration: none;
-  }
-
-  .text-underline-hover:hover {
-      text-decoration: underline;
-  }
-
-  a:not([class]) {
+  <!--Try and fix in trickster.scss-->
+  <style>
+    .text-underline-hover {
       text-decoration: none;
-  }
+    }
 
-  a:not([class]):hover {
-      text-decoration: underline;
-  }
-</style>
+    .text-underline-hover:hover {
+        text-decoration: underline;
+    }
+
+    a:not([class]) {
+        text-decoration: none;
+    }
+
+    a:not([class]):hover {
+        text-decoration: underline;
+    }
+  </style>
 
   <div class="container text-center">
-        <h1>{{ profile.User.FirstName }}'s Landed Tricks</h1>
-        </br>
-        {% if profile.ProfilePhoto %}
-          <img 
-          class="rounded-circle" 
-          height="150" 
-          src="{{ profile.ProfilePhoto.url }}" 
-          alt="User Profile Image" 
-          />
-        {% else %}    
-          <img 
-          class="rounded-circle" 
-          height="150" 
-          src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
-          alt="Default User Profile Image" 
-          />
-        {% endif %}
-      </br></br>
-      <h3>Skill Level: {{ profile.SkillLevel }}</h3>
-      <h3>Mastery Level: {{ profile.UserDifficultyLevel }}</h3>
+    <h1>{{ profile.User.FirstName }}'s Landed Tricks</h1>
     </br>
+    {% if profile.ProfilePhoto %}
+      <img 
+      class="rounded-circle" 
+      height="150" 
+      src="{{ profile.ProfilePhoto.url }}" 
+      alt="User Profile Image" 
+      />
+    {% else %}    
+      <img 
+      class="rounded-circle" 
+      height="150" 
+      src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+      alt="Default User Profile Image" 
+      />
+    {% endif %}
+    </br></br>
+    <h3>Skill Level: {{ profile.SkillLevel }}</h3>
+    <h3>Mastery Level: {{ profile.UserDifficultyLevel }}</h3>
+    </br>
+    </div>
+    <div class="card text-dark bg-light">
+      <div class="card-header">
+        {{ profile.User.FirstName }}'s Learned Tricks:
       </div>
-        <div class="card text-dark bg-light">
-          <div class="card-header">
-            {{ profile.User.FirstName }}'s Learned Tricks:
-          </div>
-          <div class="card-body">
-            <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
-            <div class="container-md">
-              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-                {% for trick in profile.LearnedTricks.all %}
-                  <div class="col-sm">
-                    {% if user.is_authenticated %}
-                      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 15rem;">
-                    {% else %}
-                      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 12rem;">
+      <div class="card-body">
+        <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
+        <div class="container-md">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+            {% for trick in profile.LearnedTricks.all %}
+              <div class="col-sm">
+                {% if user.is_authenticated %}
+                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 15rem;">
+                {% else %}
+                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 12rem;">
+                {% endif %}
+                <!--{% if trick.TrickImg %}
+                  <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+                {% else %}    
+                  <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                {% endif %}-->
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {{ trick }} 
+                    {% if user.is_superuser %}
+                    <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
                     {% endif %}
-                    <!--{% if trick.TrickImg %}
-                      <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-                    {% else %}    
-                      <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-                    {% endif %}-->
-                      <div class="card-body">
-                        <h5 class="card-title">
-                          {{ trick }} 
-                          {% if user.is_superuser %}
-                          <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
-                          {% endif %}
-                        </h5>
-                      </div>
-                      <ul class="list-group-dark list-group-flush">
-                        <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
-                        <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
-                      </ul>
-                      <div class="card-body-dark text-center gap-3" style="height: 3rem">
-                        <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-                        <a href="#" class="btn btn-primary">Save This Trick</a>
-                      </div>
-                      {% if user.is_authenticated %}
-                      <div class="card-body-dark text-center gap-3" style="height: 3rem">
-                        <!-- Change to Unlearn Trick Button Functionally-->
-                        <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
-                          {%  csrf_token %}
-                          <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-danger btn-sm">Unlearn Trick</button>
-                        </form>
-                      </div>
-                      {% endif %}
-                    </div>
-                  </div>
-                {% endfor %}
+                  </h5>
+                </div>
+                <ul class="list-group-dark list-group-flush">
+                  <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                  <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+                </ul>
+                <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                  <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                  <a href="#" class="btn btn-primary">Save This Trick</a>
+                </div>
+                <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                  <!-- Trick Learned Button -->
+                  {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick %}
+                </div>
               </div>
             </div>
-            <!-- -------------------------------------------------------------------------------------------- -->
+          {% endfor %}
+        </div>
+      </div>
+      <!-- -------------------------------------------------------------------------------------------- -->
     </div>
   </div>
 
