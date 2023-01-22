@@ -1,4 +1,5 @@
 - Get Unlearn trick button working on all pages that need it.
 - Fix the Learn & Unlearn trick buttons so that they return the page clicked on.
+- Start using jQuery or Ajax to return button presses without reloading.
 - Look into:
   - What changes need made to User & tick models for Skill Programs.

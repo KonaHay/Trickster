@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, get_user_model
 
-from .models import Trickster_User
+from .models import Trickster_User, User_Profile
 
 #Universally setting User to get_user_model
 #User = get_user_model()
@@ -39,3 +39,15 @@ class UserAuthenticationForm(forms.ModelForm):
     password = self.cleaned_data['password']
     if not authenticate(Email=Email, password=password):
       raise forms.ValidationError("Invalid Login")
+
+class ProfileUpdateForm(forms.ModelForm):
+  class Meta:
+        model = User_Profile
+        fields = ('ProfilePhoto',)
+        labels = {
+            'ProfilePhoto':'',
+        }
+
+        widgets = {
+            'ProfilePhoto': forms.ClearableFileInput(attrs={'class':'form-control'}),
+        }

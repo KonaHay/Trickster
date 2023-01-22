@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 
 from .models import  Trickster_User, User_Profile
-from .forms import UserRegistrationForm,  UserAuthenticationForm
+from .forms import UserRegistrationForm,  UserAuthenticationForm, ProfileUpdateForm
 from TricksterMain.models import Trick, SkillLevel
 
 # ======================================================================================================================================
@@ -79,6 +79,22 @@ def profile(request, pk):
     messages.success(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
 
+# ======================================================================================================================================
+
+def update_profile(request, pk):
+  if request.user.is_authenticated:
+    profile = User_Profile.objects.get(User_id=pk)
+    form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=profile)
+    if form.is_valid():
+      form.save()
+      messages.success(request, ("The Changes To Your Profile Have Been Saved!"))
+      return redirect('home')
+  else:
+    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    return redirect('home')
+  return render(request, 'user_pages/update_profile.html', {'profile':profile, 'form':form})
+
+# ======================================================================================================================================
 
 def my_tricks(request, pk):
   if request.user.is_authenticated:

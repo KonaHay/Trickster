@@ -113,7 +113,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarScrollingDropdown">
             <li><a class="dropdown-item" href="{%url 'profile' request.user.UserID %}">My profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="{%url 'update-profile' request.user.UserID %}">Settings</a></li>
             <!-- Only If Admin User -->
             {% if request.user.is_superuser %}
               <li><hr class="dropdown-divider"></li>
