@@ -126,8 +126,8 @@ def learned_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.LearnedTricks.add(trick)
 
-
-  return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return HttpResponseRedirect('/home')
+  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
 # ======================================================================================================================================
 
@@ -138,8 +138,8 @@ def unlearn_trick(request, pk):
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
 
-
-  return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return HttpResponseRedirect('/home')
+  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
 # ======================================================================================================================================
 
