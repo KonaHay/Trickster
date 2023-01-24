@@ -20,7 +20,7 @@ class Trick (models.Model):
     def __str__(self):
         return self.TrickName
 
-class Trick_Programmes (models.Model):
+class Trick_Programme (models.Model):
     ProgrammeID = models.AutoField(primary_key=True)
     ProgrammeName = models.CharField(max_length=25)
     ProgrammeDiscription = models.TextField(blank=True)

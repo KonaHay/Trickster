@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save
 from django.utils import timezone
 
-from TricksterMain.models import Trick, SkillLevel, Trick_Programmes
+from TricksterMain.models import Trick, SkillLevel, Trick_Programme
 
 
 
@@ -66,8 +66,8 @@ class User_Profile(models.Model):
   UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   LearnedTricks = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   SavedTricks = models.ManyToManyField(Trick, related_name='saved_trick', blank=True)
-  CurrentlyLearningProgrammes = models.ManyToManyField(Trick_Programmes, related_name='currently_learning_programmes', blank=True)
-  SavedProgrammes = models.ManyToManyField(Trick_Programmes, related_name='saved_programmes', blank=True)
+  CurrentlyLearningProgrammes = models.ManyToManyField(Trick_Programme, related_name='currently_learning_programme', blank=True)
+  SavedProgrammes = models.ManyToManyField(Trick_Programme, related_name='saved_programme', blank=True)
   Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
 
   def __str__(self):
