@@ -3,17 +3,22 @@
 {% block content  %}
 
     <div class="shadow  p-4 mb-5 bg-body rounded">
-        <h1>Update Settings</h1>
+        <h1>Update User Profile</h1>
         </br>
 
         <form action="" method=POST enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+          {% csrf_token %}
+          {{ user_form.as_p }}
+          <input name="UpdateUser" type="submit" value="Update User" class="btn btn-primary">     
+        </form>
         </br>
-        <input type="submit" value="Update Profile" class="btn btn-primary">     
+
+        <form action="" method=POST enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ profile_form.as_p }}
+          <input name="UpdateProfile" type="submit" value="Update Profile" class="btn btn-primary">     
         </form>
     
-        
     </div>
 
 {% endblock %}

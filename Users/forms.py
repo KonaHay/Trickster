@@ -9,20 +9,20 @@ from .models import Trickster_User, User_Profile
 
 
 class UserRegistrationForm(UserCreationForm):
-    Email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
-    FirstName = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
-    LastName = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
-    Username = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
+  Email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
+  FirstName = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
+  LastName = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
+  Username = forms.CharField(max_length=50,  widget=forms.TextInput(attrs={'class':'form-control'}))
 
-    class Meta:
-        model = Trickster_User
-        fields = ('Username','FirstName', 'LastName', 'Email', 'password1', 'password2')
+  class Meta:
+      model = Trickster_User
+      fields = ('Username','FirstName', 'LastName', 'Email', 'password1', 'password2')
 
-    def __init__(self,  *args, **kwargs):
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+  def __init__(self,  *args, **kwargs):
+      super(UserRegistrationForm, self).__init__(*args, **kwargs)
 
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
+      self.fields['password1'].widget.attrs['class'] = 'form-control'
+      self.fields['password2'].widget.attrs['class'] = 'form-control'
 
 
 class UserAuthenticationForm(forms.ModelForm):
@@ -42,12 +42,29 @@ class UserAuthenticationForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
   class Meta:
-        model = User_Profile
-        fields = ('ProfilePhoto',)
-        labels = {
-            'ProfilePhoto':'',
-        }
+    model = User_Profile
+    fields = ('ProfilePhoto',)
+    labels = {
+      'ProfilePhoto':'',
+    }
 
-        widgets = {
-            'ProfilePhoto': forms.ClearableFileInput(attrs={'class':'form-control'}),
-        }
+    widgets = {
+        'ProfilePhoto': forms.ClearableFileInput(attrs={'class':'form-control'}),
+    }
+
+class UserUpdateForm(forms.ModelForm):        
+  class Meta:
+    model = Trickster_User
+    fields = ('Username', 'Email', 'FirstName', 'LastName')
+    labels = {
+      'Username':'Username',
+      'Email':'Email',
+      'FirstName':'First Name',
+      'LastName':'Last Name'
+    }
+    widgets = {
+      'Username' : forms.TextInput(attrs={'class':'form-control'}),
+      'Email' : forms.EmailInput(attrs={'class':'form-control'}),
+      'FirstName' : forms.TextInput(attrs={'class':'form-control'}),
+      'LastName' : forms.TextInput(attrs={'class':'form-control'})
+    }

@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 
 from random import shuffle
 
-from .models import Trick, SkillLevel, Trick_Programmes
+from .models import Trick, SkillLevel, Trick_Programme
 from .forms import TrickForm
 from Users.models import Trickster_User, User_Profile 
 
