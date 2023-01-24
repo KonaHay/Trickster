@@ -22,7 +22,7 @@
             <!-- <li><a class="dropdown-item disabled" href="">Find My Skill Level</a></li> -->
             <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
             <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
-            <li><a class="dropdown-item disabled" href="">Saved Tricks</a></li>
+            <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
             <li><a class="dropdown-item disabled" href="">Glossary</a></li>
             {% endif %}
           </ul>

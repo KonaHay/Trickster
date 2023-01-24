@@ -23,7 +23,20 @@
                 <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
               {% endif %}
               <div class="card-body">
-                <h5 class="card-title">{{ trick }}</h5>
+                <h5 class="card-title">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-6">
+                        {{ trick }} 
+                      </div>
+                      <div class="col-6">
+                        {% if user.is_superuser %}
+                        <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </h5>
                 <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
               </div>
               <ul class="list-group-dark list-group-flush">
@@ -31,8 +44,17 @@
                 <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
               </ul>
               <div class="card-body-dark text-center gap-3" style="height: 3rem">
-                <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-                <a href="#" class="btn btn-primary">Save This Trick</a>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-6">
+                      <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                    </div>
+                    <div class="col-6">
+                      <!-- Save Trick Button -->
+                      {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="card-body-dark text-center gap-3" style="height: 3rem">
                 <!-- Trick Learned Button -->

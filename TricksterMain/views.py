@@ -9,9 +9,9 @@ from django.core.paginator import Paginator
 
 from random import shuffle
 
-from .models import Trick, SkillLevel
+from .models import Trick, SkillLevel, Trick_Programmes
 from .forms import TrickForm
-from Users.models import Trickster_User, User_Profile
+from Users.models import Trickster_User, User_Profile 
 
 
 def home(request):
@@ -126,6 +126,7 @@ def learned_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.LearnedTricks.add(trick)
 
+  messages.success(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
@@ -138,6 +139,31 @@ def unlearn_trick(request, pk):
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
 
+  messages.success(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
+  return HttpResponseRedirect('/home')
+  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+
+# ======================================================================================================================================
+
+def save_trick(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+  profile.SavedTricks.add(trick)
+
+  messages.success(request, (trick.TrickName + " Has Been Added To Your List Of Saved Tricks!"))
+  return HttpResponseRedirect('/home')
+  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+
+# ======================================================================================================================================
+
+def unsave_trick(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+
+  if profile.SavedTricks.filter(TrickID=trick.TrickID).exists():
+    profile.SavedTricks.remove(trick)
+
+  messages.success(request, (trick.TrickName + " Has Been Removed From Your List Of Saved Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 

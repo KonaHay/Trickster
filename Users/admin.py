@@ -5,7 +5,8 @@ from .models import Trickster_User, User_Profile
 
 class ProfileInline(admin.StackedInline):
   model = User_Profile
-  fields = ['User', 'ProfilePhoto', 'SkillLevel', 'UserDifficultyLevel', 'LearnedTricks', 'Follows']
+  fields = ['User', 'ProfilePhoto', 'SkillLevel', 'UserDifficultyLevel', 'LearnedTricks', 'SavedTricks', 'Follows']
+  #'CurrentlyLearningProgrammes', 'SavedProgrammes',
 
 class UserAdminConfig(UserAdmin):
     model = Trickster_User

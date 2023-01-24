@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+  {% if trick in saved_tricks.all %}
+    <form action="{% url 'unsave-trick' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-danger btn-sm">Unsave Trick</button>
+    </form>
+  {% else %}
+    <form action="{% url 'save-trick' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-primary btn-sm">Save Trick</button>
+    </form>
+  {% endif %}
+{% endif %}

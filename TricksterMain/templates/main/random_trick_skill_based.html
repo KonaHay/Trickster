@@ -26,15 +26,20 @@
             <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
           </ul>
           <div class="card-body-dark text-center gap-3" style="height: 3rem">
-            <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-            <a href="#" class="btn btn-primary">Save This Trick</a>
+            <div class="container">
+              <div class="row">
+                <div class="col-6">
+                  <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                </div>
+                <div class="col-6">
+                  <!-- Save Trick Button -->
+                  {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body-dark text-center gap-3" style="height: 3rem">
-            <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
-              {%  csrf_token %}
-              <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-success btn-sm">Trick Learned</button>
-            </form>
-          </div>
+          <!-- Trick Learned Button -->
+          {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
         </div>
       {% endwith %}
       <form class="d-flex" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
@@ -59,16 +64,25 @@
           <li class="list-group-item">Trick Difficulty: ?</li>
         </ul>
         <div class="card-body-dark text-center gap-3" style="height: 3rem">
-          <a href="#" class="card-link me-md-4">Learn How</a>
-          <a href="#" class="btn btn-primary">Save This Trick</a>
+          <div class="container">
+            <div class="row">
+              <div class="col-6">
+                <a href="#" class="card-link disabled me-md-4">Learn How</a>
+              </div>
+              <div class="col-6">
+                <a class="btn btn-primary disabled btn-sm">Save Trick</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Trick Learned Button -->
-        {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
+        <div class="card-body-dark text-center gap-3" style="height: 3rem">
+          <a class="btn btn-outline-info disabled btn-sm">Trick Learned</a>
+        </div>
       </div>
       <form class="d-flex" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
         {% csrf_token %}
         <input type="hidden" name="randomise" value="randomise"> 
-        <button class="btn btn-outline-primary" value="" type="submit">Randomise!</button>
+        <button class="btn btn-primary" value="" type="submit">Randomise!</button>
       </form>
 
     {% endif %}  

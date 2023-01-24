@@ -3,27 +3,8 @@
 
 {% block content  %}
 {% if profile %}
-  <!--Try and fix in trickster.scss-->
-  <style>
-    .text-underline-hover {
-      text-decoration: none;
-    }
-
-    .text-underline-hover:hover {
-        text-decoration: underline;
-    }
-
-    a:not([class]) {
-        text-decoration: none;
-    }
-
-    a:not([class]):hover {
-        text-decoration: underline;
-    }
-  </style>
-
   <div class="container text-center">
-    <h1>{{ profile.User.FirstName }}'s Landed Tricks</h1>
+    <h1>{{ profile.User.FirstName }}'s Saved Tricks</h1>
     </br>
     {% if profile.ProfilePhoto %}
       <img 
@@ -47,24 +28,24 @@
     </div>
     <div class="card text-dark bg-light">
       <div class="card-header">
-        {{ profile.User.FirstName }}'s Learned Tricks:
+        {{ profile.User.FirstName }}'s Saved Tricks:
       </div>
       <div class="card-body">
         <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
         <div class="container-md">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-            {% for trick in profile.LearnedTricks.all %}
+            {% for trick in profile.SavedTricks.all %}
               <div class="col-sm">
                 {% if user.is_authenticated %}
-                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 15rem;">
+                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
                 {% else %}
-                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 12rem;">
+                  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
                 {% endif %}
-                <!--{% if trick.TrickImg %}
+                {% if trick.TrickImg %}
                   <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
                 {% else %}    
                   <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-                {% endif %}-->
+                {% endif %}
                 <div class="card-body">
                   <h5 class="card-title">
                     {{ trick }} 
@@ -72,6 +53,7 @@
                     <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
                     {% endif %}
                   </h5>
+                  <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
                 </div>
                 <ul class="list-group-dark list-group-flush">
                   <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>

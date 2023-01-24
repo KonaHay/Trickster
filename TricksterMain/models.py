@@ -20,4 +20,16 @@ class Trick (models.Model):
     def __str__(self):
         return self.TrickName
 
+class Trick_Programmes (models.Model):
+    ProgrammeID = models.AutoField(primary_key=True)
+    ProgrammeName = models.CharField(max_length=25)
+    ProgrammeDiscription = models.TextField(blank=True)
+    ProgrammeTricks = models.ManyToManyField(Trick, related_name='programme_tricks', blank=True)
+    ProgrammeRecLevel = models.ForeignKey(SkillLevel, blank=True, null=True, on_delete=models.CASCADE)
+    ProgrammeDifficulty = models.PositiveIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    ProgrammeImg = models.ImageField(null=True, blank=True, upload_to="images/")
+
+    def __str__(self):
+        return self.ProgrammeName
+
 
