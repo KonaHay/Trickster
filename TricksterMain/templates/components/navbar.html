@@ -95,7 +95,7 @@
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {% if request.user.user_profile.ProfilePhoto.url %}
+            {% if request.user.user_profile.ProfilePhoto %}
               <img 
               class="rounded-circle" 
               height="30" 
@@ -113,7 +113,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarScrollingDropdown">
             <li><a class="dropdown-item" href="{%url 'profile' request.user.UserID %}">My profile</a></li>
-            <li><a class="dropdown-item" href="{%url 'update-profile' request.user.UserID %}">Settings</a></li>
+            <li><a class="dropdown-item" href="{%url 'update-profile' request.user.UserID %}">Profile Settings</a></li>
             <!-- Only If Admin User -->
             {% if request.user.is_superuser %}
               <li><hr class="dropdown-divider"></li>

@@ -8,7 +8,7 @@
     {% else %}
       <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
         {%  csrf_token %}
-        <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-info btn-sm">Trick Learned</button>
+        <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-info btn-sm">Mark Trick As Learned</button>
       </form>
     {% endif %}
   </div>

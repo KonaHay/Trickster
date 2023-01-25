@@ -82,7 +82,7 @@ def recommend_trick(request, pk):
 
     return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile,})
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')
 
 # ======================================================================================================================================
@@ -116,7 +116,7 @@ def random_trick_skill_based(request, pk):
     else:
       return render(request, 'main/random_trick_skill_based.html', {})
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')
 
 # ======================================================================================================================================
@@ -126,7 +126,7 @@ def learned_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.LearnedTricks.add(trick)
 
-  messages.success(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
+  messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
@@ -139,7 +139,7 @@ def unlearn_trick(request, pk):
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
 
-  messages.success(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
+  messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
@@ -150,7 +150,7 @@ def save_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.SavedTricks.add(trick)
 
-  messages.success(request, (trick.TrickName + " Has Been Added To Your List Of Saved Tricks!"))
+  messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Saved Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 
@@ -163,7 +163,7 @@ def unsave_trick(request, pk):
   if profile.SavedTricks.filter(TrickID=trick.TrickID).exists():
     profile.SavedTricks.remove(trick)
 
-  messages.success(request, (trick.TrickName + " Has Been Removed From Your List Of Saved Tricks!"))
+  messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Saved Tricks!"))
   return HttpResponseRedirect('/home')
   #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
 

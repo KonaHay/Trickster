@@ -24,10 +24,12 @@ def user_login(request):
 
       if user is not None:
         login(request, user)
+        messages.success(request, ("Login Successful!"))
         return redirect('home')
-
+    context['UserAuthenticationForm'] = form
   else:
     form = UserAuthenticationForm()
+    context['UserAuthenticationForm'] = form
 
   context['user_login'] = form
   return render(request, 'authentication/login.html', context)
@@ -36,7 +38,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    messages.success(request, ("User Logged Out!"))
+    messages.warning(request, ("User Logged Out!"))
     
     # change to redirect to page user logged out on
     return redirect('home')
@@ -76,7 +78,7 @@ def profile(request, pk):
 
     return render(request, 'user_pages/profile.html', {'profile': profile})
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
 
 # ======================================================================================================================================
@@ -107,7 +109,7 @@ def update_profile(request, pk):
     return render(request, 'user_pages/update_profile.html', {'profile':profile, 'profile_form':profile_form, 'user_form':user_form})
 
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
 
 # ======================================================================================================================================
@@ -119,7 +121,7 @@ def my_tricks(request, pk):
 
     return render(request, 'user_pages/my_tricks.html', {'profile': profile})
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
 
 # ======================================================================================================================================
@@ -131,5 +133,5 @@ def my_saved_tricks(request, pk):
 
     return render(request, 'user_pages/my_saved_tricks.html', {'profile': profile})
   else:
-    messages.success(request, ("You Must Be Logged In To See This Page!"))
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')

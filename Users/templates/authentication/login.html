@@ -17,15 +17,13 @@
             <small style="color: grey">{{ feild.help_text }}</small>
           {% endif %}
 
-          {% for errors in field.errors %}
+          <div style="color:red";>
             <p style="color: red">{{ feild.errors }}</p>
-          {% endfor %}
+          </div>
 
-          {% if user_login.non_feild_errors %}
-            <div style="color:red";>
-              <p>{{ user_login.non_feild_errors }}</p>
-            </div>
-          {% endif %}
+          <div style="color:red";>
+            <p>{{ user_login.non_feild_errors }}</p>
+          </div>
         </p>
       {% endfor %}
       <div class="row">
