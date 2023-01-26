@@ -52,7 +52,7 @@
             {{ profile.User.FirstName }}'s Learned Tricks:
           </div>
           <div class="card-body">
-
+            <p class="card-text">Total Tricks Learned: {{ profile.LearnedTricks.all.count }}</p>
             <p class="card-text">
               {% for trick in profile.LearnedTricks.all %}
                 <a class="text-light text-underline-hover" href="{% url 'show-trick' trick.TrickID %}"> {{ trick.TrickName }}</br>

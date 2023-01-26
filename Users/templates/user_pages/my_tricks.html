@@ -47,9 +47,10 @@
     </div>
     <div class="card text-dark bg-light">
       <div class="card-header">
-        {{ profile.User.FirstName }}'s Learned Tricks:
+        <span calss="align-middle"><h4>{{ profile.User.FirstName }}'s Learned Tricks: </h4></span>
       </div>
       <div class="card-body">
+        <p class="card-text"><strong>Total Tricks Learned: {{ trick_count }}</strong></p>
         <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
         <div class="container-md">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">

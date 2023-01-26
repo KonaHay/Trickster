@@ -47,14 +47,17 @@ def trick_list(request):
   #tricks = t_paginator.paginator_tricks
   #-----------------------------------------
 
-  #Pagination setup
+
   all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  trick_count = all_tricks.count()
+
+  #Pagination setup
   p = Paginator(all_tricks, 6)
   page = request.GET.get('page')
   tricks = p.get_page(page)
   num_pages = "T" * tricks.paginator.num_pages
 
-  return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages})
+  return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages, "trick_count":trick_count})
    # -- Try replacing this link ^ to the paginator.html instead! --
 
 # ======================================================================================================================================

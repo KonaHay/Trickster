@@ -118,8 +118,9 @@ def my_tricks(request, pk):
   if request.user.is_authenticated:
 
     profile = User_Profile.objects.get(User_id=pk)
+    trick_count = profile.LearnedTricks.all().count()
 
-    return render(request, 'user_pages/my_tricks.html', {'profile': profile})
+    return render(request, 'user_pages/my_tricks.html', {'profile': profile, "trick_count":trick_count})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
@@ -130,8 +131,9 @@ def my_saved_tricks(request, pk):
   if request.user.is_authenticated:
 
     profile = User_Profile.objects.get(User_id=pk)
+    trick_count = profile.SavedTricks.all().count()
 
-    return render(request, 'user_pages/my_saved_tricks.html', {'profile': profile})
+    return render(request, 'user_pages/my_saved_tricks.html', {'profile': profile, "trick_count":trick_count})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')

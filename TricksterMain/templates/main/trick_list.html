@@ -2,8 +2,16 @@
 {% load static %}
 
 {% block content  %}
-
+<div class="shadow  p-4 mb-5 bg-body rounded">
   <h1> Trickster Trick Database </h1>
+  <br/>
+  <div class="col-4">
+    <div class="card text-bg-dark">
+      <div class="card-body">
+        <p class="card-text">Database Coantians: {{ trick_count }} Tricks!</p>
+      </div>
+    </div>
+  </div>
   <br/>
   <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
   <div class="container-md">
@@ -62,7 +70,7 @@
     </div>
   </div>
   <!-- -------------------------------------------------------------------------------------------- -->
-
+</div>
   <!-- Pagination --- Will be moved into its own function.-->
 
   <nav aria-label="Paginator">
@@ -105,11 +113,8 @@
         </a>
       </li>
       {% endif %}
-
-      <!-- ----------------------------------------------- -->
-
     </ul>
   </nav>
-
+  <!-- ----------------------------------------------- -->
 
 {% endblock %}
