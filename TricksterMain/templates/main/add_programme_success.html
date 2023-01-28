@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+
+    <h2>The Programme "{{ Programme.ProgrammeName }}" Has Been Created!</h2>
+    <h3>Skill Level: {{ Programme.ProgrammeRecLevel }}</h3>
+    <h3>Difficulty: {{ Programme.ProgrammeDifficulty }}</h3>
+    </br>
+    <a href="{% url 'add-programme-tricks-list' Programme.ProgrammeID %}" class="btn btn-success">Add Tricks To programme</a>
+
+  </div>
+{% endblock %}

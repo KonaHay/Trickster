@@ -17,5 +17,15 @@ urlpatterns = [
     path('unsave_trick/<int:pk>', views.unsave_trick, name='unsave-trick'),
     path('random_trick', views.random_trick, name='random-trick'),
     path('random_trick_skill_based/<int:pk>', views.random_trick_skill_based, name='random-trick-skill-based'),
+
+    #Skill Programme URL's
+    path('add_programme', views.add_programme, name='add-programme'),
+    path('add_programme_success/<programme_id>', views.add_programme_success, name='add-programme-success'),
+    path('add_programme_tricks_list/<programme_id>', views.add_programme_tricks_list, name='add-programme-tricks-list'),
+    path('add_programme_tricks_button/<programme_id>', views.add_programme_tricks_button, name='add-programme-tricks-button'),
+    path('remove_programme_tricks_button/<programme_id>', views.remove_programme_tricks_button, name='remove-programme-tricks-button'),
+    path('programme_list', views.programme_list, name="programme-list"),
+
+    #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),
 ]

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Trick
+from .models import Trick, Trick_Programme
 
 #Form to add a trick to the database.
 class TrickForm(ModelForm):
@@ -24,3 +24,25 @@ class TrickForm(ModelForm):
             'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
             'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
         }
+
+#Form to add a trick programme to the database.
+class AddProgrammeForm(ModelForm):
+  class Meta:
+    model = Trick_Programme
+    fields = ('ProgrammeName', 'ProgrammeRecLevel',  'ProgrammeDifficulty',  'ProgrammeDiscription', 'ProgrammeImg')
+    labels = {
+      'ProgrammeName': 'Enter the Programme Name:',
+      'ProgrammeRecLevel':'Reccomended Level for this programme:',
+      'ProgrammeDifficulty':'Programme Difficulty (Scale 1-10):',
+      'ProgrammeDiscription':'Enter the discription of this programme:',
+      'ProgrammeImg':'Upload a cover image for this programme:',
+    }
+    
+    widgets = {
+      'ProgrammeName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Beginner Guide'}),
+      'ProgrammeRecLevel': forms.Select(attrs={'class':'form-control', 'empty_label':'Select a skill level'}),
+      'ProgrammeDifficulty': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
+      'ProgrammeDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
+      'ProgrammeImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
+    }
+

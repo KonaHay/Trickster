@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from random import shuffle
 
 from .models import Trick, SkillLevel, Trick_Programme
-from .forms import TrickForm
+from .forms import TrickForm, AddProgrammeForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -185,7 +185,7 @@ def add_trick(request):
       if 'submitted' in request.GET:
         submitted = True
         messages.success(request, ("Trick Added Successfuly!"))
-    return render(request, 'main/add_trick.html', {'form' : form, 'submitted':submitted})
+    return render(request, 'main/add_trick.html', {'form':form, 'submitted':submitted})
 
 # ======================================================================================================================================
 
@@ -223,6 +223,98 @@ def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   trick.delete()
   return HttpResponseRedirect('/trick_list')
+
+# ======================================================================================================================================
+
+@permission_required('trick.add_programme', login_url='home')
+def add_programme(request):
+    submitted = False
+    if request.method == "POST":
+      form = AddProgrammeForm(request.POST, request.FILES)
+      if form.is_valid():
+        new_programme = form.save()
+        #need to pass the ProgrammeID after its been created.
+        programme = new_programme
+        return HttpResponseRedirect('/add_programme_success/%d'%programme.ProgrammeID)
+    else:
+      form = AddProgrammeForm
+      if 'submitted' in request.GET:
+        submitted = True
+        messages.success(request, ("Trick Programme Added Successfully!"))
+    return render(request, 'main/add_programme.html', {'form':form, 'submitted':submitted})
+
+
+def add_programme_success(request, programme_id):
+  Programme = Trick_Programme.objects.get(pk=programme_id)
+
+  return render(request, 'main/add_programme_success.html', {'Programme':Programme})
+
+# ======================================================================================================================================
+
+@permission_required('trick.add_programme', login_url='home')
+def add_programme_tricks_list(request, programme_id):
+
+  all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+
+  Programme = Trick_Programme.objects.get(pk=programme_id)
+  Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+
+  #Search Trick Function
+  if request.method == "POST":
+    trick_searched = request.POST['trick_searched']
+    searched_tricks =  Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+
+    return render(request, 'main/add_programme_tricks.html', {
+      'Programme':Programme, 
+      'Programme_Tricks':Programme_Tricks, 
+      'all_tricks':all_tricks, 
+      'trick_searched':trick_searched, 
+      'searched_tricks':searched_tricks
+      })
+  else:
+    return render(request, 'main/add_programme_tricks.html', {
+    'Programme':Programme, 
+    'Programme_Tricks':Programme_Tricks, 
+    'all_tricks':all_tricks, 
+    })
+
+# ======================================================================================================================================
+
+def add_programme_tricks_button(request, programme_id):
+  #Saved Trick Function - Alter 
+  programme = Trick_Programme.objects.get(ProgrammeID=programme_id)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+  programme.ProgrammeTricks.add(trick)
+
+  messages.info(request, (trick.TrickName + " Has Been Added To The " + programme.ProgrammeName + " Programme!"))
+  return HttpResponseRedirect('/add_programme_tricks_list/%d'%programme.ProgrammeID)
+
+# ======================================================================================================================================
+
+def remove_programme_tricks_button(request, programme_id):
+  programme = Trick_Programme.objects.get(ProgrammeID=programme_id)
+  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+
+  if programme.ProgrammeTricks.filter(TrickID=trick.TrickID).exists():
+    programme.ProgrammeTricks.remove(trick)
+
+  messages.error(request, (trick.TrickName + " Has Been Removed From The " + programme.ProgrammeName + " Programme!"))
+  return HttpResponseRedirect('/add_programme_tricks_list/%d'%programme.ProgrammeID)
+
+# ======================================================================================================================================
+
+def programme_list(request):
+
+  all_programmes = Trick_Programme.objects.all().order_by('ProgrammeRecLevel', 'ProgrammeDifficulty', 'ProgrammeName')
+  programme_count = all_programmes.count()
+
+  #Pagination setup
+  p = Paginator(all_programmes, 6)
+  page = request.GET.get('page')
+  programmes = p.get_page(page)
+  num_pages = "T" * programmes.paginator.num_pages
+
+  return render(request, 'main/programme_list.html', {'programmes': programmes, "num_pages":num_pages, "programme_count":programme_count})
 
 # ======================================================================================================================================
 

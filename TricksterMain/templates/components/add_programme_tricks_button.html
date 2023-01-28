@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+  <div class="card-body-dark text-center gap-3" style="height: 3rem">
+    {% if trick in ProgrammeTricks %}
+      <form action="{% url 'remove-programme-tricks-button' Programme.ProgrammeID %}" method="POST">
+        {%  csrf_token %}
+        <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-danger btn-sm">Remove Trick</button>
+      </form>
+    {% else %}
+      <form action="{% url 'add-programme-tricks-button' Programme.ProgrammeID %}" method="POST">
+        {%  csrf_token %}
+        <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-info btn-sm">Add Trick</button>
+      </form>
+    {% endif %}
+  </div>
+{% endif %}

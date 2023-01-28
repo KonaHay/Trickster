@@ -1,0 +1,129 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+
+  <!--Programme Title and Current Tricks-->
+  <div class="container-md">
+    <div class="row">
+      <div class="col-md-9">
+        <h1 class="display-6"><strong>Add tricks to <u>{{ Programme }}</u>: </strong></h1>
+      </div>
+      <div class="col-md-3">
+        <div class="container align-end">
+          <a class="btn btn-success" href="{%url 'programme-list'%}">Confirm Added Tricks</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </br> 
+  <div class="card ">
+    <h4 class="card-header">Current tricks in the {{ Programme }} Programme:</h4>
+    </br>
+    <!-- I want to put this section into a carosel to cycle through the current tricks eventually. -->
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {% for trick in Programme_Tricks %}
+          <div class="col-sm">
+            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 22rem;">
+              {% if trick.TrickImg %}
+                <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+              {% else %}    
+                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{ trick }} 
+                </h5>
+              </div>
+              <ul class="list-group-dark list-group-flush">
+                <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+              </ul>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <!-- Add/Remove Trick Button -->
+                {% include 'components/add_programme_tricks_button.html' with ProgrammeTricks=Programme.ProgrammeTricks.all user=user trick=trick %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </br>
+  <div class="card ">
+    <div class="card-header">
+      <h4>Add new tricks to the {{ Programme }} Programme:</h4>
+      <!-- Search Bar -->
+      <form class="d-flex" method="POST" >
+        {% csrf_token %}
+        <input class="form-control me-2 input-sm" type="search" placeholder="Search For Tricks" aria-label="Search" name="trick_searched">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+    </div>
+    </br>
+
+    {% if trick_searched %}
+      <div class="container-md">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+          {% for trick in searched_tricks %}
+            <div class="col-sm">
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 22rem;">
+                {% if trick.TrickImg %}
+                  <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+                {% else %}    
+                  <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title text-center">
+                    {{ trick }} 
+                  </h5>
+                </div>
+                <ul class="list-group-dark list-group-flush">
+                  <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                  <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+                </ul>
+                <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                  <!-- Add/Remove Trick Button -->
+                  {% include 'components/add_programme_tricks_button.html' with ProgrammeTricks=Programme.ProgrammeTricks.all user=user trick=trick %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% else %}
+      <!-- If No Trick Searched show this -->
+      <div class="container-md">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+          {% for trick in all_tricks %}
+            <div class="col-sm">
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 22rem;">
+                {% if trick.TrickImg %}
+                  <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+                {% else %}    
+                  <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title text-center">
+                    {{ trick }} 
+                  </h5>
+                </div>
+                <ul class="list-group-dark list-group-flush">
+                  <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                  <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+                </ul>
+                <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                  <!-- Add/Remove Trick Button -->
+                  {% include 'components/add_programme_tricks_button.html' with ProgrammeTricks=Programme.ProgrammeTricks.all user=user trick=trick %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% endblock %}
