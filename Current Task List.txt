@@ -1,5 +1,7 @@
 - Fix the Learn & Unlearn trick buttons so that they return the page clicked on.
 - Start using jQuery or Ajax to return button presses without reloading.
 - Try to Delete old profile images and Trick images once they have been changed.
-- Look into:
-  - What changes need made to User & tick models for Skill Programmes.
+
+High Priority:
+- Increase skill programme functionality.
+- remove Save Skill Programme button from not authenticated users.

@@ -1,0 +1,95 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+<div class="shadow  p-4 mb-5 bg-body rounded">
+  <h1> {{ Programme.ProgrammeName }} </h1>
+  <br/>
+  <div class="card ">
+    <h4 class="card-header">Programme Description:</h4>
+    <p class="card-text">{{ Programme.ProgrammeDiscription }}</p>
+  </div>
+  </br>
+  <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="true" href="#">Lesson 1:</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" aria-disabled="true">Lesson 2:</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Lesson 3:</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Lesson Title!</h5>
+      <p class="card-text">Lesson 1 will go here.</p>
+      <a href="#" class="btn btn-primary">Refrenced Tricks</a>
+    </div>
+  </div>
+  <div class="card ">
+    <h4 class="card-header">Tricks Within This Programme:</h4>
+    </br>
+    <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {% for trick in Programme_Tricks %}
+          <div class="col-sm">
+            {% if user.is_authenticated %}
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+            {% else %}
+              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+            {% endif %}
+              {% if trick.TrickImg %}
+                <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+              {% else %}    
+                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-6">
+                        {{ trick }} 
+                      </div>
+                      <div class="col-6">
+                        {% if user.is_superuser %}
+                        <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </h5>
+                <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
+              </div>
+              <ul class="list-group-dark list-group-flush">
+                <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+                <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+              </ul>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-6">
+                      <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                    </div>
+                    <div class="col-6">
+                      <!-- Save Trick Button -->
+                      {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Trick Learned Button -->
+              {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- -------------------------------------------------------------------------------------------- -->
+  </div>
+</div>
+{% endblock %}

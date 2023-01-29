@@ -25,6 +25,7 @@ urlpatterns = [
     path('add_programme_tricks_button/<programme_id>', views.add_programme_tricks_button, name='add-programme-tricks-button'),
     path('remove_programme_tricks_button/<programme_id>', views.remove_programme_tricks_button, name='remove-programme-tricks-button'),
     path('programme_list', views.programme_list, name="programme-list"),
+    path('view_programme/<programme_id>', views.view_programme, name='view-programme'),
 
     #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),

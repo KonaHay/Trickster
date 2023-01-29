@@ -318,6 +318,13 @@ def programme_list(request):
 
 # ======================================================================================================================================
 
+def view_programme(request, programme_id):
+  Programme = Trick_Programme.objects.get(pk=programme_id)
+  Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks})
+
+# ======================================================================================================================================
+
 @login_required(login_url='/login')
 def admin_db(request):
   # An Extra Level Security for the Admin Panel
