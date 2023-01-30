@@ -9,36 +9,7 @@
     </br>
     <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
     {% with randomised_tricks|first as trick %}
-      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-        {% if trick.TrickImg %}
-          <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-        {% else %}    
-          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ trick }}</h5>
-          <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
-        </div>
-        <ul class="list-group-dark list-group-flush">
-          <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
-          <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
-        </ul>
-        <div class="card-body-dark text-center gap-3" style="height: 3rem">
-          <div class="container">
-            <div class="row">
-              <div class="col-6">
-                <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-              </div>
-              <div class="col-6">
-                <!-- Save Trick Button -->
-                {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Trick Learned Button -->
-        {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
-      </div>
+      {% include 'components/trick_cards.html' with trick=trick user=request.user %}
     {% endwith %}
     <form class="d-flex" method="POST" action="{% url 'random-trick' %}">
       {% csrf_token %}

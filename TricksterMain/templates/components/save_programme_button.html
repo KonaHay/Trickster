@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+  {% if programme in saved_programmes.all %}
+    <form action="{% url 'unsave-programme' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <button type="submit", name="programme_id", value="{{programme.ProgrammeID}}", class="btn btn-danger btn-sm">Unsave Programme</button>
+    </form>
+  {% else %}
+    <form action="{% url 'save-programme' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <button type="submit", name="programme_id", value="{{programme.ProgrammeID}}", class="btn btn-primary btn-sm">Save Programme</button>
+    </form>
+  {% endif %}
+{% endif %}

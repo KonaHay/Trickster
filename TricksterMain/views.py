@@ -226,6 +226,12 @@ def delete_trick(request, trick_id):
 
 # ======================================================================================================================================
 
+def trick_card(request, pk):
+
+  return render(request, 'components/trick_cards.html', {})
+
+# ======================================================================================================================================
+
 @permission_required('trick.add_programme', login_url='home')
 def add_programme(request):
     submitted = False
@@ -322,6 +328,28 @@ def view_programme(request, programme_id):
   Programme = Trick_Programme.objects.get(pk=programme_id)
   Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks})
+
+# ======================================================================================================================================
+
+def save_programme(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
+  profile.SavedProgrammes.add(programme)
+
+  messages.info(request, (programme.ProgrammeName + " Has Been Added To Your List Of Saved Programmes!"))
+  return HttpResponseRedirect('/home')
+
+# ======================================================================================================================================
+
+def unsave_programme(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
+
+  if profile.SavedProgrammes.filter(ProgrammeID=programme.TrickID).exists():
+    profile.SavedProgrammes.remove(programme)
+
+  messages.error(request, (programme.ProgrammeName + " Has Been Removed From Your List Of Saved Programmes!"))
+  return HttpResponseRedirect('/home')
 
 # ======================================================================================================================================
 

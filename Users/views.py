@@ -137,3 +137,16 @@ def my_saved_tricks(request, pk):
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
+
+# ======================================================================================================================================
+
+def my_saved_programmes(request, pk):
+  if request.user.is_authenticated:
+
+    profile = User_Profile.objects.get(User_id=pk)
+    programme_count = profile.SavedProgrammes.all().count()
+
+    return render(request, 'user_pages/my_saved_programmes.html', {'profile': profile, "programme_count":programme_count})
+  else:
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
+    return redirect('home')

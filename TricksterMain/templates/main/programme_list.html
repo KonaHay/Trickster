@@ -49,11 +49,11 @@
               <div class="container">
                 <div class="row">
                   <div class="col-6">
-                    <a href="{% url 'view-programme' programme.ProgrammeID %}" class="card-link me-md-4">View Programme</a>
+                    <a href="{% url 'view-programme' programme.ProgrammeID %}" class="btn btn-outline-primary btn-sm">View Programme</a>
                   </div>
                   <div class="col-6">
                     <!-- Save Programme Button -->
-                    <button type="submit", name="programme_id",, class="btn btn-primary btn-sm">Save Programme</button>
+                    {% include 'components/save_programme_button.html' with saved_programmes=request.user.user_profile.SavedProgrammes user=request.user programme=programme %}
                   </div>
                 </div>
               </div>

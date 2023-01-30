@@ -17,6 +17,7 @@ urlpatterns = [
     path('unsave_trick/<int:pk>', views.unsave_trick, name='unsave-trick'),
     path('random_trick', views.random_trick, name='random-trick'),
     path('random_trick_skill_based/<int:pk>', views.random_trick_skill_based, name='random-trick-skill-based'),
+    path('trick_card', views.trick_card, name='trick-card'),
 
     #Skill Programme URL's
     path('add_programme', views.add_programme, name='add-programme'),
@@ -26,6 +27,8 @@ urlpatterns = [
     path('remove_programme_tricks_button/<programme_id>', views.remove_programme_tricks_button, name='remove-programme-tricks-button'),
     path('programme_list', views.programme_list, name="programme-list"),
     path('view_programme/<programme_id>', views.view_programme, name='view-programme'),
+    path('unsave_programme/<int:pk>', views.unsave_programme, name='unsave-programme'),
+    path('save_programme/<int:pk>', views.save_programme, name='save-programme'),
 
     #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),
