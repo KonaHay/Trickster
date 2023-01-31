@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-6">
                       {% if user.is_superuser %}
-                      <a href="#" class="btn btn-success btn-sm">Edit Programme</a>
+                      <a href="{% url 'update-programme' programme.ProgrammeID %}" class="btn btn-success btn-sm">Edit Programme</a>
                       {% endif %}
                     </div>
                   </div>

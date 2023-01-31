@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from random import shuffle
 
 from .models import Trick, SkillLevel, Trick_Programme
-from .forms import TrickForm, AddProgrammeForm
+from .forms import TrickForm, ProgrammeForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -66,24 +66,30 @@ def trick_list(request):
 def recommend_trick(request, pk):
   if request.user.is_authenticated:
     profile = User_Profile.objects.get(User_id=pk)
+    user_learned_tricks = profile.LearnedTricks
     user_skill_level = profile.SkillLevel
     user_ability = profile.UserDifficultyLevel
-    user_learned_tricks = profile.LearnedTricks
+
+    learned_tricks = user_learned_tricks.order_by('TrickName')
+    user_learned_trick_names = learned_tricks
+
+    
 
     filters = models.Q()
 
     #Trying to filter by if the user has NOT learned the trick (~models.Q used to get Non Learned Tricks)
-    #if user_learned_tricks:
-    #  filters &= ~models.Q(Trick__LearnedTricks=user_learned_tricks,)
+    #if user_learned_tricks: .exclude(TrickName__LearnedTricks=user_learned_trick_names)
+    #filters &= ~models.Q(Trick__LearnedTricks=user_learned_tricks,)
 
     filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
 
     recommend_tricks = Trick.objects.filter(filters).order_by('TrickName')
+    messages.error(request, (learned_tricks))
 
     #Try to use paginator to put tricks into a carosel.
 
 
-    return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile,})
+    return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile, 'user_learned_tricks':user_learned_tricks})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')
@@ -107,7 +113,6 @@ def random_trick_skill_based(request, pk):
       profile = User_Profile.objects.get(User_id=pk)
       user_skill_level = profile.SkillLevel
       user_ability = profile.UserDifficultyLevel
-      user_learned_tricks = profile.LearnedTricks
 
       filters = models.Q()
 
@@ -118,6 +123,23 @@ def random_trick_skill_based(request, pk):
       return render(request, 'main/random_trick_skill_based.html', {'random_trick': random_trick, 'profile': profile,})
     else:
       return render(request, 'main/random_trick_skill_based.html', {})
+  else:
+    messages.error(request, ("You Must Be Logged In To See This Page!"))
+    return HttpResponseRedirect('/home')
+
+# ======================================================================================================================================
+
+def random_trick_learned(request, pk):
+  if request.user.is_authenticated:
+    if request.method == "POST":
+      profile = User_Profile.objects.get(User_id=pk)
+      user_learned_tricks = profile.LearnedTricks
+
+      random_trick = user_learned_tricks.order_by('?')
+      
+      return render(request, 'main/random_trick_learned.html', {'random_trick': random_trick, 'profile': profile,})
+    else:
+      return render(request, 'main/random_trick_learned.html', {})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')
@@ -236,14 +258,14 @@ def trick_card(request, pk):
 def add_programme(request):
     submitted = False
     if request.method == "POST":
-      form = AddProgrammeForm(request.POST, request.FILES)
+      form = ProgrammeForm(request.POST, request.FILES)
       if form.is_valid():
         new_programme = form.save()
         #need to pass the ProgrammeID after its been created.
         programme = new_programme
         return HttpResponseRedirect('/add_programme_success/%d'%programme.ProgrammeID)
     else:
-      form = AddProgrammeForm
+      form = ProgrammeForm
       if 'submitted' in request.GET:
         submitted = True
         messages.success(request, ("Trick Programme Added Successfully!"))
@@ -350,6 +372,26 @@ def unsave_programme(request, pk):
 
   messages.error(request, (programme.ProgrammeName + " Has Been Removed From Your List Of Saved Programmes!"))
   return HttpResponseRedirect('/home')
+
+# ======================================================================================================================================
+
+@permission_required('programme.change_programme', login_url='home')
+def update_programme(request, programme_id):
+  programme = Trick_Programme.objects.get(pk=programme_id)
+  form = ProgrammeForm(request.POST or None, instance=programme)
+  if form.is_valid():
+    form.save()
+    messages.success(request, ("Trick Updated Successfuly!"))
+    return HttpResponseRedirect('/programme_list')
+  return render(request, 'main/update_programme.html', {'programme':programme, 'form':form})
+
+# ======================================================================================================================================
+
+@permission_required('trick.delete_trick', login_url='home')
+def delete_programme(request, programme_id):
+  programme = Trick_Programme.objects.get(pk=programme_id)
+  programme.delete()
+  return HttpResponseRedirect('/programme_list')
 
 # ======================================================================================================================================
 

@@ -23,7 +23,7 @@
             <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
             <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
             <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
-            <li><a class="dropdown-item disabled" href="">Glossary</a></li>
+            <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">Saved Programmes</a></li>
             {% endif %}
           </ul>
         </li>
@@ -49,7 +49,7 @@
             <li><a class="dropdown-item" href="{% url 'random-trick' %}">Random Trick</a></li>
             {% if request.user.is_authenticated %}
               <li><a class="dropdown-item" href="{%url 'random-trick-skill-based' request.user.UserID %}">Random Trick (Skill Based)</a></li>
-              <li><a class="dropdown-item disabled" href="#">Random Trick (Learned)</a></li>
+              <li><a class="dropdown-item" href="{%url 'random-trick-learned' request.user.UserID %}">Random Trick (Learned)</a></li>
             {% endif %}
           </ul>
         </li>
@@ -62,10 +62,9 @@
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tricksDropdown">
             <li><a class="dropdown-item" href="{%url 'programme-list'%}">Programme List</a></li>
             <li><a class="dropdown-item" href="{% url 'view-programme' 1 %}">Beginners Guide</a></li>
-            <li><a class="dropdown-item disabled" href="">Obstical Starter Kit</a></li>
-            <li><a class="dropdown-item disabled" href="">Mastering Spin Tricks</a></li>
-            <li><a class="dropdown-item disabled" href="">Mastering Flip Tricks</a></li>
-            <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">My Saved Programmes</a></li>
+            <li><a class="dropdown-item" href="{% url 'view-programme' 25 %}">Obstical Starter Kit</a></li>
+            <li><a class="dropdown-item" href="{% url 'view-programme' 26 %}">Mastering Spin Tricks</a></li>
+            <li><a class="dropdown-item" href="{% url 'view-programme' 27 %}">Mastering Flip Tricks</a></li>
           </ul>
         </li>
         <!-- =================== -->

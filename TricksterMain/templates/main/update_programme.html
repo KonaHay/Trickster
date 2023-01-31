@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+
+    <div class="shadow  p-4 mb-5 bg-body rounded">
+        <h1>Update Programme: {{ programme }}</h1>
+        </br>
+
+        <form action="" method=POST enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for feild in form %}
+          <p>
+            {{ feild.label_tag }}
+            {{ feild}}
+
+            {% if feild.help_text %}
+              <small style="color: grey">{{ feild.help_text }}</small>
+            {% endif %}
+
+            <div style="color:red";>
+              <p>{{ feild.errors }}</p>
+            </div>
+
+          </p>
+        {% endfor %}
+        </br>
+        <input type="submit" value="Update" class="btn btn-primary">
+
+        <a href="{% url 'add-programme-tricks-list' programme.ProgrammeID %}" class="btn btn-success">Add Tricks To Programme</a>
+
+        <!-- Only if hass delete permissions -->
+        <a href="{% url 'delete-programme' programme.ProgrammeID %}" class="btn btn-danger">Delete</a>
+        
+        </form>
+    
+    </div>
+
+{% endblock %}

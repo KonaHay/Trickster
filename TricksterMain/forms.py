@@ -26,7 +26,7 @@ class TrickForm(ModelForm):
         }
 
 #Form to add a trick programme to the database.
-class AddProgrammeForm(ModelForm):
+class ProgrammeForm(ModelForm):
   class Meta:
     model = Trick_Programme
     fields = ('ProgrammeName', 'ProgrammeRecLevel',  'ProgrammeDifficulty',  'ProgrammeDiscription', 'ProgrammeImg')
