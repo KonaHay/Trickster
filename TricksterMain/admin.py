@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 #Import Models
-from .models import SkillLevel, Trick, Trick_Programme
+from .models import SkillLevel, Trick, Trick_Programme, Category
 
 #Unregister Groups
 admin.site.unregister(Group)
@@ -20,6 +20,12 @@ class SkillLevelAdmin(admin.ModelAdmin):
     list_display = ('SkillLevelName', 'SkillLevelID',)
     ordering = ('SkillLevelID',)
     search_fields = ('SkillLevelName', 'SkillLevelID',)
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('CategoryName', 'CategoryID',)
+    ordering = ('CategoryID',)
+    search_fields = ('CategoryName', 'CategoryID',)
 
 @admin.register(Trick_Programme)
 class TrickProgrammeAdmin(admin.ModelAdmin):

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Trick, Trick_Programme
+from .models import Trick, Trick_Programme, Category
 
 #Form to add a trick to the database.
 class TrickForm(ModelForm):
@@ -23,6 +23,18 @@ class TrickForm(ModelForm):
             'TrickDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
             'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
             'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
+        }
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = ('CategoryName',)
+        labels = {
+            'CategoryName': 'Enter the Category Name:',
+        }
+        
+        widgets = {
+            'CategoryName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Cabel Trick'}),
         }
 
 #Form to add a trick programme to the database.

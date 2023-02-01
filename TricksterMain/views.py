@@ -9,8 +9,8 @@ from django.core.paginator import Paginator
 
 from random import shuffle
 
-from .models import Trick, SkillLevel, Trick_Programme
-from .forms import TrickForm, ProgrammeForm
+from .models import Trick, SkillLevel, Trick_Programme, Category
+from .forms import TrickForm, ProgrammeForm, CategoryForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -392,6 +392,23 @@ def delete_programme(request, programme_id):
   programme = Trick_Programme.objects.get(pk=programme_id)
   programme.delete()
   return HttpResponseRedirect('/programme_list')
+
+# ======================================================================================================================================
+
+@permission_required('category.add_category', login_url='home')
+def add_category(request):
+    submitted = False
+    if request.method == "POST":
+      form = CategoryForm(request.POST, request.FILES)
+      if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/add_category?submitted=True')
+    else:
+      form = CategoryForm
+      if 'submitted' in request.GET:
+        submitted = True
+        messages.success(request, ("New Category Created!"))
+    return render(request, 'main/add_category.html', {'form':form, 'submitted':submitted})
 
 # ======================================================================================================================================
 

@@ -19,6 +19,7 @@ urlpatterns = [
     path('random_trick_skill_based/<int:pk>', views.random_trick_skill_based, name='random-trick-skill-based'),
     path('random_trick_learned/<int:pk>', views.random_trick_learned, name='random-trick-learned'),
     path('trick_card', views.trick_card, name='trick-card'),
+    path('add_category', views.add_category, name='add-category'),
 
     #Skill Programme URL's
     path('add_programme', views.add_programme, name='add-programme'),
