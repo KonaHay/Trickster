@@ -10,7 +10,7 @@ admin.site.unregister(Group)
 
 @admin.register(Trick)
 class TrickAdmin(admin.ModelAdmin):
-    fields = ('TrickName', 'TrickRecLevel', 'TrickDifficulty','TrickDiscription', 'TrickHowTo', 'TrickImg',)
+    fields = ('TrickName', 'TrickRecLevel', 'TrickDifficulty','TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg',)
     list_display = ('TrickName', 'TrickRecLevel', 'TrickDifficulty',)
     ordering = ('TrickRecLevel', 'TrickDifficulty', 'TrickName')
     search_fields = ('TrickName',)
