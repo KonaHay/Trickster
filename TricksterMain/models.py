@@ -11,6 +11,8 @@ class SkillLevel (models.Model):
 class Category (models.Model):
   CategoryID = models.AutoField(primary_key=True)
   CategoryName = models.CharField(max_length=25)
+  CategoryDescription = models.TextField(blank=True)
+  CategoryImg = models.ImageField(null=True, blank=True, upload_to="images/")
 
   def __str__(self):
     return self.CategoryName

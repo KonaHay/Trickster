@@ -20,6 +20,10 @@ urlpatterns = [
     path('random_trick_learned/<int:pk>', views.random_trick_learned, name='random-trick-learned'),
     path('trick_card', views.trick_card, name='trick-card'),
     path('add_category', views.add_category, name='add-category'),
+    path('category_list', views.category_list, name="category-list"),
+    path('show_category/<category_id>', views.show_category, name='show-category'),
+    path('update_category/<category_id>', views.update_category, name='update-category'),
+    path('delete_category/<category_id>', views.delete_category, name='delete-category'),
 
     #Skill Programme URL's
     path('add_programme', views.add_programme, name='add-programme'),

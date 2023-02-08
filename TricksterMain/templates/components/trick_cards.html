@@ -1,50 +1,50 @@
 {% load static %}
-  <div class="col-sm">
-    {% if user.is_authenticated %}
-      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-    {% else %}
-      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+<div class="col-sm">
+  {% if user.is_authenticated %}
+    <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+  {% else %}
+    <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+  {% endif %}
+    {% if trick.TrickImg %}
+      <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+    {% else %}    
+      <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
     {% endif %}
-      {% if trick.TrickImg %}
-        <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-      {% else %}    
-        <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">
-          <div class="container">
-            <div class="row">
-              <div class="col-6">
-                {{ trick }} 
-              </div>
-              <div class="col-6">
-                {% if user.is_superuser %}
-                <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </h5>
-        <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
-      </div>
-      <ul class="list-group-dark list-group-flush">
-        <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
-        <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
-      </ul>
-      <div class="card-body-dark text-center gap-3" style="height: 3rem">
+    <div class="card-body">
+      <h5 class="card-title">
         <div class="container">
           <div class="row">
             <div class="col-6">
-              <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+              {{ trick }} 
             </div>
             <div class="col-6">
-              <!-- Save Trick Button -->
-              {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+              {% if user.is_superuser %}
+              <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
+              {% endif %}
             </div>
           </div>
         </div>
-      </div>
-      <!-- Trick Learned Button -->
-      {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
+      </h5>
+      <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
     </div>
+    <ul class="list-group-dark list-group-flush">
+      <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+      <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+    </ul>
+    <div class="card-body-dark text-center gap-3" style="height: 3rem">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+          </div>
+          <div class="col-6">
+            <!-- Save Trick Button -->
+            {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Trick Learned Button -->
+    {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
   </div>
+</div>

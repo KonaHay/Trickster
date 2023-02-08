@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+<div class="shadow  p-4 mb-5 bg-body rounded">
+  <h1> Trickster Trick Categories </h1>
+  <br/>
+  <div class="container-md">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      {% for category in categories %}
+        <div class="col-sm">
+            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 26rem;">
+            {% if category.CategoryImg %}
+              <img src="{{ category.CategoryImg.url }}" class="img-fluid rounded" alt="trick cover image">
+            {% else %}    
+              <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-6">
+                      {{ category }} 
+                    </div>
+                    <div class="col-6">
+                      {% if user.is_superuser %}
+                      <a href="{% url 'update-category' category.CategoryID %}" class="btn btn-success btn-sm">Edit Category</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </h5>
+              <p class="card-text">{{ category.CategoryDescription|truncatechars:180 }}</p>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <a href="{% url 'show-category' category.CategoryID %}" class="btn btn-outline-primary">View Tricks</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

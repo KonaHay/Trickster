@@ -412,6 +412,46 @@ def add_category(request):
 
 # ======================================================================================================================================
 
+def category_list(request):
+
+  all_categories = Category.objects.all().order_by('CategoryID')
+
+  return render(request, 'main/category_list.html', {'categories': all_categories})
+
+# ======================================================================================================================================
+
+def show_category(request, category_id):
+
+  category = Category.objects.get(pk=category_id)
+  category_name = category.CategoryName
+  tricks =  Trick.objects.filter(TrickCategory__CategoryName__exact=category_name).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  trick_count = tricks.count()
+  
+  return render(request, 'main/show_category.html', {'category':category, 'tricks':tricks, 'trick_count':trick_count})
+
+# ======================================================================================================================================
+
+@permission_required('category.change_category', login_url='home')
+def update_category(request, category_id):
+  category = Category.objects.get(pk=category_id)
+  form = CategoryForm(request.POST or None, instance=category)
+  if form.is_valid():
+    form.save()
+    messages.success(request, ("Category Updated Successfuly!"))
+    return HttpResponseRedirect('/category_list')
+  return render(request, 'main/update_category.html', {'category':category, 'form':form})
+
+# ======================================================================================================================================
+
+@permission_required('trick.delete_trick', login_url='home')
+def delete_category(request, category_id):
+  category = Category.objects.get(pk=category_id)
+  category.delete()
+  return HttpResponseRedirect('/category_list')
+
+# ======================================================================================================================================
+
+
 @login_required(login_url='/login')
 def admin_db(request):
   # An Extra Level Security for the Admin Panel

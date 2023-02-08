@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+
+    <div class="shadow  p-4 mb-5 bg-body rounded">
+        <h1>Update Category: {{ category }}</h1>
+        </br>
+
+        <form action="" method=POST enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for feild in form %}
+          <p>
+            {{ feild.label_tag }}
+            {{ feild}}
+
+            {% if feild.help_text %}
+              <small style="color: grey">{{ feild.help_text }}</small>
+            {% endif %}
+
+            <div style="color:red";>
+              <p>{{ feild.errors }}</p>
+            </div>
+
+          </p>
+        {% endfor %}
+        </br>
+        <input type="submit" value="Update" class="btn btn-primary">
+
+        <!-- Only if hass delete permissions -->
+        <a href="{% url 'delete-category' category.CategoryID %}" class="btn btn-danger">Delete</a>
+        
+      </form>
+    </div>
+
+{% endblock %}
