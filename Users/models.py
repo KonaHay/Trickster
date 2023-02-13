@@ -17,11 +17,11 @@ class CustomUserManager(BaseUserManager):
     other_fields.setdefault('is_active', True)
 
     if other_fields.get('is_staff') is not True:
-        raise ValueError(
-            'Superuser must be assigned to is_staff=True.')
+      raise ValueError(
+        'Superuser must be assigned to is_staff=True.')
     if other_fields.get('is_superuser') is not True:
-        raise ValueError(
-            'Superuser must be assigned to is_superuser=True.')
+      raise ValueError(
+        'Superuser must be assigned to is_superuser=True.')
 
     return self.create_user(Email, Username, FirstName, LastName, password, **other_fields)
 
@@ -56,14 +56,16 @@ class Trickster_User(AbstractBaseUser, PermissionsMixin):
   REQUIRED_FIELDS = ['Username', 'FirstName', 'LastName']
 
   def __str__(self):
-      return self.FirstName + ' ' + self.LastName
+    return self.FirstName + ' ' + self.LastName
 
 class User_Profile(models.Model):
 
   User = models.OneToOneField(Trickster_User, on_delete=models.CASCADE)
   ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/profile")
+  Bio = models.TextField(blank=True)
   SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
   UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
+  UserLevelProgress = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
   LearnedTricks = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   SavedTricks = models.ManyToManyField(Trick, related_name='saved_trick', blank=True)
   CurrentlyLearningProgrammes = models.ManyToManyField(Trick_Programme, related_name='currently_learning_programme', blank=True)
@@ -71,7 +73,7 @@ class User_Profile(models.Model):
   Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
 
   def __str__(self):
-     return self.User.Username
+    return self.User.Username
 
 def create_profile(sender, instance, created, **kwargs):
   if created:

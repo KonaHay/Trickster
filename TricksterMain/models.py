@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from embed_video.fields import EmbedVideoField
 
 class SkillLevel (models.Model):
   SkillLevelID = models.AutoField(primary_key=True)
@@ -42,3 +43,14 @@ class Trick_Programme (models.Model):
 
   def __str__(self):
     return self.ProgrammeName
+
+class Programme_Lesson (models.Model):
+  LessonID = models.AutoField(primary_key=True)
+  Programme = models.ForeignKey(Trick_Programme, related_name='lesson', blank=True, null=True, on_delete=models.CASCADE)
+  LessonName = models.CharField(max_length=25)
+  LessonShortDesc = models.TextField(blank=True)
+  LessonLongDesc = models.TextField(blank=True)
+  LessonVideo = EmbedVideoField(blank=True)
+
+  def __str__(self):
+    return self.LessonName

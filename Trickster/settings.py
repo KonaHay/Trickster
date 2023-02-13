@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'embed_video',
     'TricksterMain',
     'Users',
 ]
@@ -129,3 +130,8 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.SUCCESS: 'success',
                 message_constants.WARNING: 'warning',
                 message_constants.ERROR: 'danger',}
+
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+    'django.template.context_processors.request',
+]

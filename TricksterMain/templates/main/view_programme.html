@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load embed_video_tags %}
 
 {% block content  %}
 <div class="shadow  p-4 mb-5 bg-body rounded">
@@ -14,22 +15,18 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="true" href="#">Lesson 1:</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" aria-disabled="true">Lesson 2:</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Lesson 3:</a>
+          <a class="nav-link active" aria-current="true" href="#">{{ Lessons.LessonName }}</a>
         </li>
       </ul>
     </div>
     <div class="card-body">
-      <h5 class="card-title">Lesson Title!</h5>
-      <p class="card-text">Lesson 1 will go here.</p>
-      <a href="#" class="btn btn-primary">Refrenced Tricks</a>
+      <h5 class="card-title">{{ Lessons.LessonName }}</h5>
+      <p class="card-text">{{ Lessons.LessonLongDesc }}</p>
+      <p class="card-text">{% video Lessons.LessonVideo '426x240' %}</p>
+      <a href="#" class="btn btn-primary">Completed</a>
     </div>
   </div>
+  </br>
   <div class="card ">
     <h4 class="card-header">Tricks Within This Programme:</h4>
     </br>

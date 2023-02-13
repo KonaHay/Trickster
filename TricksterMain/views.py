@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 
 from random import shuffle
 
-from .models import Trick, SkillLevel, Trick_Programme, Category
+from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson
 from .forms import TrickForm, ProgrammeForm, CategoryForm
 from Users.models import Trickster_User, User_Profile 
 
@@ -349,7 +349,8 @@ def programme_list(request):
 def view_programme(request, programme_id):
   Programme = Trick_Programme.objects.get(pk=programme_id)
   Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
-  return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks})
+  Lessons = Programme_Lesson.objects.get(Programme=programme_id)
+  return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks, 'Lessons':Lessons})
 
 # ======================================================================================================================================
 
@@ -357,7 +358,6 @@ def save_programme(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
   profile.SavedProgrammes.add(programme)
-
   messages.info(request, (programme.ProgrammeName + " Has Been Added To Your List Of Saved Programmes!"))
   return HttpResponseRedirect('/home')
 
