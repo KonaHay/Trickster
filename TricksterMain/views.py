@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from random import shuffle
 
 from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson
-from .forms import TrickForm, ProgrammeForm, CategoryForm
+from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -232,7 +232,7 @@ def update_trick(request, trick_id):
 def search_trick(request):
   if request.method == "POST":
     trick_searched = request.POST['trick_searched']
-    tricks =  Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+    tricks = Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
     return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks})
   else:
@@ -256,26 +256,49 @@ def trick_card(request, pk):
 
 @permission_required('trick.add_programme', login_url='home')
 def add_programme(request):
-    submitted = False
-    if request.method == "POST":
-      form = ProgrammeForm(request.POST, request.FILES)
-      if form.is_valid():
-        new_programme = form.save()
-        #need to pass the ProgrammeID after its been created.
-        programme = new_programme
-        return HttpResponseRedirect('/add_programme_success/%d'%programme.ProgrammeID)
-    else:
-      form = ProgrammeForm
-      if 'submitted' in request.GET:
-        submitted = True
-        messages.success(request, ("Trick Programme Added Successfully!"))
-    return render(request, 'main/add_programme.html', {'form':form, 'submitted':submitted})
+  submitted = False
+  if request.method == "POST":
+    form = ProgrammeForm(request.POST, request.FILES)
+    if form.is_valid():
+      new_programme = form.save()
+      #need to pass the ProgrammeID after its been created.
+      programme = new_programme
+      return HttpResponseRedirect('/add_programme_success/%d'%programme.ProgrammeID)
+  else:
+    form = ProgrammeForm
+    if 'submitted' in request.GET:
+      submitted = True
+      messages.success(request, ("Trick Programme Added Successfully!"))
+  return render(request, 'main/add_programme.html', {'form':form, 'submitted':submitted})
 
+# ======================================================================================================================================
 
 def add_programme_success(request, programme_id):
   Programme = Trick_Programme.objects.get(pk=programme_id)
 
   return render(request, 'main/add_programme_success.html', {'Programme':Programme})
+
+# ======================================================================================================================================
+
+@permission_required('trick.add_programme', login_url='home')
+def add_programme_lessons(request, programme_id):
+
+  Programme = Trick_Programme.objects.get(pk=programme_id)
+
+  submitted = False
+  if request.method == "POST":
+    form = LessonForm(request.POST, request.FILES)
+    if form.is_valid():
+      form.instance.Programme = Programme
+      form.save()
+      messages.success(request, ("Lesson Added Successfully!"))
+      return HttpResponseRedirect('/add_programme_success/%d'%Programme.ProgrammeID)
+  else:
+    form = LessonForm
+    if 'submitted' in request.GET:
+      submitted = True
+      messages.success(request, ("Lesson Added Successfully!"))
+  return render(request, 'main/add_programme_lessons.html', {'Programme':Programme, 'form':form, 'submitted':submitted})
 
 # ======================================================================================================================================
 
@@ -349,7 +372,8 @@ def programme_list(request):
 def view_programme(request, programme_id):
   Programme = Trick_Programme.objects.get(pk=programme_id)
   Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
-  Lessons = Programme_Lesson.objects.get(Programme=programme_id)
+
+  Lessons = Programme_Lesson.objects.filter(Programme=programme_id).order_by('LessonNumber')
   return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks, 'Lessons':Lessons})
 
 # ======================================================================================================================================

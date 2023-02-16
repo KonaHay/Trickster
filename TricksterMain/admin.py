@@ -36,7 +36,7 @@ class TrickProgrammeAdmin(admin.ModelAdmin):
 
 @admin.register(Programme_Lesson)
 class ProgrammeLessonAdmin(admin.ModelAdmin):
-  fields = ('Programme', 'LessonName', 'LessonShortDesc','LessonLongDesc', 'LessonVideo', )
+  fields = ('Programme', 'LessonName', 'LessonNumber', 'LessonShortDesc','LessonLongDesc', 'LessonVideo', )
   list_display = ('LessonName', 'LessonShortDesc',)
-  ordering = ('LessonName',)
+  ordering = ('Programme', 'LessonName',)
   search_fields = ('LessonName', 'Programme',)

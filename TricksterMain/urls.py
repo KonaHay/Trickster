@@ -28,6 +28,7 @@ urlpatterns = [
     #Skill Programme URL's
     path('add_programme', views.add_programme, name='add-programme'),
     path('add_programme_success/<programme_id>', views.add_programme_success, name='add-programme-success'),
+    path('add_programme_lessons/<programme_id>', views.add_programme_lessons, name='add-programme-lessons'),
     path('add_programme_tricks_list/<programme_id>', views.add_programme_tricks_list, name='add-programme-tricks-list'),
     path('add_programme_tricks_button/<programme_id>', views.add_programme_tricks_button, name='add-programme-tricks-button'),
     path('remove_programme_tricks_button/<programme_id>', views.remove_programme_tricks_button, name='remove-programme-tricks-button'),

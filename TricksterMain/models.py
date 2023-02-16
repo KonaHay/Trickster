@@ -47,6 +47,7 @@ class Trick_Programme (models.Model):
 class Programme_Lesson (models.Model):
   LessonID = models.AutoField(primary_key=True)
   Programme = models.ForeignKey(Trick_Programme, related_name='lesson', blank=True, null=True, on_delete=models.CASCADE)
+  LessonNumber = models.PositiveIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   LessonName = models.CharField(max_length=25)
   LessonShortDesc = models.TextField(blank=True)
   LessonLongDesc = models.TextField(blank=True)

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Trick, Trick_Programme, Category
+from .models import Trick, Trick_Programme, Category, Programme_Lesson
 
 #Form to add a trick to the database.
 class TrickForm(ModelForm):
@@ -44,7 +44,6 @@ class CategoryForm(ModelForm):
       'CategoryImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
     }
 
-#Form to add a trick programme to the database.
 class ProgrammeForm(ModelForm):
   class Meta:
     model = Trick_Programme
@@ -65,3 +64,22 @@ class ProgrammeForm(ModelForm):
       'ProgrammeImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
     }
 
+class LessonForm(ModelForm):
+  class Meta:
+    model = Programme_Lesson
+    fields = ('LessonName', 'LessonNumber', 'LessonShortDesc',  'LessonLongDesc',  'LessonVideo')
+    labels = {
+      'LessonName': 'Enter the Lesson Name:',
+      'LessonNumber': 'Select the Lesson Number:',
+      'LessonShortDesc':'Enter the Short Description for this Lesson:',
+      'LessonLongDesc':'Enter the Long Description for this Lesson:',
+      'LessonVideo':'Add a link to the Lesson Video:',
+    }
+    
+    widgets = {
+      'LessonName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Lesson Title'}),
+      'LessonNumber': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
+      'LessonShortDesc': forms.Textarea(attrs={'rows': 5, 'cols': 20, 'class':'form-control', 'placeholder':'Enter Short Discription Here.'}),
+      'LessonLongDesc': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter Long Discription Here.'}),
+      'LessonVideo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter Video URL'}),
+    }

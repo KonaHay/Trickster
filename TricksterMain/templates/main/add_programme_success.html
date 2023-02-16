@@ -7,7 +7,19 @@
     <h3>Skill Level: {{ Programme.ProgrammeRecLevel }}</h3>
     <h3>Difficulty: {{ Programme.ProgrammeDifficulty }}</h3>
     </br>
-    <a href="{% url 'add-programme-tricks-list' Programme.ProgrammeID %}" class="btn btn-success">Add Tricks To Programme</a>
 
+    <div class="container-md">
+      <div class="row">
+        <div class="col-md-9">
+          <a href="{% url 'add-programme-lessons' Programme.ProgrammeID %}" class="btn btn-warning">Add Lessons To Programme</a>
+          <a href="{% url 'add-programme-tricks-list' Programme.ProgrammeID %}" class="btn btn-warning">Add Tricks To Programme</a>
+        </div>
+        <div class="col-md-3">
+          <div class="container align-end">
+            <a href="{%url 'programme-list'%}" class="btn btn-success">Create Programme</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}

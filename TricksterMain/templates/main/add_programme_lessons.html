@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h1> Add Lessons To You're Programme: </h1>
+    <br/><br/>
+    <form action="" method=POST enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {{ form.as_p  }}
+
+      <input type="submit" value="Add Lesson" class="btn btn-warning">
+
+    </form>
+  </div>
+{% endblock %}
