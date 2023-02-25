@@ -8,92 +8,70 @@
   <br/>
   <div class="card ">
     <h4 class="card-header">Programme Description:</h4>
-    <p class="card-text">{{ Programme.ProgrammeDiscription }}</p>
+    <div class="card-body">
+      <p class="card-text">{{ Programme.ProgrammeDiscription|linebreaksbr }}</p>
+    </div>
   </div>
   </br>
-  <div class="card text-center">
-    <div class="card-header">
 
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        {% for lesson in Lessons %}
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="{{ Lessons.LessonID }}" data-bs-toggle="tab" data-bs-target="#{{ lesson.LessonName }}" type="button" role="tab" aria-controls="{{ lesson.LessonName }}" aria-selected="true">{{ lesson.LessonName }}</button>
-        </li>
-        {% endfor %}
-      </ul>
+  {% if Lessons %}
+    <div class="card text-center">
+      <div class="card-header">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          {% for lesson in Lessons %}
+            <li class="nav-item" role="presentation">
+              {% if lesson.LessonNumber == 1 %}
+                <button class="nav-link active" id="{{ Lessons.LessonID }}" data-bs-toggle="tab" data-bs-target="#{{ lesson.LessonNumber }}" type="button" role="tab" aria-controls="{{ lesson.LessonNumber }}" aria-selected="true">{{ lesson.LessonName }}</button>
+              {% else %}
+                <button class="nav-link" id="{{ Lessons.LessonID }}" data-bs-toggle="tab" data-bs-target="#{{ lesson.LessonNumber }}" type="button" role="tab" aria-controls="{{ lesson.LessonNumber }}" aria-selected="true">{{ lesson.LessonName }}</button>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+          {% for lesson in Lessons %}
+
+            {% if lesson.LessonNumber == 1 %}
+              <div class="tab-pane fade show active" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
+            {% else %}
+              <div class="tab-pane fade" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
+            {% endif %}
+
+              <h5 class="card-text">{{ lesson.LessonName }}</h5>
+              <p class="card-text">{{ lesson.LessonLongDesc|linebreaksbr }}</p>
+              </br>
+              <div class="container-md">
+              {% video lesson.LessonVideo '640x360' %}
+              </div>
+              </br>
+
+              {% include 'components/learned_lesson_button.html' with completed_lessons=request.user.user_profile.CompletedLessons user=request.user lesson=lesson programme=Programme %}
+
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    </br>
+  {% else %}
+    <div class="shadow  p-4 mb-5 bg-body rounded">
+      <h3>This Programme Has No Lessons</h3>
 
     </div>
-    <div class="card-body">
-      <div class="tab-content" id="myTabContent">
-        {% for lesson in Lessons %}
-          <div class="tab-pane fade" id="{{ lesson.LessonName }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">{{ Lessons.LessonName }}</div>
-        {% endfor %}
-      </div>
-    </div>   
+  {% endif %}
 
-  </div>
-  </br>
-  </br>
   <div class="card ">
     <h4 class="card-header">Tricks Within This Programme:</h4>
     </br>
-    <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
     <div class="container-md">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         {% for trick in Programme_Tricks %}
-          <div class="col-sm">
-            {% if user.is_authenticated %}
-              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-            {% else %}
-              <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
-            {% endif %}
-              {% if trick.TrickImg %}
-                <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-              {% else %}    
-                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-              {% endif %}
-              <div class="card-body">
-                <h5 class="card-title">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-6">
-                        {{ trick }} 
-                      </div>
-                      <div class="col-6">
-                        {% if user.is_superuser %}
-                        <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                </h5>
-                <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
-              </div>
-              <ul class="list-group-dark list-group-flush">
-                <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
-                <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
-              </ul>
-              <div class="card-body-dark text-center gap-3" style="height: 3rem">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-6">
-                      <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
-                    </div>
-                    <div class="col-6">
-                      <!-- Save Trick Button -->
-                      {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Trick Learned Button -->
-              {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
-            </div>
-          </div>
+          {% include 'components/trick_cards.html' with trick=trick user=request.user %}
         {% endfor %}
       </div>
     </div>
-    <!-- -------------------------------------------------------------------------------------------- -->
   </div>
 </div>
 {% endblock %}

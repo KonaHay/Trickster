@@ -3,5 +3,6 @@
 - Try to Delete old profile images and Trick images once they have been changed.
 
 High Priority:
-- Increase skill programme functionality.
-- remove Save Skill Programme button from not authenticated users.
+- Get all photo uploads to auto adjust to 16:9 ratio
+- Finish Reccomended tricks functionality
+

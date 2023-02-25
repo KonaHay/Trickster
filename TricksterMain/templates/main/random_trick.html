@@ -3,14 +3,12 @@
 
 {% block content  %}
 
-  {% if randomised_tricks %}
+  {% if random_trick %}
 
     <h1>Your Random Trick:</h1>
     </br>
     <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
-    {% with randomised_tricks|first as trick %}
-      {% include 'components/trick_cards.html' with trick=trick user=request.user %}
-    {% endwith %}
+    {% include 'components/trick_cards.html' with trick=random_trick user=request.user %}
     <form class="d-flex" method="POST" action="{% url 'random-trick' %}">
       {% csrf_token %}
       <input type="hidden" name="randomise" value="randomise"> 

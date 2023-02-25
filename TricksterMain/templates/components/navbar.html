@@ -61,6 +61,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tricksDropdown">
             <li><a class="dropdown-item" href="{%url 'programme-list'%}">Programme List</a></li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{% url 'view-programme' 1 %}">Beginners Guide</a></li>
             <li><a class="dropdown-item" href="{% url 'view-programme' 25 %}">Obstical Starter Kit</a></li>
             <li><a class="dropdown-item" href="{% url 'view-programme' 26 %}">Mastering Spin Tricks</a></li>
@@ -119,7 +120,7 @@
               <li><a class="dropdown-item" href="{%url 'add-trick'%}">Add Trick</a></li>
               <li><a class="dropdown-item" href="{%url 'add-programme'%}">Add Trick Programme</a></li>
               <li><a class="dropdown-item" href="{%url 'add-category'%}">Add Category</a></li>
-              <li><a class="dropdown-item" href="{%url 'admin-db'%}">Admin Panel</a></li>
+              <li><a class="dropdown-item text-danger" href="{%url 'admin-db'%}">Admin Panel</a></li>
             {% endif %}
             <!-- ================== -->
             <li><hr class="dropdown-divider"></li>

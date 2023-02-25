@@ -38,6 +38,8 @@ urlpatterns = [
     path('save_programme/<int:pk>', views.save_programme, name='save-programme'),
     path('update_programme/<programme_id>', views.update_programme, name='update-programme'),
     path('delete_programme/<programme_id>', views.delete_programme, name='delete-programme'),
+    path('learned_lesson/<int:pk>', views.learned_lesson, name='learned-lesson'),
+    path('unlearn_lesson/<int:pk>', views.unlearn_lesson, name='unlearn-lesson'),
 
     #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),

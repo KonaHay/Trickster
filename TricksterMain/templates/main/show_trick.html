@@ -31,9 +31,9 @@
                     {% endif %}
                     </div></br>
                     <p class="h6">Trick Discription: </p>
-                    <p>{{ trick.TrickDiscription }}</p>
+                    <p>{{ trick.TrickDiscription|linebreaksbr }}</p>
                     <p class="h6">Trick How To: </p>
-                    <p>{{ trick.TrickHowTo }}</p>
+                    <p>{{ trick.TrickHowTo|linebreaksbr }}</p>
                     <dl class="row">
                         <dt class="col-sm-9">Trick Difficulty:</dt>
                         <dd class="col-sm-3">{{ trick.TrickDifficulty }}</dd>

@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+  <div class="card-body-dark text-center gap-3" style="height: 3rem">
+    {% if lesson in completed_lessons.all %}
+      <form action="{% url 'unlearn-lesson' request.user.UserID %}" method="POST">
+        {%  csrf_token %}
+        <button type="submit", name="lesson_id", value="{{lesson.LessonID}}", class="btn btn-outline-danger btn-sm">Unlearn Lesson</button>
+      </form>
+    {% else %}
+      <form action="{% url 'learned-lesson' request.user.UserID %}" method="POST">
+        {%  csrf_token %}
+        <button type="submit", name="lesson_id", value="{{lesson.LessonID}}", class="btn btn-outline-info btn-sm">Mark Lesson As Learned</button>
+      </form>
+    {% endif %}
+  </div>
+{% endif %}

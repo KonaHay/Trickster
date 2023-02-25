@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.template.defaultfilters import slugify
 from embed_video.fields import EmbedVideoField
 
 class SkillLevel (models.Model):
@@ -14,9 +15,14 @@ class Category (models.Model):
   CategoryName = models.CharField(max_length=25)
   CategoryDescription = models.TextField(blank=True)
   CategoryImg = models.ImageField(null=True, blank=True, upload_to="images/")
+  slug = models.SlugField(null=True)
 
   def __str__(self):
     return self.CategoryName
+  
+  def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+        super(Category,self).save(*args,**kwargs)
 
 class Trick (models.Model):
   TrickID = models.AutoField(primary_key=True)

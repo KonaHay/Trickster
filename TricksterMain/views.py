@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -99,9 +99,9 @@ def recommend_trick(request, pk):
 def random_trick(request):
   if request.method == "POST":
 
-    randomised_tricks = Trick.objects.all().order_by('?')
+    random_trick = Trick.objects.all().order_by('?').first()
 
-    return render(request, 'main/random_trick.html', {'randomised_tricks':randomised_tricks,})
+    return render(request, 'main/random_trick.html', {'random_trick':random_trick,})
   else:
     return render(request, 'main/random_trick.html', {})
 
@@ -118,7 +118,7 @@ def random_trick_skill_based(request, pk):
 
       filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
 
-      random_trick = Trick.objects.filter(filters).order_by('?')
+      random_trick = Trick.objects.filter(filters).order_by('?').first()
 
       return render(request, 'main/random_trick_skill_based.html', {'random_trick': random_trick, 'profile': profile,})
     else:
@@ -135,7 +135,7 @@ def random_trick_learned(request, pk):
       profile = User_Profile.objects.get(User_id=pk)
       user_learned_tricks = profile.LearnedTricks
 
-      random_trick = user_learned_tricks.order_by('?')
+      random_trick = user_learned_tricks.order_by('?').first()
       
       return render(request, 'main/random_trick_learned.html', {'random_trick': random_trick, 'profile': profile,})
     else:
@@ -378,6 +378,45 @@ def view_programme(request, programme_id):
 
 # ======================================================================================================================================
 
+def learned_lesson(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  lesson = get_object_or_404(Programme_Lesson, LessonID=request.POST.get("lesson_id"))
+  profile.CompletedLessons.add(lesson)
+
+  #Add a way to check if all lessons in a programme are learned mark the programme as completed!
+  programme = lesson.Programme
+  programme_lessons = Programme_Lesson.objects.filter(Programme=programme.ProgrammeID).order_by('LessonNumber')
+
+  programme_lessons_learned = profile.CompletedLessons.filter(Programme=programme.ProgrammeID)
+
+  if list(programme_lessons) == list(programme_lessons_learned):
+    profile.CompletedProgrammes.add(programme)
+    messages.success(request, ("Congradulations! You Have Completed The " + programme.ProgrammeName + "Programme!"))
+
+  messages.info(request, (programme_lessons))
+  messages.info(request, (programme_lessons_learned))
+
+  messages.success(request, (lesson.LessonName + " Has Been Marked As Learned!"))
+  return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
+  # get to return to the same page
+
+# ======================================================================================================================================
+
+def unlearn_lesson(request, pk):
+  profile = User_Profile.objects.get(User_id=pk)
+  lesson = get_object_or_404(Programme_Lesson, LessonID=request.POST.get("lesson_id"))
+
+  programme = lesson.Programme
+
+  if profile.CompletedLessons.filter(LessonID=lesson.LessonID).exists():
+    profile.CompletedLessons.remove(lesson)
+
+  messages.error(request, (lesson.LessonName + " Has Been Unmarked As Learned!"))
+  return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
+  # get to return to the same page
+
+# ======================================================================================================================================
+
 def save_programme(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
@@ -447,8 +486,8 @@ def category_list(request):
 def show_category(request, category_id):
 
   category = Category.objects.get(pk=category_id)
-  category_name = category.CategoryName
-  tricks =  Trick.objects.filter(TrickCategory__CategoryName__exact=category_name).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  categoryID = category.CategoryID
+  tricks =  Trick.objects.filter(TrickCategory=categoryID).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   trick_count = tricks.count()
   
   return render(request, 'main/show_category.html', {'category':category, 'tricks':tricks, 'trick_count':trick_count})

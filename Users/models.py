@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save
 from django.utils import timezone
 
-from TricksterMain.models import Trick, SkillLevel, Trick_Programme
+from TricksterMain.models import Trick, SkillLevel, Trick_Programme, Programme_Lesson
 
 
 
@@ -69,6 +69,8 @@ class User_Profile(models.Model):
   LearnedTricks = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   SavedTricks = models.ManyToManyField(Trick, related_name='saved_trick', blank=True)
   CurrentlyLearningProgrammes = models.ManyToManyField(Trick_Programme, related_name='currently_learning_programme', blank=True)
+  CompletedProgrammes = models.ManyToManyField(Trick_Programme, related_name='completed_programme', blank=True)
+  CompletedLessons = models.ManyToManyField(Programme_Lesson, related_name='completed_lessons', blank=True)
   SavedProgrammes = models.ManyToManyField(Trick_Programme, related_name='saved_programme', blank=True)
   Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
 
