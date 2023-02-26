@@ -1,6 +1,7 @@
-- Fix the Learn & Unlearn trick buttons so that they return the page clicked on.
 - Start using jQuery or Ajax to return button presses without reloading.
 - Try to Delete old profile images and Trick images once they have been changed.
+
+- Add 'Programme Learned' cover to programmes which have been completed.
 
 High Priority:
 - Get all photo uploads to auto adjust to 16:9 ratio

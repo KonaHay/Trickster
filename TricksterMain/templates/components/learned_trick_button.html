@@ -3,11 +3,13 @@
     {% if trick in learned_tricks.all %}
       <form action="{% url 'unlearn-trick' request.user.UserID %}" method="POST">
         {%  csrf_token %}
+        <input type="hidden" name="current_page" value="{{ current_page }}"/>
         <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-danger btn-sm">Unlearn Trick</button>
       </form>
     {% else %}
       <form action="{% url 'learned-trick' request.user.UserID %}" method="POST">
         {%  csrf_token %}
+        <input type="hidden" name="current_page" value="{{ current_page }}"/>
         <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-outline-info btn-sm">Mark Trick As Learned</button>
       </form>
     {% endif %}

@@ -16,7 +16,7 @@
   <div class="container-md">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
       {% for trick in tricks %}
-        {% include 'components/trick_cards.html' with trick=trick user=request.user %}
+        {% include 'components/trick_cards.html' with trick=trick user=request.user current_page=current_page%}
       {% endfor %}
     </div>
   </div>

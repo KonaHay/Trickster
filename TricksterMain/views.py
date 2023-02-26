@@ -47,7 +47,6 @@ def trick_list(request):
   #tricks = t_paginator.paginator_tricks
   #-----------------------------------------
 
-
   all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   trick_count = all_tricks.count()
 
@@ -57,7 +56,10 @@ def trick_list(request):
   tricks = p.get_page(page)
   num_pages = "T" * tricks.paginator.num_pages
 
-  return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages, "trick_count":trick_count})
+  current_path = request.path
+  current_page = current_path + "?page=" + page
+
+  return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages, "trick_count":trick_count, "current_page":current_page})
    # -- Try replacing this link ^ to the paginator.html instead! --
 
 # ======================================================================================================================================
@@ -65,6 +67,8 @@ def trick_list(request):
 # View for recommending tricks to users
 def recommend_trick(request, pk):
   if request.user.is_authenticated:
+    current_page = request.path
+
     profile = User_Profile.objects.get(User_id=pk)
     user_learned_tricks = profile.LearnedTricks
     user_skill_level = profile.SkillLevel
@@ -72,8 +76,6 @@ def recommend_trick(request, pk):
 
     learned_tricks = user_learned_tricks.order_by('TrickName')
     user_learned_trick_names = learned_tricks
-
-    
 
     filters = models.Q()
 
@@ -89,7 +91,7 @@ def recommend_trick(request, pk):
     #Try to use paginator to put tricks into a carosel.
 
 
-    return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile, 'user_learned_tricks':user_learned_tricks})
+    return render(request, 'main/recommend_trick.html', {'recommend_tricks': recommend_tricks, 'profile': profile, 'user_learned_tricks':user_learned_tricks, 'current_page':current_page})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return HttpResponseRedirect('/home')
@@ -98,10 +100,11 @@ def recommend_trick(request, pk):
 
 def random_trick(request):
   if request.method == "POST":
+    current_page = request.path
 
     random_trick = Trick.objects.all().order_by('?').first()
 
-    return render(request, 'main/random_trick.html', {'random_trick':random_trick,})
+    return render(request, 'main/random_trick.html', {'random_trick':random_trick, 'current_page':current_page})
   else:
     return render(request, 'main/random_trick.html', {})
 
@@ -110,6 +113,8 @@ def random_trick(request):
 def random_trick_skill_based(request, pk):
   if request.user.is_authenticated:
     if request.method == "POST":
+      current_page = request.path
+
       profile = User_Profile.objects.get(User_id=pk)
       user_skill_level = profile.SkillLevel
       user_ability = profile.UserDifficultyLevel
@@ -120,7 +125,7 @@ def random_trick_skill_based(request, pk):
 
       random_trick = Trick.objects.filter(filters).order_by('?').first()
 
-      return render(request, 'main/random_trick_skill_based.html', {'random_trick': random_trick, 'profile': profile,})
+      return render(request, 'main/random_trick_skill_based.html', {'random_trick': random_trick, 'profile': profile, 'current_page':current_page})
     else:
       return render(request, 'main/random_trick_skill_based.html', {})
   else:
@@ -132,12 +137,14 @@ def random_trick_skill_based(request, pk):
 def random_trick_learned(request, pk):
   if request.user.is_authenticated:
     if request.method == "POST":
+      current_page = request.path
+
       profile = User_Profile.objects.get(User_id=pk)
       user_learned_tricks = profile.LearnedTricks
 
       random_trick = user_learned_tricks.order_by('?').first()
       
-      return render(request, 'main/random_trick_learned.html', {'random_trick': random_trick, 'profile': profile,})
+      return render(request, 'main/random_trick_learned.html', {'random_trick': random_trick, 'profile': profile, 'current_page':current_page})
     else:
       return render(request, 'main/random_trick_learned.html', {})
   else:
@@ -151,9 +158,9 @@ def learned_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.LearnedTricks.add(trick)
 
+  current_page = request.POST.get("current_page")
   messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
-  return HttpResponseRedirect('/home')
-  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return redirect(current_page)
 
 # ======================================================================================================================================
 
@@ -164,9 +171,9 @@ def unlearn_trick(request, pk):
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
 
+  current_page = request.POST.get("current_page")
   messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
-  return HttpResponseRedirect('/home')
-  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return redirect(current_page)
 
 # ======================================================================================================================================
 
@@ -175,9 +182,9 @@ def save_trick(request, pk):
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.SavedTricks.add(trick)
 
+  current_page = request.POST.get("current_page")
   messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Saved Tricks!"))
-  return HttpResponseRedirect('/home')
-  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return redirect(current_page)
 
 # ======================================================================================================================================
 
@@ -188,9 +195,9 @@ def unsave_trick(request, pk):
   if profile.SavedTricks.filter(TrickID=trick.TrickID).exists():
     profile.SavedTricks.remove(trick)
 
+  current_page = request.POST.get("current_page")
   messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Saved Tricks!"))
-  return HttpResponseRedirect('/home')
-  #return HttpResponseRedirect(reverse('recommend-trick', args=[str(pk)]))
+  return redirect(current_page)
 
 # ======================================================================================================================================
 
@@ -212,8 +219,10 @@ def add_trick(request):
 # ======================================================================================================================================
 
 def show_trick(request, trick_id):
+  current_page = request.path
+
   trick = Trick.objects.get(pk=trick_id)
-  return render(request, 'main/show_trick.html', {'trick' : trick})
+  return render(request, 'main/show_trick.html', {'trick':trick, 'current_page':current_page})
 
 # ======================================================================================================================================
 
@@ -229,12 +238,15 @@ def update_trick(request, trick_id):
 
 # ======================================================================================================================================
 
+#The 'current_page' redirect method doesnt work right with search as it does not maintain the searched value
 def search_trick(request):
   if request.method == "POST":
+    current_page = request.path
+
     trick_searched = request.POST['trick_searched']
     tricks = Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
-    return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks})
+    return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks, 'current_page':current_page})
   else:
     return render(request, 'main/search_trick.html', {})
 
@@ -370,11 +382,13 @@ def programme_list(request):
 # ======================================================================================================================================
 
 def view_programme(request, programme_id):
+  current_page = request.path
+
   Programme = Trick_Programme.objects.get(pk=programme_id)
   Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
   Lessons = Programme_Lesson.objects.filter(Programme=programme_id).order_by('LessonNumber')
-  return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks, 'Lessons':Lessons})
+  return render(request, 'main/view_programme.html', {'Programme':Programme, 'Programme_Tricks':Programme_Tricks, 'Lessons':Lessons, 'current_page':current_page})
 
 # ======================================================================================================================================
 
@@ -392,9 +406,6 @@ def learned_lesson(request, pk):
   if list(programme_lessons) == list(programme_lessons_learned):
     profile.CompletedProgrammes.add(programme)
     messages.success(request, ("Congradulations! You Have Completed The " + programme.ProgrammeName + "Programme!"))
-
-  messages.info(request, (programme_lessons))
-  messages.info(request, (programme_lessons_learned))
 
   messages.success(request, (lesson.LessonName + " Has Been Marked As Learned!"))
   return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
@@ -484,13 +495,14 @@ def category_list(request):
 # ======================================================================================================================================
 
 def show_category(request, category_id):
+  current_page = request.path
 
   category = Category.objects.get(pk=category_id)
   categoryID = category.CategoryID
   tricks =  Trick.objects.filter(TrickCategory=categoryID).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   trick_count = tricks.count()
   
-  return render(request, 'main/show_category.html', {'category':category, 'tricks':tricks, 'trick_count':trick_count})
+  return render(request, 'main/show_category.html', {'category':category, 'tricks':tricks, 'trick_count':trick_count, 'current_page':current_page})
 
 # ======================================================================================================================================
 

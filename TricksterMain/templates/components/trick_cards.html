@@ -39,12 +39,12 @@
           </div>
           <div class="col-6">
             <!-- Save Trick Button -->
-            {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+            {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick current_page=current_page %}
           </div>
         </div>
       </div>
     </div>
     <!-- Trick Learned Button -->
-    {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick %}
+    {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=trick current_page=current_page %}
   </div>
 </div>
