@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 
 from random import shuffle
 
-from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson
+from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson, Glossary_Term
 from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm
 from Users.models import Trickster_User, User_Profile 
 
@@ -526,6 +526,18 @@ def delete_category(request, category_id):
 
 # ======================================================================================================================================
 
+def glossary(request):
+
+  CommonTerms = Glossary_Term.objects.filter(CommonlyUsed=True).order_by('KeyWord')
+  UncommonTerms = Glossary_Term.objects.filter(CommonlyUsed=False).order_by('KeyWord')
+
+  CommonTermCount = CommonTerms.count()
+  UncommonTermCount = UncommonTerms.count()
+  TermCount = CommonTermCount + UncommonTermCount
+  
+  return render(request, 'main/glossary.html', {'CommonTerms':CommonTerms, 'UncommonTerms':UncommonTerms, 'TermCount':TermCount})
+
+# ======================================================================================================================================
 
 @login_required(login_url='/login')
 def admin_db(request):

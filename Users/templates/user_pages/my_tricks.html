@@ -86,14 +86,14 @@
                       </div>
                       <div class="col-6">
                         <!-- Save Trick Button -->
-                        {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick %}
+                        {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=trick current_page=current_page %}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="card-body-dark text-center gap-3" style="height: 3rem">
                   <!-- Trick Learned Button -->
-                  {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick %}
+                  {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick current_page=current_page %}
                 </div>
               </div>
             </div>

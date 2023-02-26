@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+  <!--Try and fix in trickster.scss-->
+  <style>
+    .text-underline-hover {
+      text-decoration: none;
+    }
+
+    .text-underline-hover:hover {
+      text-decoration: underline;
+    }
+
+    a:not([class]) {
+      text-decoration: none;
+    }
+
+    a:not([class]):hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <div class="container-md ">
+    <h2>Trickster Glossary of Specialist Terms: </h2>
+    </br>
+    </div>
+    <div class="card-body">
+      <p class="card-text"><strong>Total Glossary Terms: {{ term_count }}</strong></p>
+    </div>
+    {% for term in CommonTerms %}
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="{{ term.TermID }}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ term.TermID }}" aria-expanded="true" aria-controls="{{ term.TermID }}">
+            {{ term.KeyWord }}
+          </button>
+        </h2>
+        <div id="{{ term.TermID }}" class="accordion-collapse collapse show" aria-labelledby="{{ term.TermID }}" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>{{ term.KeyWord }} - </strong>{{ term.Description }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

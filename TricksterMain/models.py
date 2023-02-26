@@ -61,3 +61,9 @@ class Programme_Lesson (models.Model):
 
   def __str__(self):
     return self.LessonName
+
+class Glossary_Term (models.Model):
+  TermID = models.AutoField(primary_key=True)
+  KeyWord = models.CharField(max_length=25)
+  Description = models.TextField(blank=True)
+  CommonlyUsed = models.BooleanField(default=False)

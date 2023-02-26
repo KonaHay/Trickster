@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 #Import Models
-from .models import SkillLevel, Trick, Trick_Programme, Category, Programme_Lesson
+from .models import SkillLevel, Trick, Trick_Programme, Category, Programme_Lesson, Glossary_Term
 
 #Unregister Groups
 admin.site.unregister(Group)
@@ -40,3 +40,10 @@ class ProgrammeLessonAdmin(admin.ModelAdmin):
   list_display = ('LessonName', 'LessonShortDesc',)
   ordering = ('Programme', 'LessonName',)
   search_fields = ('LessonName', 'Programme',)
+
+@admin.register(Glossary_Term)
+class GlossaryAdmin(admin.ModelAdmin):
+  fields = ('KeyWord', 'Description', 'CommonlyUsed')
+  list_display = ('KeyWord', 'Description',)
+  ordering = ('CommonlyUsed', 'KeyWord',)
+  search_fields = ('KeyWord', 'CommonlyUsed',)
