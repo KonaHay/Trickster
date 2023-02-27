@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from random import shuffle
 
 from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson, Glossary_Term
-from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm
+from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm, GlossaryTermForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -405,7 +405,7 @@ def learned_lesson(request, pk):
 
   if list(programme_lessons) == list(programme_lessons_learned):
     profile.CompletedProgrammes.add(programme)
-    messages.success(request, ("Congradulations! You Have Completed The " + programme.ProgrammeName + "Programme!"))
+    messages.success(request, ("Congradulations! You Have Completed The " + programme.ProgrammeName + " Programme!"))
 
   messages.success(request, (lesson.LessonName + " Has Been Marked As Learned!"))
   return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
@@ -421,6 +421,10 @@ def unlearn_lesson(request, pk):
 
   if profile.CompletedLessons.filter(LessonID=lesson.LessonID).exists():
     profile.CompletedLessons.remove(lesson)
+
+  if profile.CompletedProgrammes.filter(ProgrammeID=programme.ProgrammeID).exists():
+    profile.CompletedProgrammes.remove(programme)
+    messages.error(request, ("Awww! " + programme.ProgrammeName + " Has Been Unmarked As Completed!"))
 
   messages.error(request, (lesson.LessonName + " Has Been Unmarked As Learned!"))
   return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
@@ -536,6 +540,23 @@ def glossary(request):
   TermCount = CommonTermCount + UncommonTermCount
   
   return render(request, 'main/glossary.html', {'CommonTerms':CommonTerms, 'UncommonTerms':UncommonTerms, 'TermCount':TermCount})
+
+# ======================================================================================================================================
+
+@permission_required('category.add_category', login_url='home')
+def add_glossary_term(request):
+    submitted = False
+    if request.method == "POST":
+      form = GlossaryTermForm(request.POST, request.FILES)
+      if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/add_glossary_term?submitted=True')
+    else:
+      form = GlossaryTermForm
+      if 'submitted' in request.GET:
+        submitted = True
+        messages.success(request, ("New Term Added To The Glossary!"))
+    return render(request, 'main/add_glossary_term.html', {'form':form, 'submitted':submitted})
 
 # ======================================================================================================================================
 

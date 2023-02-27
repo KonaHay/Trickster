@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Trick, Trick_Programme, Category, Programme_Lesson
+from .models import Trick, Trick_Programme, Category, Programme_Lesson, Glossary_Term
 
 #Form to add a trick to the database.
 class TrickForm(ModelForm):
@@ -82,4 +82,20 @@ class LessonForm(ModelForm):
       'LessonShortDesc': forms.Textarea(attrs={'rows': 5, 'cols': 20, 'class':'form-control', 'placeholder':'Enter Short Discription Here.'}),
       'LessonLongDesc': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter Long Discription Here.'}),
       'LessonVideo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter Video URL'}),
+    }
+
+class GlossaryTermForm(ModelForm):
+  class Meta:
+    model = Glossary_Term
+    fields = ('KeyWord', 'Description', 'CommonlyUsed')
+    labels = {
+      'KeyWord': 'Enter The Term For The Glossary:',
+      'Description':'Enter The Deffinition Of This Term:',
+      'CommonlyUsed':'Is This Term Considered Commonly Used:',
+    }
+    
+    widgets = {
+      'KeyWord': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Cabel Trick'}),
+      'Description': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
+      'CommonlyUsed': forms.CheckboxInput(attrs={"class": "form-check-input"}),
     }

@@ -67,3 +67,11 @@ class Glossary_Term (models.Model):
   KeyWord = models.CharField(max_length=25)
   Description = models.TextField(blank=True)
   CommonlyUsed = models.BooleanField(default=False)
+  slug = models.SlugField(null=True)
+
+  def __str__(self):
+    return self.KeyWord
+
+  def save(self,*args,**kwargs):
+        self.slug = slugify(self.KeyWord)
+        super(Glossary_Term,self).save(*args,**kwargs)

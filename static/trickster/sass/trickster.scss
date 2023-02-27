@@ -1,5 +1,8 @@
 // Custom Variables
 $primary: #2184f7;
+$secondary: #cccccc;
+$trickstergray: #cccccc;
+$tricksterdark: #262a31;
 
 //Pagination colours
 $pagination-bg: #262a31;
@@ -14,17 +17,48 @@ $pagination-disabled-color: #323232;
 $pagination-disabled-bg: #dcdfe0;
 $pagination-disabled-border-color: #b6b6b6;
 
-
 // Import Functions & Variables
 @import '../../../node_modules/bootstrap/scss/_functions';
 @import '../../../node_modules/bootstrap/scss/_variables';
+@import '../../../node_modules/bootstrap/scss/_mixins';
+@import '../../../node_modules/bootstrap/scss/_utilities';
 
-$custom-theme-colors: (
-  "tricksterdark": #262a31
-);
+$theme-colors: map-merge($theme-colors, (
+  "tricksterdark": $tricksterdark,
+  "trickstergray": $trickstergray,
 
-$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+  'primary-dark' : shade-color($blue, 20%),
+  'primary-light' : tint-color($blue, 20%),
 
+  'purple' : $indigo,
+  'purple-dark' : shade-color($indigo, 20%),
+  'purple-light' : tint-color($indigo, 10%),
+));
+
+$utilities-colors: map-merge($theme-colors, $utilities-colors);
+$utilities-border-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+// Configuration
+
+// Layout & components
+@import '../../../node_modules/bootstrap/scss/_root';
+@import '../../../node_modules/bootstrap/scss/_reboot';
+
+@import '../../../node_modules/bootstrap/scss/_type';
+@import '../../../node_modules/bootstrap/scss/_containers';
+@import '../../../node_modules/bootstrap/scss/_grid'; 
+@import '../../../node_modules/bootstrap/scss/_forms';
+@import '../../../node_modules/bootstrap/scss/_buttons';
+@import '../../../node_modules/bootstrap/scss/_transitions';
+
+// Helpers
+@import '../../../node_modules/bootstrap/scss/_helpers';
+
+// Utilities
+@import '../../../node_modules/bootstrap/scss/utilities/_api';
 
 // import bootstrap
 @import '../../../node_modules/bootstrap/scss/bootstrap';

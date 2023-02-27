@@ -7,3 +7,5 @@ High Priority:
 - Get all photo uploads to auto adjust to 16:9 ratio
 - Finish Reccomended tricks functionality
 
+- Add a Programme Summary to the Confirm Programme Page
+

@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block content  %}
+
+  <style>
+    .nopadding {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h1> Add New Term </h1>
+    <br/>
+    {% if submitted %}
+    <h2>The new term has been added to the Trickster Glossary!</h2>
+    </br>
+    <a href="{%url 'add-glossary-term'%}" class="btn btn-primary">Add Another Term</a>
+    {% else %}
+
+      <form action="" method=POST enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p  }}
+
+        <input type="submit" value="Submit" class="btn btn-primary">
+
+      </form>
+
+    {% endif %}
+  </div>
+{% endblock %}
