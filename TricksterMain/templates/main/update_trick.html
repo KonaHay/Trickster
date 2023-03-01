@@ -2,36 +2,35 @@
 
 {% block content  %}
 
-    <div class="shadow  p-4 mb-5 bg-body rounded">
-        <h1>Update Trick: {{ trick }}</h1>
-        </br>
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h1>Update Trick: {{ trick }}</h1>
+    </br>
 
-        <form action="" method=POST enctype="multipart/form-data">
-        {% csrf_token %}
+    <form action="" method=POST enctype="multipart/form-data">
+    {% csrf_token %}
 
-        {% for feild in form %}
-          <p>
-            {{ feild.label_tag }}
-            {{ feild}}
+    {% for feild in form %}
+      <p>
+        {{ feild.label_tag }}
+        {{ feild}}
 
-            {% if feild.help_text %}
-              <small style="color: grey">{{ feild.help_text }}</small>
-            {% endif %}
+        {% if feild.help_text %}
+          <small style="color: grey">{{ feild.help_text }}</small>
+        {% endif %}
 
-            <div style="color:red";>
-              <p>{{ feild.errors }}</p>
-            </div>
+        <div style="color:red";>
+          <p>{{ feild.errors }}</p>
+        </div>
 
-          </p>
-        {% endfor %}
-        </br>
-        <input type="submit" value="Update" class="btn btn-primary">
+      </p>
+    {% endfor %}
+    </br>
+    <input type="submit" value="Update" class="btn btn-primary">
 
-        <!-- Only if hass delete permissions -->
-        <a href="{% url 'delete-trick' trick.TrickID %}" class="btn btn-danger">Delete</a>
-        
-        </form>
+    <!-- Only if hass delete permissions -->
+    <a href="{% url 'delete-trick' trick.TrickID %}" class="btn btn-danger">Delete</a>
     
-    </div>
+    </form>
+  </div>
 
 {% endblock %}

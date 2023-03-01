@@ -233,7 +233,7 @@ def update_trick(request, trick_id):
   if form.is_valid():
     form.save()
     messages.success(request, ("Trick Updated Successfuly!"))
-    return HttpResponseRedirect('/trick_list')
+    return HttpResponseRedirect('/trick_list?page=1')
   return render(request, 'main/update_trick.html', {'trick':trick, 'form':form})
 
 # ======================================================================================================================================
