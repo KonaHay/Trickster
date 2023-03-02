@@ -33,6 +33,7 @@ class Trick (models.Model):
   TrickDifficulty = models.PositiveIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   TrickImg = models.ImageField(null=True, blank=True, upload_to="images/")
   TrickCategory = models.ManyToManyField(Category, related_name='trick_category_tags', blank=True)
+  approved = models.BooleanField('Approved', default=False)
 
   def __str__(self):
     return self.TrickName

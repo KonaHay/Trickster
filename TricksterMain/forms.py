@@ -2,8 +2,34 @@ from django import forms
 from django.forms import ModelForm
 from .models import Trick, Trick_Programme, Category, Programme_Lesson, Glossary_Term
 
-#Form to add a trick to the database.
 class TrickForm(ModelForm):
+  class Meta:
+    model = Trick
+    fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'approved')
+    labels = {
+      'TrickName': 'Enter the Trick Name:',
+      'TrickRecLevel':'Reccomended Level for this Trick:',
+      'TrickDifficulty':'Trick Difficulty (Scale 1-10):',
+      'TrickDiscription':'Enter the discription of this trick:',
+      'TrickHowTo':'Enter a How To for this trick:',
+      'TrickCategory':'Select a Category for the new Trick (CTRL Click to Add Multiple):',
+      'TrickImg':'Upload a cover image for this trick:',
+      'approved':'Approved:'
+    }
+      
+    widgets = {
+      'TrickName': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Ollie'}),
+      'TrickRecLevel': forms.Select(attrs={'class':'form-control', 'placeholder':'Select a skill level'}),
+      'TrickDifficulty': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
+      'TrickDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
+      'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
+      #Fix select multiple feild.
+      #'TrickCategory':forms.CheckboxSelectMultiple(attrs={'class':'form-check-input', 'type':'checkbox'}),
+      'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
+      'approved': forms.CheckboxInput(attrs={"class": "form-check-input"}),
+    }
+
+class SubmitTrickForm(ModelForm):
   class Meta:
     model = Trick
     fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg')
@@ -13,7 +39,7 @@ class TrickForm(ModelForm):
       'TrickDifficulty':'Trick Difficulty (Scale 1-10):',
       'TrickDiscription':'Enter the discription of this trick:',
       'TrickHowTo':'Enter a How To for this trick:',
-      'TrickCategory':'Select a Category for the new Trick:',
+      'TrickCategory':'Select a Category for the new Trick (CTRL Click to Add Multiple):',
       'TrickImg':'Upload a cover image for this trick:',
     }
       
@@ -23,8 +49,8 @@ class TrickForm(ModelForm):
       'TrickDifficulty': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
       'TrickDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
       'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
-      #Change to a select multiple feild.
-      #'TrickCategory':forms.CheckboxSelectMultiple(attrs={'class':'form-control', 'placeholder':'Select a skill level'}),
+      #Fix select multiple feild.
+      #'TrickCategory':forms.CheckboxSelectMultiple(attrs={'class':'form-check-input', 'type':'checkbox'}),
       'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
     }
 

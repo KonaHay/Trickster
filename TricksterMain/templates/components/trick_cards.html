@@ -7,21 +7,35 @@
   {% endif %}
     {% if trick.TrickImg %}
       <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+      {% if trick in request.user.user_profile.LearnedTricks.all %}
+        <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 10.1rem; background-color: rgba(0, 0, 0, 0.3)">
+          <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+        </div>
+      {% endif %}
     {% else %}    
       <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+      {% if trick in request.user.user_profile.LearnedTricks.all %}
+        <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 10.1rem; background-color: rgba(0, 0, 0, 0.3)">
+          <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+        </div>
+      {% endif %}
     {% endif %}
     <div class="card-body">
       <h5 class="card-title">
         <div class="container">
           <div class="row">
-            <div class="col-6">
-              {{ trick }} 
-            </div>
-            <div class="col-6">
-              {% if user.is_superuser %}
-              <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
-              {% endif %}
-            </div>
+            {% if user.is_superuser %}
+              <div class="col-7">
+                {{ trick }} 
+              </div>
+              <div class="col-5">
+                <a href="{% url 'update-trick' trick.TrickID %}" class="btn btn-success btn-sm">Edit Trick</a>
+              </div>
+            {% else %}
+              <div class="col-12">
+                {{ trick.TrickName }} 
+              </div>
+            {% endif %}
           </div>
         </div>
       </h5>

@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h1> Trickster Trick Approval Page </h1>
+    <br/>
+    <div class="col-4">
+      <div class="card text-bg-dark">
+        <div class="card-body">
+          <p class="card-text">Total Unapproved Tricks: {{ trick_count }} Tricks!</p>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {% for trick in unapproved_tricks %}
+        <div class="col-sm">
+          {% if user.is_authenticated %}
+            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
+          {% else %}
+            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
+          {% endif %}
+            {% if trick.TrickImg %}
+              <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+              {% if trick in request.user.user_profile.LearnedTricks.all %}
+                <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 10.1rem; background-color: rgba(0, 0, 0, 0.3)">
+                  <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                </div>
+              {% endif %}
+            {% else %}    
+              <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+              {% if trick in request.user.user_profile.LearnedTricks.all %}
+                <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 10.1rem; background-color: rgba(0, 0, 0, 0.3)">
+                  <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                </div>
+              {% endif %}
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">
+                      {{ trick.TrickName }} 
+                    </div>
+                  </div>
+                </div>
+              </h5>
+              <p class="card-text">{{ trick.TrickDiscription|truncatechars:180 }}</p>
+            </div>
+            <ul class="list-group-dark list-group-flush">
+              <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+              <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+            </ul>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    <a href="{% url 'show-trick' trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                  </div>
+                  <div class="col-6">
+                    <!-- Save Trick Button -->
+                    <a class="btn btn-primary btn-sm disabled" >Save Trick</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <a class="btn btn-outline-info btn-sm disabled" dissabled>Mark Trick As Learned</a>
+            </div>
+          </div>
+          <a href="{% url 'approve-trick' trick.TrickID %}" class="btn btn-success">Approve Trick</a>
+          <a href="{% url 'delete-unapproved-trick' trick.TrickID %}" class="btn btn-danger">Delete Trick</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

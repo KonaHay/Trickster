@@ -37,6 +37,11 @@
             <li><a class="dropdown-item" href="{%url 'trick-list'%}?page=1">Trick List</a></li>
             <li><a class="dropdown-item" href="{%url 'category-list'%}">Trick Categories</a></li>
             <li><a class="dropdown-item" href="{%url 'glossary'%}">Glossary</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{%url 'submit-trick'%}">Submit A Trick</a></li>
+            {% if request.user.is_superuser %}
+              <li><a class="dropdown-item text-danger" href="{%url 'approve-tricks'%}">Approve Tricks</a></li>
+            {% endif %}
           </ul>
         </li>
         <!-- =================== -->

@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from random import shuffle
 
 from .models import Trick, SkillLevel, Trick_Programme, Category, Programme_Lesson, Glossary_Term
-from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm, GlossaryTermForm
+from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm, GlossaryTermForm, SubmitTrickForm
 from Users.models import Trickster_User, User_Profile 
 
 
@@ -47,7 +47,7 @@ def trick_list(request):
   #tricks = t_paginator.paginator_tricks
   #-----------------------------------------
 
-  all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  all_tricks = Trick.objects.filter(approved=True).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   trick_count = all_tricks.count()
 
   #Pagination setup
@@ -238,6 +238,32 @@ def update_trick(request, trick_id):
 
 # ======================================================================================================================================
 
+def submit_trick(request):
+    submitted = False
+    if request.method == "POST":
+      form = SubmitTrickForm(request.POST, request.FILES)
+      if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/submit_trick?submitted=True')
+    else:
+      form = SubmitTrickForm
+      if 'submitted' in request.GET:
+        submitted = True
+        messages.success(request, ("Trick Submitted Successfuly!"))
+    return render(request, 'main/submit_trick.html', {'form':form, 'submitted':submitted})
+
+# ======================================================================================================================================
+
+@permission_required('trick.change_trick', login_url='home')
+def approve_tricks(request):
+
+  unapproved_tricks = Trick.objects.filter(approved=False).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  trick_count = unapproved_tricks.count()
+
+  return render(request, 'main/approve_tricks.html', {'unapproved_tricks': unapproved_tricks, "trick_count":trick_count})
+
+# ======================================================================================================================================
+
 #The 'current_page' redirect method doesnt work right with search as it does not maintain the searched value
 def search_trick(request):
   if request.method == "POST":
@@ -257,6 +283,24 @@ def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   trick.delete()
   return HttpResponseRedirect('/trick_list')
+
+# ======================================================================================================================================
+
+@permission_required('trick.delete_trick', login_url='home')
+def delete_unapproved_trick(request, trick_id):
+  trick = Trick.objects.get(pk=trick_id)
+  trick.delete()
+  messages.error(request, ("Trick '" + trick.TrickName + "' has been Deleted!"))
+  return HttpResponseRedirect('/approve_tricks')
+
+# ======================================================================================================================================
+
+@permission_required('trick.change_trick', login_url='home')
+def approve_trick(request, trick_id):
+  trick = Trick.objects.get(pk=trick_id)
+  Trick.objects.filter(pk=trick.TrickID).update(approved=True)
+  messages.success(request, ("Trick '" + trick.TrickName + "' has been Approved!"))
+  return HttpResponseRedirect('/approve_tricks')
 
 # ======================================================================================================================================
 

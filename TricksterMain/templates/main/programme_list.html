@@ -20,9 +20,19 @@
         <div class="col-md">
           <div class="card text-bg-dark mb-3" style="width: 22rem; height: 35rem;">
             {% if programme.ProgrammeImg %}
-              <img src="{{ programme.ProgrammeImg.url }}" class="img-fluid rounded" alt="programme cover image">
+                <img src="{{ programme.ProgrammeImg.url }}" class="img-fluid rounded" alt="programme cover image">
+                {% if programme in request.user.user_profile.CompletedProgrammes.all %}
+                  <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 12.4rem; background-color: rgba(0, 0, 0, 0.3)">
+                    <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                  </div>
+                {% endif %}
             {% else %}    
-              <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default programme cover image">
+                <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="programme cover image">
+                {% if programme in request.user.user_profile.CompletedProgrammes.all %}
+                  <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 12.4rem; background-color: rgba(0, 0, 0, 0.3)">
+                    <img src="{% static 'trickster/images/TheTickBlue.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                  </div>
+                {% endif %}
             {% endif %}
             <div class="card-body">
               <h5 class="card-title">
@@ -33,7 +43,7 @@
                     </div>
                     <div class="col-6">
                       {% if user.is_superuser %}
-                      <a href="{% url 'update-programme' programme.ProgrammeID %}" class="btn btn-success btn-sm">Edit Programme</a>
+                        <a href="{% url 'update-programme' programme.ProgrammeID %}" class="btn btn-success btn-sm">Edit Programme</a>
                       {% endif %}
                     </div>
                   </div>
