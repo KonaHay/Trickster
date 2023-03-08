@@ -2,3 +2,6 @@ node_modules/
 package-lock.json
 package.json
 db.sqlite3
+users/__pycache__/
+TricksterMain/__pycache__/
+Trickster/__pycache__/
