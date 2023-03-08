@@ -76,7 +76,8 @@ def profile(request, pk):
 
     profile = User_Profile.objects.get(User_id=pk)
 
-    return render(request, 'user_pages/profile.html', {'profile': profile})
+    current_page = request.path
+    return render(request, 'user_pages/profile.html', {'profile': profile, 'current_page':current_page})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
@@ -120,7 +121,8 @@ def my_tricks(request, pk):
     profile = User_Profile.objects.get(User_id=pk)
     trick_count = profile.LearnedTricks.all().count()
 
-    return render(request, 'user_pages/my_tricks.html', {'profile': profile, "trick_count":trick_count})
+    current_page = request.path
+    return render(request, 'user_pages/my_tricks.html', {'profile': profile, "trick_count":trick_count, 'current_page':current_page})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
@@ -133,7 +135,7 @@ def my_saved_tricks(request, pk):
     profile = User_Profile.objects.get(User_id=pk)
     trick_count = profile.SavedTricks.all().count()
 
-    current_page = request.POST.get("current_page")
+    current_page = request.path
     return render(request, 'user_pages/my_saved_tricks.html', {'profile': profile, "trick_count":trick_count, 'current_page':current_page})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
@@ -147,7 +149,8 @@ def my_saved_programmes(request, pk):
     profile = User_Profile.objects.get(User_id=pk)
     programme_count = profile.SavedProgrammes.all().count()
 
-    return render(request, 'user_pages/my_saved_programmes.html', {'profile': profile, "programme_count":programme_count})
+    current_page = request.path
+    return render(request, 'user_pages/my_saved_programmes.html', {'profile': profile, "programme_count":programme_count, 'current_page':current_page})
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
