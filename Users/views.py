@@ -90,23 +90,18 @@ def update_profile(request, pk):
     user = Trickster_User.objects.get(UserID=pk)
 
     if request.method == 'POST':
-
-      if 'UpdateProfile' in request.POST:
-        profile_form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=profile)
-        if profile_form.is_valid():
-          profile_form.save()
-          messages.success(request, ("The Changes To Your Profile Have Been Saved!"))
-          return HttpResponseRedirect('/Users/profile/%d'%user.UserID)
-
-      elif 'UpdateUser' in request.POST:
-        user_form = UserUpdateForm(request.POST or None, instance=user)
-        if user_form.is_valid():
-          user_form.save()
-          messages.success(request, ("The Changes To Your Profile Have Been Saved!"))
-          return HttpResponseRedirect('/Users/profile/%d'%user.UserID)
-
-    profile_form = ProfileUpdateForm(instance=profile)
-    user_form = UserUpdateForm(instance=user)
+      user_form = UserUpdateForm(request.POST or None, instance=user)
+      profile_form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=profile)
+      
+      if profile_form.is_valid() and user_form.is_valid():
+        profile_form.save()
+        user_form.save()
+        messages.success(request, ("Account Updated Successfully!"))
+        return HttpResponseRedirect('/Users/profile/%d'%user.UserID)
+      
+    else:
+      profile_form = ProfileUpdateForm(instance=profile)
+      user_form = UserUpdateForm(instance=user)
     return render(request, 'user_pages/update_profile.html', {'profile':profile, 'profile_form':profile_form, 'user_form':user_form})
 
   else:

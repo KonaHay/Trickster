@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b(83c-s#4yg6#m*04e(^)2imb+d+jg5o3#ekhd*-j8z8)v=m9k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'Kona10.pythonanywhere.com']
 
@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'embed_video',
     'TricksterMain',
     'Users',
+
+    #Django Cleanup - Must be last in list!
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

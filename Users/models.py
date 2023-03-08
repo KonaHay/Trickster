@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save
 from django.utils import timezone
+from PIL import Image, ImageSequence
 
 from TricksterMain.models import Trick, SkillLevel, Trick_Programme, Programme_Lesson
 
@@ -76,6 +77,24 @@ class User_Profile(models.Model):
 
   def __str__(self):
     return self.User.Username
+  
+  def save(self, *args, **kwargs):
+    super().save(*args, **kwargs)
+    
+    if self.ProfilePhoto:
+      img = Image.open(self.ProfilePhoto.path)
+      default_size = (500, 500)
+
+      if img.format == 'GIF':
+         # im is your original image
+        resized_img = img.resize(default_size)
+        resized_img.format = img.format
+        resized_img.save(self.ProfilePhoto.path, save_all=True, append_images=[resized_img])
+
+      else:
+        resized_img = img.resize(default_size)
+        resized_img.format = img.format
+        resized_img.save(self.ProfilePhoto.path)
 
 def create_profile(sender, instance, created, **kwargs):
   if created:

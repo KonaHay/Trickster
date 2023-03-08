@@ -27,7 +27,7 @@
               <div class="container">
                 <div class="row">
                   <div class="col-12">
-                    <button class="btn btn-outline-info">Take Me There</button>
+                    <a href="{%url 'trick-list'%}" class="btn btn-outline-info btn-sm">Take Me There</a>
                   </div>
                 </div>
               </div>
@@ -48,7 +48,7 @@
               <div class="container">
                 <div class="row">
                   <div class="col-12">
-                    <button class="btn btn-outline-info">Get My Skill Level</button>
+                    <a href="" class="btn btn-outline-info btn-sm">Get My Skill Level</a>
                   </div>
                 </div>
               </div>
@@ -70,7 +70,7 @@
                 <div class="row">
                   <div class="col-12">
                     <!-- Save Trick Button -->
-                    <button class="btn btn-outline-info">Check Them Out</button>
+                    <a href="{%url 'programme-list'%}" class="btn btn-outline-info btn-sm">Check Them Out</a>
                   </div>
                 </div>
               </div>
@@ -107,8 +107,16 @@
                         <div class="thumb-content">
                           <div class="card-body">
                             <h4>Beginners Guide</h4>
-                            <p>{{ beginners_guide.ProgrammeDiscription|truncatechars:110 }}</p>
-                            <a href="{% url 'view-programme' beginners_guide.ProgrammeID %}" class="btn btn-outline-primary btn-sm">View Programme</a>
+                            <p>{{ beginners_guide.ProgrammeDiscription|truncatechars:220 }}</p>
+                          </div>
+                          <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-12">
+                                  <a href="{% url 'view-programme' beginners_guide.ProgrammeID %}" class="btn btn-outline-info btn-sm">View Programme</a>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>						
@@ -123,8 +131,16 @@
                         <div class="thumb-content">
                           <div class="card-body">
                             <h4>How To Ollie</h4>
-                            <p>{{ how_to_ollie.TrickDiscription|truncatechars:180 }}</p>
-                            <a href="{% url 'show-trick' how_to_ollie.TrickID %}" class="btn btn-outline-primary btn-sm">Learn How</a>
+                            <p>{{ how_to_ollie.TrickDiscription|truncatechars:220 }}</p>
+                          </div>
+                          <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-12">
+                                  <a href="{% url 'show-trick' how_to_ollie.TrickID %}" class="btn btn-outline-info btn-sm">Learn How</a>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>	
                       </div>					

@@ -62,8 +62,9 @@ def trick_list(request):
   tricks = p.get_page(page)
   num_pages = "T" * tricks.paginator.num_pages
 
-  current_path = request.path
-  current_page = current_path + "?page=" + page
+  current_page = request.path
+  if page:
+    current_page = current_page + "?page=" + page
 
   return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages, "trick_count":trick_count, "current_page":current_page})
    # -- Try replacing this link ^ to the paginator.html instead! --
@@ -235,11 +236,11 @@ def show_trick(request, trick_id):
 @permission_required('trick.change_trick', login_url='home')
 def update_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
-  form = TrickForm(request.POST or None, instance=trick)
+  form = TrickForm(request.POST or None, request.FILES or None, instance=trick)
   if form.is_valid():
     form.save()
     messages.success(request, ("Trick Updated Successfuly!"))
-    return HttpResponseRedirect('/trick_list?page=1')
+    return HttpResponseRedirect('/trick_list')
   return render(request, 'main/update_trick.html', {'trick':trick, 'form':form})
 
 # ======================================================================================================================================
@@ -506,7 +507,7 @@ def unsave_programme(request, pk):
 @permission_required('programme.change_programme', login_url='home')
 def update_programme(request, programme_id):
   programme = Trick_Programme.objects.get(pk=programme_id)
-  form = ProgrammeForm(request.POST or None, instance=programme)
+  form = ProgrammeForm(request.POST or None, request.FILES or None, instance=programme)
   if form.is_valid():
     form.save()
     messages.success(request, ("Trick Updated Successfuly!"))
@@ -563,7 +564,7 @@ def show_category(request, category_id):
 @permission_required('category.change_category', login_url='home')
 def update_category(request, category_id):
   category = Category.objects.get(pk=category_id)
-  form = CategoryForm(request.POST or None, instance=category)
+  form = CategoryForm(request.POST or None, request.FILES or None, instance=category)
   if form.is_valid():
     form.save()
     messages.success(request, ("Category Updated Successfuly!"))

@@ -2,6 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.template.defaultfilters import slugify
 from embed_video.fields import EmbedVideoField
+from PIL import Image
 
 class SkillLevel (models.Model):
   SkillLevelID = models.AutoField(primary_key=True)
@@ -21,8 +22,16 @@ class Category (models.Model):
     return self.CategoryName
   
   def save(self,*args,**kwargs):
-        self.slug = slugify(self.name)
-        super(Category,self).save(*args,**kwargs)
+    self.slug = slugify(self.CategoryName)
+    super(Category,self).save(*args,**kwargs)
+
+    if self.CategoryImg:
+      img = Image.open(self.CategoryImg.path)
+      default_size = (960, 540)
+
+      resized_img = img.resize(default_size)
+      resized_img.format = img.format
+      resized_img.save(self.CategoryImg.path)
 
 class Trick (models.Model):
   TrickID = models.AutoField(primary_key=True)
@@ -37,6 +46,17 @@ class Trick (models.Model):
 
   def __str__(self):
     return self.TrickName
+  
+  def save(self,*args,**kwargs):
+    super().save(*args, **kwargs)
+
+    if self.TrickImg:
+      img = Image.open(self.TrickImg.path)
+
+      default_size = (960, 540)
+      resized_img = img.resize(default_size)
+      resized_img.format = img.format
+      resized_img.save(self.TrickImg.path)
 
 class Trick_Programme (models.Model):
   ProgrammeID = models.AutoField(primary_key=True)
@@ -50,6 +70,17 @@ class Trick_Programme (models.Model):
 
   def __str__(self):
     return self.ProgrammeName
+  
+  def save(self, *args, **kwargs):
+    super().save(*args, **kwargs)
+
+    if self.ProgrammeImg:
+      img = Image.open(self.ProgrammeImg.path)
+
+      default_size = (960, 540)
+      resized_img = img.resize(default_size)
+      resized_img.format = img.format
+      resized_img.save(self.ProgrammeImg.path)
 
 class Programme_Lesson (models.Model):
   LessonID = models.AutoField(primary_key=True)

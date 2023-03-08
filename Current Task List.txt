@@ -1,11 +1,10 @@
 - Start using jQuery or Ajax to return button presses without reloading.
-- Try to Delete old profile images and Trick images once they have been changed.
-
-- Add 'Programme Learned' cover to programmes which have been completed.
 
 High Priority:
-- Get all photo uploads to auto adjust to 16:9 ratio
+- Add Find Skill Level functionality
+- Add Progression System
 - Finish Reccomended tricks functionality
 
+Non Essential:
 - Add a Programme Summary to the Confirm Programme Page
 - Edit Search functionality to include Skill Programmes

@@ -8,43 +8,42 @@
 
         <form action="" method=POST enctype="multipart/form-data">
           {% csrf_token %}
-          {% for feild in user_form %}
-            <p>
-              {{ feild.label_tag }}
-              {{ feild}}
+          <fieldset class="form-group">
+            {% for feild in user_form %}
+              <p>
+                {{ feild.label_tag }}
+                {{ feild}}
 
-              {% if feild.help_text %}
-                <small style="color: grey">{{ feild.help_text }}</small>
-              {% endif %}
+                {% if feild.help_text %}
+                  <small style="color: grey">{{ feild.help_text }}</small>
+                {% endif %}
 
-              <div style="color:red";>
-                <p>{{ feild.errors }}</p>
-              </div>
+                <div style="color:red";>
+                  <p>{{ feild.errors }}</p>
+                </div>
 
-            </p>
-          {% endfor %}
-          <input name="UpdateUser" type="submit" value="Update User" class="btn btn-primary">     
-        </form>
-        </br>
+              </p>
+            {% endfor %}
 
-        <form action="" method=POST enctype="multipart/form-data">
-          {% csrf_token %}
-          {% for feild in profile_form %}
-            <p>
-              {{ feild.label_tag }}
-              {{ feild}}
+            {% for feild in profile_form %}
+              <p>
+                {{ feild.label_tag }}
+                {{ feild}}
 
-              {% if feild.help_text %}
-                <small style="color: grey">{{ feild.help_text }}</small>
-              {% endif %}
+                {% if feild.help_text %}
+                  <small style="color: grey">{{ feild.help_text }}</small>
+                {% endif %}
 
-              <div style="color:red";>
-                <p>{{ feild.errors }}</p>
-              </div>
+                <div style="color:red";>
+                  <p>{{ feild.errors }}</p>
+                </div>
 
-            </p>
-          {% endfor %}
-          <input name="UpdateProfile" type="submit" value="Update Profile" class="btn btn-primary">     
+              </p>
+            {% endfor %}
+          </fieldset>
+          <div class="form-group">
+            <button class="btn btn-outline-primary" type="submit">Update</button>
+          </div>     
         </form>
     
     </div>

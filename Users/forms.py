@@ -45,7 +45,7 @@ class ProfileUpdateForm(forms.ModelForm):
     model = User_Profile
     fields = ('ProfilePhoto',)
     labels = {
-      'ProfilePhoto':'',
+      'ProfilePhoto':'Profile Picture',
     }
 
     widgets = {
