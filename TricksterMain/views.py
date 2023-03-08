@@ -14,8 +14,14 @@ from .forms import TrickForm, ProgrammeForm, CategoryForm, LessonForm, GlossaryT
 from Users.models import Trickster_User, User_Profile 
 
 
+def carousel_test(request):
+  return render(request, 'main/carousel_test.html', {})
+
 def home(request):
-  return render(request, 'main/home.html', {})
+  beginners_guide = Trick_Programme.objects.get(ProgrammeID=1)
+  how_to_ollie = Trick.objects.get(TrickID=15)
+
+  return render(request, 'main/home.html', {'beginners_guide':beginners_guide, 'how_to_ollie':how_to_ollie})
 
 # ======================================================================================================================================
 
@@ -481,7 +487,7 @@ def save_programme(request, pk):
   programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
   profile.SavedProgrammes.add(programme)
   messages.info(request, (programme.ProgrammeName + " Has Been Added To Your List Of Saved Programmes!"))
-  return HttpResponseRedirect('/home')
+  return redirect('programme-list')
 
 # ======================================================================================================================================
 
@@ -489,11 +495,11 @@ def unsave_programme(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   programme = get_object_or_404(Trick_Programme, ProgrammeID=request.POST.get("programme_id"))
 
-  if profile.SavedProgrammes.filter(ProgrammeID=programme.TrickID).exists():
+  if profile.SavedProgrammes.filter(ProgrammeID=programme.ProgrammeID).exists():
     profile.SavedProgrammes.remove(programme)
 
   messages.error(request, (programme.ProgrammeName + " Has Been Removed From Your List Of Saved Programmes!"))
-  return HttpResponseRedirect('/home')
+  return redirect('programme-list')
 
 # ======================================================================================================================================
 

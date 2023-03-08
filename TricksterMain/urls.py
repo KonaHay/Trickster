@@ -47,6 +47,8 @@ urlpatterns = [
     path('learned_lesson/<int:pk>', views.learned_lesson, name='learned-lesson'),
     path('unlearn_lesson/<int:pk>', views.unlearn_lesson, name='unlearn-lesson'),
 
+    path('carousel_test', views.carousel_test, name='carousel-test'),
+
     #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),
 ]

@@ -1,9 +1,221 @@
 {% extends 'main/base.html' %}
 
 {% block content  %}
+  {% load static %}
+  <h1> Welcome to Trickster! </h1>
+  <h2> The Ultimate Wakeboarding Guide!</h2>
+  </br>
+  
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h2>Get started with some of our handy tools!</h2>
+    </br> 
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3 g-3">
 
-    <h1> Welcome to Trickster! </h1>
-    <h2> The Ultimate Wakeboarding Database!</h2>
+        <!-- Add an IF to check if the User is logged in then change the cards shown here -->
 
+        <!--Trick Database Card-->
+        <div class="col-sm">
+          <div class="card text-bg-dark mb-3" style="height: 32rem;">
+            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="trick cover image">
+            <div class="card-body">
+              <h4>Trick Database</h4>
+              <p class="card-text">Tricksters Trick Database is compiled of hundreds of differnt wakeboarding tricks for both Cable and Boat riders.</p>
+              <p class="card-text">Each with their step by step guide helping you elevate your wakeboarding!</p>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <button class="btn btn-outline-info">Take Me There</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!--Get Skill Level Card style="width: 20rem; height: 32rem;"-->
+        <div class="col-sm">
+          <div class="card text-bg-dark mb-3" style="height: 32rem;">
+            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="trick cover image">
+            <div class="card-body">
+              <h4>Get Your Skill Level</h4>
+              <p class="card-text">Trickster prides itself on helping wakeboarders progress! This is why we developed the Skill Level system.</p>
+              <p class="card-text">Take our short quiz and mark off some tricks you already know. This lets us gauge your level and reccomend you the next steps to take!</p>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <button class="btn btn-outline-info">Get My Skill Level</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Skill Programmes Card-->
+        <div class="col-sm">
+          <div class="card text-bg-dark mb-3" style="height: 32rem;">
+            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="trick cover image">
+            <div class="card-body">
+              <h4>Trickster Programmes</h4>
+              <p class="card-text">Tricksters Skill Programmes are step by step guides on how to elevate your Wakeboarding to the next level! </p>
+              <p class="card-text">Check out the PRO-grammes such as David OC's 'Zero to Hero' Course amoung many others!</p>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <!-- Save Trick Button -->
+                    <button class="btn btn-outline-info">Check Them Out</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h2>Heres Some Tricks & Guides To Get Started!</h2>
+    </br> 
+    <div class="container-md">
+      <div class="row">
+        <div class="col-md-10 mx-auto">
+          <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+            <!-- Carousel indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>   
+            <!-- Wrapper for carousel items -->
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
+                        <div class="img-box">
+                          <img src="{{ beginners_guide.ProgrammeImg.url }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>Beginners Guide</h4>
+                            <p>{{ beginners_guide.ProgrammeDiscription|truncatechars:110 }}</p>
+                            <a href="{% url 'view-programme' beginners_guide.ProgrammeID %}" class="btn btn-outline-primary btn-sm">View Programme</a>
+                          </div>
+                        </div>
+                      </div>						
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem">
+                        <div class="img-box">
+                          <img src="{{ how_to_ollie.TrickImg.url }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>How To Ollie</h4>
+                            <p>{{ how_to_ollie.TrickDiscription|truncatechars:180 }}</p>
+                            <a href="{% url 'show-trick' how_to_ollie.TrickID %}" class="btn btn-outline-primary btn-sm">Learn How</a>
+                          </div>
+                        </div>	
+                      </div>					
+                    </div>
+                  </div>				
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
+                        <div class="img-box">
+                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>Kuala Lumpur</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam.</p>
+                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
+                          </div>
+                        </div>	
+                      </div>					
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem">
+                        <div class="img-box">
+                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>Agra</h4>
+                            <p>Vivamus fermentum in arcu in aliquam. Quisque aliqua porta odio in fringilla vivamus.</p>
+                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
+                          </div>
+                        </div>	
+                      </div>					
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
+                        <div class="img-box">
+                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>Rio De Janeiro</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam.</p>
+                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
+                          </div>
+                        </div>	
+                      </div>					
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="thumb-wrapper">
+                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
+                        <div class="img-box">
+                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
+                        </div>
+                        <div class="thumb-content">
+                          <div class="card-body">
+                            <h4>Giza</h4>
+                            <p>Vivamus fermentum in arcu in aliquam. Quisque aliqua porta odio in fringilla vivamus.</p>
+                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
+                          </div>
+                        </div>		
+                      </div>				
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Carousel controls -->
+            <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+              <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

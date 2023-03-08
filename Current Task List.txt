@@ -8,11 +8,4 @@ High Priority:
 - Finish Reccomended tricks functionality
 
 - Add a Programme Summary to the Confirm Programme Page
-
-<button class="btn btn-primary btn-sm" dissabled>Save Trick</button>
-<button class="btn btn-outline-info btn-sm" dissabled>Mark Lesson As Learned</button>
-</div>
-<form action="{% url 'approve-tricks' %}" method="POST">
-  {%  csrf_token %}
-  <button type="submit", name="trick_id", value="{{trick.TrickID}}", class="btn btn-success">Approve Trick</button>
-</form>
+- Edit Search functionality to include Skill Programmes
