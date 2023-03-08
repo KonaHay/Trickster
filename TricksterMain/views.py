@@ -25,33 +25,7 @@ def home(request):
 
 # ======================================================================================================================================
 
-# ----------------------------------------------------------------------
-# Attempt at a view based pagination setup
-# class t_paginator(View):
-#   tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
-#   page_amount = 6
-#   p = Paginator(tricks, page_amount)
-  
-#   def paginator_pages(self, request):   
-#     page = request.GET.get('page')
-#     trick_list = self.p.get_page(page)
-#     num_pages = "T" * trick_list.paginator.num_pages
-#     return HttpResponse({"num_pages":num_pages})
-
-#   def paginator_tricks(self, request):
-#     page = request.GET.get('page')
-#     trick_list = self.p.get_page(page)
-
-#     return HttpResponse({'trick_list': trick_list})
-# ----------------------------------------------------------------------
-
-# ======================================================================================================================================
-
 def trick_list(request):
-  #------ For view based paginator ---------
-  #num_pages = t_paginator.paginator_pages
-  #tricks = t_paginator.paginator_tricks
-  #-----------------------------------------
 
   all_tricks = Trick.objects.filter(approved=True).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   trick_count = all_tricks.count()
@@ -67,7 +41,6 @@ def trick_list(request):
     current_page = current_page + "?page=" + page
 
   return render(request, 'main/trick_list.html', {'tricks': tricks, "num_pages":num_pages, "trick_count":trick_count, "current_page":current_page})
-   # -- Try replacing this link ^ to the paginator.html instead! --
 
 # ======================================================================================================================================
 
