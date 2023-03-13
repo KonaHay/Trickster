@@ -1,9 +1,14 @@
 - Start using jQuery or Ajax to return button presses without reloading.
 
 High Priority:
+- Fix login bug where if email is not valid error occurs!
 - Add Find Skill Level functionality
 - Add Progression System
 - Finish Reccomended tricks functionality
+
+Low Priority:
+- Fix Half Screen view of all pages.
+- Adjust Mobile phone view of all pages
 
 Non Essential:
 - Add a Programme Summary to the Confirm Programme Page

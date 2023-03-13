@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'embed_video',
     'TricksterMain',
     'Users',
+    'TricksterQuiz',
 
     #Django Cleanup - Must be last in list!
     'django_cleanup.apps.CleanupConfig',
