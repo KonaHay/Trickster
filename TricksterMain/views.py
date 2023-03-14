@@ -82,7 +82,7 @@ def random_trick(request):
   if request.method == "POST":
     current_page = request.path
 
-    random_trick = Trick.objects.all().order_by('?').first()
+    random_trick = Trick.objects.filter(approved=True).order_by('?').first()
 
     return render(request, 'main/random_trick.html', {'random_trick':random_trick, 'current_page':current_page})
   else:
@@ -102,6 +102,8 @@ def random_trick_skill_based(request, pk):
       filters = models.Q()
 
       filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
+
+      filters &= models.Q(approved=True)
 
       random_trick = Trick.objects.filter(filters).order_by('?').first()
 
@@ -250,7 +252,7 @@ def search_trick(request):
     current_page = request.path
 
     trick_searched = request.POST['trick_searched']
-    tricks = Trick.objects.filter(TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+    tricks = Trick.objects.filter(approved=True, TrickName__contains=trick_searched).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
     return render(request, 'main/search_trick.html', {'trick_searched':trick_searched, 'tricks':tricks, 'current_page':current_page})
   else:
@@ -262,6 +264,7 @@ def search_trick(request):
 def delete_trick(request, trick_id):
   trick = Trick.objects.get(pk=trick_id)
   trick.delete()
+  messages.error(request, ("Trick '" + trick.TrickName + "' has been Deleted!"))
   return HttpResponseRedirect('/trick_list')
 
 # ======================================================================================================================================
@@ -341,7 +344,7 @@ def add_programme_lessons(request, programme_id):
 @permission_required('trick.add_programme', login_url='home')
 def add_programme_tricks_list(request, programme_id):
 
-  all_tricks = Trick.objects.all().order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
+  all_tricks = Trick.objects.filter(approved=True).order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
 
   Programme = Trick_Programme.objects.get(pk=programme_id)
   Programme_Tricks = Programme.ProgrammeTricks.order_by('TrickRecLevel', 'TrickDifficulty', 'TrickName')
