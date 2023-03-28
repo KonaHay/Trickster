@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+<div id="trick-section" class="shadow  p-4 mb-5 bg-body rounded">
+  <h1> {{ quiz.QuizTitle}} </h1>
+  <hr>
+  <br/>
+  <form id="trick-form" class="mt-3 mb-3">
+    {% csrf_token%}
+    <div class="container-md">
+      <div id="trick-box" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-l-3 row-cols-xl-3 g-4">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-info mt-3">Next</button>
+  </form>
+</div>
+
+<div id="quiz-section" class="shadow  p-4 mb-5 bg-body rounded">
+  <h1> Bonus Questions </h1>
+  <form id="quiz-form" class="mt-3 mb-3">
+    {% csrf_token%}
+    <div id="quiz-box"></div>
+    <button type="submit" class="btn btn-info mt-3">Next</button>
+  </form>
+
+  <div id="score-box"></div>
+  <div id="result-box"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'TricksterQuiz/quiz.js' %}" defer></script>
+{% endblock%}

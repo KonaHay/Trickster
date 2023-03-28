@@ -1,0 +1,25 @@
+{% load static %}
+<div class="col-sm">
+  <div class="card text-bg-dark mb-3" style="width: 18rem; height: 22rem;">
+    {% if trick.TrickImg %}
+      <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+    {% else %}    
+      <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title text-center">
+        {{ trick }} 
+      </h5>
+    </div>
+    <ul class="list-group-dark list-group-flush">
+      <li class="list-group-item">Recommended Level: {{ trick.TrickRecLevel }}</li>
+      <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
+    </ul>
+    <div class="card-body-dark text-center gap-3" style="height: 3rem">
+
+      <!-- Change this to custom Learned Trick button that tracks the scores for the quiz! -->
+      {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick current_page=current_page %}
+    
+    </div>
+  </div>
+</div>

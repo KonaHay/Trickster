@@ -9,7 +9,7 @@ urlpatterns = [
     path('', include('TricksterMain.urls')),
     path('Users/', include('django.contrib.auth.urls')),
     path('Users/', include('Users.urls')),
-    path('Quiz/', include('TricksterQuiz.urls')),
+    path('quiz/', include('TricksterQuiz.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,6 +1,8 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from PIL import Image
+import random
+
 
 from TricksterMain.models import Trick, Glossary_Term
 from Users.models import User_Profile
@@ -40,10 +42,10 @@ class Quiz_Section(models.Model):
     return f"{self.SectionName} - {self.SectionQuiz}"
   
   def get_questions(self):
-    return self.questions.all()
+    return self.questions.all()[:self.SectionNoOfQuestions]
   
   def get_bonus(self):
-    return self.bonus_questions.all()[:self.BonusNoOfTerms]
+    return self.bonus_questions.all()
   
   class Meta:
     verbose_name_plural = 'Quiz Sections'
@@ -73,6 +75,11 @@ class Term_Bonus(models.Model):
 
   def __str__(self):
     return f"{self.BonusName} - {self.BonusSection}"
+  
+  def get_questions(self):
+    questions = list(self.questions.all())
+    random.shuffle(questions)
+    return questions[:self.BonusNoOfTerms]
   
   class Meta:
     verbose_name_plural = 'Term Bonuses'

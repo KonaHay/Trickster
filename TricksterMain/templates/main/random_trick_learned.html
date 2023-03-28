@@ -5,9 +5,8 @@
 
   {% if user.is_authenticated %}
     {% if random_trick %}
-      {{random_trick}}
       <h1>Your Random Trick:</h1>
-      <h4>From Your Current Skill Level...</h4>
+      <h4>From Your Learned Tricks...</h4>
       </br>
       <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
 
@@ -51,7 +50,7 @@
     {% else %}
 
       <h1>Get A Random Trick:</h1>
-      <h4>From Your Current Skill Level...</h4>
+      <h4>From Your Learned Tricks...</h4>
       </br>
       <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
           <img src="{% static 'trickster/images/RandomTrickImg.png' %}" class="img-fluid rounded" alt="default trick cover image">
