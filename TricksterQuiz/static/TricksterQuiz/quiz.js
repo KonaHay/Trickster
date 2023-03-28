@@ -8,6 +8,8 @@ const quizSection = document.getElementById('quiz-section')
 const quizBox = document.getElementById('quiz-box')
 const quizForm = document.getElementById('quiz-form')
 
+const trickScore = document.getElementById('trickScore')
+
 const scoreBox = document.getElementById('score-box')
 const resultBox = document.getElementById('result-box')
 
@@ -70,7 +72,13 @@ const sendTrickData = () => {
     data: data,
     success: function(response){
       console.log(response)
+
       const results = response.results
+      const score = response.score
+      console.log(score)
+
+      trickScore.innerHTML = `${score}`
+
       trickSection.classList.add('d-none')
       quizSection.classList.remove('d-none')
 
@@ -94,7 +102,7 @@ $.ajax({
   type: 'GET',
   url: `${url}/data`,
   success: function(response){
-    quizSection.classList.add('d-none')
+    //quizSection.classList.add('d-none')
 
     const data = response.data
 
@@ -135,6 +143,8 @@ const sendBonusData = () => {
       }
     }
   })
+  score = trickScore.innerHTML
+  data["score"] = score
 
   $.ajax({
     type: 'POST',

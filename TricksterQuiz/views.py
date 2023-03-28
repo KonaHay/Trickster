@@ -23,11 +23,12 @@ def skill_level_quiz(request):
 # ======================================================================================================================================
 
 def quiz_underway(request, pk):
-  quiz = Skill_Level_Quiz.objects.get(QuizID=pk)
-  section_tricks = Section_Trick.objects.filter(TrickSection=quiz.QuizID).order_by('TrickValue')
+  quizSection = Quiz_Section.objects.get(SectionNumber=pk)
+  quiz = Skill_Level_Quiz.objects.filter(QuizID=quizSection.SectionQuiz.QuizID)
+  section_tricks = Section_Trick.objects.filter(TrickSection=quizSection).order_by('TrickValue')
 
   current_page = request.path
-  return render(request, 'pages/quiz_underway.html', {'quiz':quiz, 'section_tricks':section_tricks, 'current_page':current_page})
+  return render(request, 'pages/quiz_underway.html', {'quiz':quiz, 'quizSection':quizSection, 'section_tricks':section_tricks, 'current_page':current_page})
 
 # ======================================================================================================================================
 
@@ -85,8 +86,6 @@ def next_quiz(request, pk):
     results = []
 
     for key in data_.keys():
-      tricksExist = True
-
       trick = Trick.objects.get(TrickName=key)
       selectedTrick = Section_Trick.objects.get(Trick=trick.TrickID)
 
@@ -103,18 +102,28 @@ def next_quiz(request, pk):
 
 # ======================================================================================================================================
 
+def quiz_bonus(request, pk):
+  quiz = Skill_Level_Quiz.objects.get(QuizID=pk)
+
+  current_page = request.path
+  return render(request, 'pages/quiz_bonus.html', {'quiz':quiz, 'current_page':current_page})
+
+  return 
+
+# ======================================================================================================================================
+
 def save_quiz(request, pk):
   #print(request.POST)
   if is_ajax(request=request):
-
-    jsonData = JsonResponse([])
-    messages.info(request, (jsonData))
 
     questions= []
     data = request.POST
     data_ = dict(data.lists())
 
     data_.pop('csrfmiddlewaretoken')
+    messages.error(request, (data_))
+    trickScore = data_.get("score")
+    data_.pop("score")
 
     for key in data_.keys():
       # Need to pass the TermID not the KeyWord!
@@ -149,8 +158,11 @@ def save_quiz(request, pk):
       else:
         results.append({str(q.QuestionTerm): 'not answered'})
 
-    Section_Result.objects.create(ResultSection=section, ResultBonus=quiz, ResultUser=profile, TrickScore=0, BonusScore=bonusScore)
-  return JsonResponse({'bonus': True, 'score': bonusScore, 'results': results})
+    Section_Result.objects.create(ResultSection=section, ResultBonus=quiz, ResultUser=profile, TrickScore=trickScore, BonusScore=bonusScore)
+  
+    section = section.SectionID
+    nextSection = section+1
+  return HttpResponseRedirect('quiz_underway/%d'%nextSection)()
 
 # ======================================================================================================================================
 
