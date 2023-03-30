@@ -6,7 +6,7 @@ from .models import Trickster_User, User_Profile
 class ProfileInline(admin.StackedInline):
   model = User_Profile
   fieldsets = (
-        ('Profile Info', {'fields': ('User', 'ProfilePhoto', 'SkillLevel', 'UserDifficultyLevel', 'UserLevelProgress', 'Follows')}),
+        ('Profile Info', {'fields': ('User', 'ProfilePhoto', 'SkillLevel', 'MasteryLevel', 'LevelProgress', 'Follows')}),
         ('Trick Data', {'fields': ('LearnedTricks', 'SavedTricks')}),
         ('Programme Data', {'fields': ('CurrentlyLearningProgrammes', 'CompletedProgrammes', 'SavedProgrammes', 'CompletedLessons')}),
     )

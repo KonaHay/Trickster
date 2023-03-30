@@ -6,6 +6,7 @@ urlpatterns = [
   # -- Pages -- 
   path('skill_level_quiz', views.skill_level_quiz, name='skill-level-quiz'),
   path('quiz_underway/<int:pk>', views.quiz_underway, name='quiz-underway'),
+  path('quiz_results/<int:pk>', views.quiz_results, name='quiz-results'),
 
   # -- Components --
   path('quiz_underway/<int:pk>/data/', views.quiz_data, name='quiz-data'),

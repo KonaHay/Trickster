@@ -44,11 +44,11 @@
         {% endif %}
         </br></br>
         <h3>Skill Level: {{ profile.SkillLevel }}</h3>
-        <h3>Mastery Level: {{ profile.UserDifficultyLevel }}</h3>
+        <h3>Mastery Level: {{ profile.MasteryLevel }}</h3>
         </br>
-        <h3>Mastery Progress: 40%</h3>
+        <h3>Mastery Progress: {{ profile.LevelProgress }}%</h3>
         <div class="progress">
-          <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: {{profile.LevelProgress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>
 

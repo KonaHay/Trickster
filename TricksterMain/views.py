@@ -31,7 +31,7 @@ def trick_list(request):
   trick_count = all_tricks.count()
 
   #Pagination setup
-  p = Paginator(all_tricks, 6)
+  p = Paginator(all_tricks, 12)
   page = request.GET.get('page')
   tricks = p.get_page(page)
   num_pages = "T" * tricks.paginator.num_pages
@@ -52,7 +52,7 @@ def recommend_trick(request, pk):
     profile = User_Profile.objects.get(User_id=pk)
     user_learned_tricks = profile.LearnedTricks
     user_skill_level = profile.SkillLevel
-    user_ability = profile.UserDifficultyLevel
+    user_ability = profile.MasteryLevel
 
     learned_tricks = user_learned_tricks.order_by('TrickName')
     user_learned_trick_names = learned_tricks
@@ -139,6 +139,9 @@ def learned_trick(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
   profile.LearnedTricks.add(trick)
+  progressIncrease, levelUpMessage = progress_increase(profile.pk, 5)
+  if progressIncrease==False:
+    messages.success(request, (levelUpMessage))
 
   current_page = request.POST.get("current_page")
   messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
@@ -149,13 +152,112 @@ def learned_trick(request, pk):
 def unlearn_trick(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
+  trickXP = 5
 
   if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
     profile.LearnedTricks.remove(trick)
+    progressDecrease, levelDownMessage = progress_decrease(profile.pk, 5)
+    if progressDecrease==False:
+      messages.error(request, (levelDownMessage))
+    
 
   current_page = request.POST.get("current_page")
   messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
   return redirect(current_page)
+
+# ======================================================================================================================================
+
+def progress_increase(profileID, percentageIncrease):
+  profile = User_Profile.objects.get(pk=profileID)
+
+  progressIncrease=False
+  masteryLevelUp=False
+  skillLevelUp=False
+  maxLevel=False
+  levelUpMessage = ""
+
+  currentSkillLevelID = profile.SkillLevel.SkillLevelID
+  currentMasteryLevel = profile.MasteryLevel
+  currentProgress = profile.LevelProgress
+
+  newProgressAmount = currentProgress + percentageIncrease
+  progressIncrease=True
+  if newProgressAmount >= 100:
+    masteryLevelUp=True
+    newProgressAmount = newProgressAmount-100
+    newMasteryLevel = currentMasteryLevel+1
+    if newMasteryLevel >= 11:
+      newMasteryLevel = newMasteryLevel-10
+      newSkillLevelID = currentSkillLevelID+1
+      if newSkillLevelID >= 8:
+        maxLevel=True
+      else:
+        skillLevelUp=True
+        newSkillLevel = SkillLevel.objects.get(SkillLevelID=newSkillLevelID)
+
+  profile.LevelProgress = newProgressAmount
+  if masteryLevelUp:
+    progressIncrease=False
+    levelUpMessage = "Congradulations, you have leveled up to Mastery Level "+ str(newMasteryLevel)+"!"
+    profile.MasteryLevel = newMasteryLevel
+    if skillLevelUp:
+      levelUpMessage = "Congradulations, your Skill Level has leveld up to "+newSkillLevel.SkillLevelName+"!"
+      profile.SkillLevel = newSkillLevel
+      if maxLevel:
+        levelUpMessage = "Wow! You have reached the Max Level on Trickster!"
+
+  profile.save()
+    
+  return progressIncrease, levelUpMessage
+
+# ======================================================================================================================================
+
+def progress_decrease(profileID, percentageDecrease):
+  profile = User_Profile.objects.get(pk=profileID)
+
+  progressDecrease=False
+  masteryLevelDown=False
+  skillLevelDown=False
+  lowestLevel=False
+  leveldownMessage = ""
+
+  currentSkillLevelID = profile.SkillLevel.SkillLevelID
+  currentMasteryLevel = profile.MasteryLevel
+  currentProgress = profile.LevelProgress
+
+  newProgressAmount = currentProgress - percentageDecrease
+  progressDecrease=True
+  if newProgressAmount < 0:
+    masteryLevelDown=True
+    newProgressAmount = newProgressAmount+100
+    newMasteryLevel = currentMasteryLevel-1
+    if newMasteryLevel <= 0:
+      newMasteryLevel = newMasteryLevel+10
+      newSkillLevelID = currentSkillLevelID-1
+      if newSkillLevelID <= 4:
+        lowestLevel=True
+        masteryLevelDown=False
+        skillLevelDown=False
+        newProgressAmount=0
+      else:
+        skillLevelDown=True
+        newSkillLevel = SkillLevel.objects.get(SkillLevelID=newSkillLevelID)
+
+  profile.LevelProgress = newProgressAmount
+  if masteryLevelDown:
+    progressDecrease=False
+    leveldownMessage = "Unfortunate, your Mastery Level has been dropped to "+ str(newMasteryLevel)+"!"
+    profile.MasteryLevel = newMasteryLevel
+    if skillLevelDown:
+      leveldownMessage = "Unfortunate, your Skill Level has been dropped to "+newSkillLevel.SkillLevelName+"!"
+      profile.SkillLevel = newSkillLevel
+      if lowestLevel:
+        progressDecrease=True
+
+
+  profile.save()
+    
+  return progressDecrease, leveldownMessage
 
 # ======================================================================================================================================
 
@@ -423,8 +525,10 @@ def learned_lesson(request, pk):
   profile = User_Profile.objects.get(User_id=pk)
   lesson = get_object_or_404(Programme_Lesson, LessonID=request.POST.get("lesson_id"))
   profile.CompletedLessons.add(lesson)
+  progressIncrease, levelUpMessage = progress_increase(profile.pk, 10)
+  if progressIncrease==False:
+    messages.success(request, (levelUpMessage))
 
-  #Add a way to check if all lessons in a programme are learned mark the programme as completed!
   programme = lesson.Programme
   programme_lessons = Programme_Lesson.objects.filter(Programme=programme.ProgrammeID).order_by('LessonNumber')
 
@@ -433,6 +537,9 @@ def learned_lesson(request, pk):
   if list(programme_lessons) == list(programme_lessons_learned):
     profile.CompletedProgrammes.add(programme)
     messages.success(request, ("Congradulations! You Have Completed The " + programme.ProgrammeName + " Programme!"))
+    progressIncrease, levelUpMessage = progress_increase(profile.pk, 15)
+    if progressIncrease==False:
+      messages.success(request, (levelUpMessage))
 
   messages.success(request, (lesson.LessonName + " Has Been Marked As Learned!"))
   return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)
@@ -448,10 +555,16 @@ def unlearn_lesson(request, pk):
 
   if profile.CompletedLessons.filter(LessonID=lesson.LessonID).exists():
     profile.CompletedLessons.remove(lesson)
+    progressDecrease, levelDownMessage = progress_decrease(profile.pk, 10)
+    if progressDecrease==False:
+      messages.success(request, (levelDownMessage))
 
   if profile.CompletedProgrammes.filter(ProgrammeID=programme.ProgrammeID).exists():
     profile.CompletedProgrammes.remove(programme)
     messages.error(request, ("Awww! " + programme.ProgrammeName + " Has Been Unmarked As Completed!"))
+    progressDecrease, levelDownMessage = progress_decrease(profile.pk, 15)
+    if progressDecrease==False:
+      messages.success(request, (levelDownMessage))
 
   messages.error(request, (lesson.LessonName + " Has Been Unmarked As Learned!"))
   return HttpResponseRedirect('/view_programme/%d'%programme.ProgrammeID)

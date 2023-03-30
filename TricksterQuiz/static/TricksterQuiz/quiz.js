@@ -8,7 +8,10 @@ const quizSection = document.getElementById('quiz-section')
 const quizBox = document.getElementById('quiz-box')
 const quizForm = document.getElementById('quiz-form')
 
-const trickScore = document.getElementById('trickScore')
+const trickScore = document.getElementById('trick-score')
+
+const sectionComplete = document.getElementById('section-complete')
+const quizComplete = document.getElementById('quiz-complete')
 
 const scoreBox = document.getElementById('score-box')
 const resultBox = document.getElementById('result-box')
@@ -22,8 +25,6 @@ $.ajax({
   type: 'GET',
   url: `${url}/tricks`,
   success: function(response){
-    //console.log(response)
-
     const data = response.data
 
     data.forEach(el => {
@@ -75,7 +76,6 @@ const sendTrickData = () => {
 
       const results = response.results
       const score = response.score
-      console.log(score)
 
       trickScore.innerHTML = `${score}`
 
@@ -84,7 +84,7 @@ const sendTrickData = () => {
 
     },
     error: function(error){
-      //console.log(error)
+      console.log(error)
     },
   })
 }
@@ -151,34 +151,29 @@ const sendBonusData = () => {
     url: `${url}/save/`,
     data: data,
     success: function(response){
-      const results = response.results
-      quizForm.classList.add('d-none')
+      quizSection.classList.add('d-none')
+      console.log(response)
 
-      results.forEach(res=>{
-        const resDiv = document.createElement("div")
-        for (const [question, resp] of Object.entries(res)){
-          resDiv.innerHTML += question
-          const cls = ['container', 'p-3', 'text-light', 'h3']
-          resDiv.classList.add(...cls)
+      const sectDiv = document.createElement("div")
 
-          if (resp=='not answered') {
-            resDiv.innerHTML += '- not answered'
-            resDiv.classList.add('bg-danger')
-          } else {
-            const answer = resp['answered']
-            const correct = resp['correct_answer']
-            if (answer == correct) {
-              resDiv.classList.add('bg-success')
-              resDiv.innerHTML += ` answered: ${answer}`
-            } else {
-              resDiv.classList.add('bg-danger')
-              resDiv.innerHTML += ` correct answer: ${correct}`
-              resDiv.innerHTML += ` answered: ${answer}`
-            }
-          }
-        }
-        resultBox.append(resDiv)
-      })
+      const score = response.score
+      const nextSection = response.nextSection
+      
+      if(nextSection>=5) {
+        quizComplete.classList.remove('d-none') 
+      }else{
+        sectDiv.innerHTML += ` 
+        <h1> Section Complete! </h1>
+        <h4> To move on to the next section click the "Next Section" button below. </h4>
+        <hr>
+        <br>
+        <p> You Scored: ${score} </p>
+        <a href="/quiz/quiz_underway/${nextSection}" class="btn btn-success">Next Section</a>
+        `
+      }
+
+      sectionComplete.append(sectDiv)
+      sectionComplete.classList.remove('d-none')
     },
     error: function(error){
       console.log(error)

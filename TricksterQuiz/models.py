@@ -4,7 +4,7 @@ from PIL import Image
 import random
 
 
-from TricksterMain.models import Trick, Glossary_Term
+from TricksterMain.models import Trick, SkillLevel, Glossary_Term
 from Users.models import User_Profile
 
 
@@ -32,7 +32,7 @@ class Quiz_Section(models.Model):
   SectionQuiz = models.ForeignKey(Skill_Level_Quiz, on_delete=models.CASCADE, related_name="section")
   SectionDiscription = models.TextField(blank=True)
   SectionNoOfQuestions = models.IntegerField()
-  SectionType = models.CharField(max_length=6, choices=SECTION_TYPES)
+  SectionLevel = models.ForeignKey(SkillLevel, on_delete=models.CASCADE, related_name="section_level")
   SectionFailScore = models.IntegerField()
   SectionPassScore = models.IntegerField()
   SectionNumber = models.IntegerField()

@@ -13,8 +13,8 @@ class QuizAdmin(admin.ModelAdmin):
 
 @admin.register(Quiz_Section)
 class SectionAdmin(admin.ModelAdmin):
-  fields = ('SectionQuiz', 'SectionName', 'SectionDiscription', 'SectionNoOfQuestions', 'SectionType', 'SectionFailScore', 'SectionPassScore', 'SectionNumber', 'SectionImg')
-  list_display = ('SectionName', 'SectionNoOfQuestions')
+  fields = ('SectionQuiz', 'SectionName', 'SectionDiscription', 'SectionNoOfQuestions', 'SectionLevel', 'SectionFailScore', 'SectionPassScore', 'SectionNumber', 'SectionImg')
+  list_display = ('SectionName', 'SectionFailScore', 'SectionPassScore', 'SectionLevel')
   ordering = ('SectionQuiz', 'SectionNumber')
   search_fields = ('SectionQuiz', 'SectionName', 'SectionNumber')
 

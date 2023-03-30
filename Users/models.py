@@ -65,8 +65,8 @@ class User_Profile(models.Model):
   ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/profile")
   Bio = models.TextField(blank=True)
   SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
-  UserDifficultyLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
-  UserLevelProgress = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
+  MasteryLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
+  LevelProgress = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
   LearnedTricks = models.ManyToManyField(Trick, related_name='learned_trick', blank=True)
   SavedTricks = models.ManyToManyField(Trick, related_name='saved_trick', blank=True)
   CurrentlyLearningProgrammes = models.ManyToManyField(Trick_Programme, related_name='currently_learning_programme', blank=True)
@@ -74,6 +74,7 @@ class User_Profile(models.Model):
   CompletedLessons = models.ManyToManyField(Programme_Lesson, related_name='completed_lessons', blank=True)
   SavedProgrammes = models.ManyToManyField(Trick_Programme, related_name='saved_programme', blank=True)
   Follows =  models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
+  completed_skill_quiz = models.BooleanField(default=False)
 
   def __str__(self):
     return self.User.Username

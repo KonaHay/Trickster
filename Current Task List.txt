@@ -7,6 +7,7 @@ High Priority:
 - Finish Reccomended tricks functionality
 
 Low Priority:
+- Fix spelling mistake in congradulations when a user completes a programme.
 - Fix Half Screen view of all pages.
 - Adjust Mobile phone view of all pages
 

@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+<div class="shadow  p-4 mb-5 bg-body rounded">
+  <h1> Your New Skill Level Is: </h1>
+  <hr>
+  <br>
+  <h4> <strong>Skill Level:</strong> {{ skillLevel.SkillLevelName }}</h4>
+  <h4> <strong>Mastery Level:</strong> {{ masteryLevel }}</h4>
+  <br>
+  <hr>
+  <h3> How To Progress Your Skill Level: </h3>
+  <p> You can progress your skill level by Learning New Tricks,<br>
+      As well as Completing Skill Programmes and Lessons!  </p>
+
+  <a href="{%url 'programme-list'%}" class="btn btn-info">Start Learning Now!</a>
+</div>
+
+{% endblock %}
