@@ -14,15 +14,18 @@
             My Skills
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="mySkillsDropdown">
-            <li><a class="dropdown-item" href="{%url 'skill-level-quiz' %}">Find My Skill Level</a></li>
             {% if request.user.is_authenticated %}
-            <!-- If user has obtained their skill level -->
-            <li><a class="dropdown-item disabled" href="">My Skill Level</a></li>
-            <!-- else -->
-            <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
-            <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
-            <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
-            <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">Saved Programmes</a></li>
+              {% if request.user.user_profile.completed_skill_quiz %}
+                <li><a class="dropdown-item disabled" href="">My Skill Level</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{%url 'skill-level-quiz' %}">Find My Skill Level</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
+              <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
+              <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
+              <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">Saved Programmes</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{%url 'login'%}">Find My Skill Level</a></li>
             {% endif %}
           </ul>
         </li>

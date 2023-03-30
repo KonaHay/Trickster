@@ -180,6 +180,7 @@ def save_quiz(request, pk):
       nextSectionID=5
     else:
       finalSection=True
+      thisSectionID = sectionID
       nextSectionID=5
 
     if finalSection:
@@ -188,6 +189,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
+      profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
@@ -198,6 +200,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
+      profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
