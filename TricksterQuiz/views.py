@@ -60,9 +60,12 @@ def quiz_tricks(request, pk):
 
   tricks = []
   for trick in section_tricks:
-    img = trick.Trick.TrickImg
     value = trick.TrickValue
-    tricks.append({str(trick.Trick): value})
+    if trick.Trick.TrickImg:
+      img = trick.Trick.TrickImg.url
+      tricks.append({str(trick.Trick): img})
+    else:
+      tricks.append({str(trick.Trick): "null"})
 
   return JsonResponse({
     'data': tricks,
@@ -189,7 +192,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
-      profile.completed_skill_quiz=True
+      #profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
@@ -200,7 +203,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
-      profile.completed_skill_quiz=True
+      #profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 

@@ -28,27 +28,48 @@ $.ajax({
     const data = response.data
 
     data.forEach(el => {
-      for (const [trick, scoreValue] of Object.entries(el)){
-        trickBox.innerHTML += `
-        <div class="col-sm">
-          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 15rem;">
+      for (const [trick, trickImg] of Object.entries(el)){
+        if (trickImg != "null"){
+          trickBox.innerHTML += `
+          <div class="col-sm">
+          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 17rem;">
             <div class="card-body">
               <h5 class="card-title text-center">
-                <p name="${trick}" value="${scoreValue}">${trick}</p>
+                <img src="${trickImg}" class="img-fluid rounded" alt="trick cover image">
               </h5>
-              <h6 class="text-center">
-                ${scoreValue}
-              </h6>
+              <h5 class="text-center">
+                <p name="${trick}" value="${trickImg}">${trick}</p>
+              </h5>
             </div>
             <div class="card-body-dark text-center gap-3" style="height: 3rem">
               <div class="form-check form-check-inline">
-                <input type="checkbox" class="btn-check" id="${trick}" value="${scoreValue}" autocomplete="off">
+                <input type="checkbox" class="btn-check" id="${trick}"  autocomplete="off">
                 <label class="btn btn-outline-info" for="${trick}">Mark Trick As Learned</label><br>
               </div>      
             </div>
           </div>
-        </div>
-        `
+        </div>`
+        }else{
+          trickBox.innerHTML += `
+          <div class="col-sm">
+          <div class="card text-bg-dark mb-3" style="width: 18rem; height: 17rem;">
+            <div class="card-body">
+              <h5 class="card-title text-center">
+                <img src="/static/trickster/images/TrickListDefault.png" class="img-fluid rounded" alt="default trick cover image">
+              </h5>
+              <h5 class="text-center">
+              <p name="${trick}" value="${trickImg}">${trick}</p>
+              </h5>
+            </div>
+            <div class="card-body-dark text-center gap-3" style="height: 3rem">
+              <div class="form-check form-check-inline">
+                <input type="checkbox" class="btn-check" id="${trick}"  autocomplete="off">
+                <label class="btn btn-outline-info" for="${trick}">Mark Trick As Learned</label><br>
+              </div>      
+            </div>
+          </div>
+        </div>`
+        }
       }
     })
   },
@@ -167,7 +188,6 @@ const sendBonusData = () => {
         <h4> To move on to the next section click the "Next Section" button below. </h4>
         <hr>
         <br>
-        <p> You Scored: ${score} </p>
         <a href="/quiz/quiz_underway/${nextSection}" class="btn btn-success">Next Section</a>
         `
       }
