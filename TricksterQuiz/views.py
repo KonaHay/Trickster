@@ -247,30 +247,6 @@ def quiz_trick_card(request, pk):
 
 # ======================================================================================================================================
 
-def quiz_learned_trick_button(request, pk):
-  profile = User_Profile.objects.get(User_id=pk)
-  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
-  profile.LearnedTricks.add(trick)
-
-  current_page = request.POST.get("current_page")
-  messages.info(request, (trick.TrickName + " Has Been Added To Your List Of Learned Tricks!"))
-  return redirect(current_page)
-
-# ======================================================================================================================================
-
-def quiz_unlearn_trick_button(request, pk):
-  profile = User_Profile.objects.get(User_id=pk)
-  trick = get_object_or_404(Trick, TrickID=request.POST.get("trick_id"))
-
-  if profile.LearnedTricks.filter(TrickID=trick.TrickID).exists():
-    profile.LearnedTricks.remove(trick)
-
-  current_page = request.POST.get("current_page")
-  messages.error(request, (trick.TrickName + " Has Been Removed From Your List Of Learned Tricks!"))
-  return redirect(current_page)
-
-# ======================================================================================================================================
-
 def quiz_results(request, pk):
 
   if request.user.is_authenticated:
