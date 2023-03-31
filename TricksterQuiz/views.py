@@ -96,7 +96,7 @@ def next_quiz(request, pk):
       trickName = trick.TrickName
       trickValue = selectedTrick.TrickValue
 
-      #profile.LearnedTricks.add(trick)
+      profile.LearnedTricks.add(trick)
       trickScore += trickValue
 
       results.append({str(trickName): {'Trick': trickName, 'score': trickValue}})
@@ -111,8 +111,6 @@ def quiz_bonus(request, pk):
 
   current_page = request.path
   return render(request, 'pages/quiz_bonus.html', {'quiz':quiz, 'current_page':current_page})
-
-  return 
 
 # ======================================================================================================================================
 
@@ -192,7 +190,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
-      #profile.completed_skill_quiz=True
+      profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
@@ -203,7 +201,7 @@ def save_quiz(request, pk):
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
-      #profile.completed_skill_quiz=True
+      profile.completed_skill_quiz=True
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
