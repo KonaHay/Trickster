@@ -20,7 +20,7 @@
               {% else %}
                 <li><a class="dropdown-item" href="{%url 'skill-level-quiz' %}">Find My Skill Level</a></li>
               {% endif %}
-              <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
+              <li><a class="dropdown-item disabled" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
               <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
               <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
               <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">Saved Programmes</a></li>

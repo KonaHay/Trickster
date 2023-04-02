@@ -36,30 +36,58 @@
         </div>
 
         <!--Get Skill Level Card style="width: 20rem; height: 32rem;"-->
-        <div class="col-sm">
-          <div class="card text-bg-dark mb-3" style="height: 32rem;">
-            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="trick cover image">
-            <div class="card-body">
-              <h4>Get Your Skill Level</h4>
-              <p class="card-text">Trickster prides itself on helping wakeboarders progress! This is why we developed the Skill Level system.</p>
-              <p class="card-text">Take our short quiz and mark off some tricks you already know. This lets us gauge your level and reccomend you the next steps to take!</p>
-            </div>
-            <div class="card-body-dark text-center gap-3" style="height: 3rem">
-              <div class="container">
-                <div class="row">
-                  <div class="col-12">
-                    <a href="" class="btn btn-outline-info btn-sm">Get My Skill Level</a>
+
+        {% if request.user.user_profile.completed_skill_quiz %}
+          <div class="col-sm">
+            <div class="card text-bg-dark mb-3" style="height: 32rem;">
+              <img src="{% static 'trickster/images/Wipe_Out.png' %}" class="img-fluid rounded" alt="trick cover image">
+              <div class="card-body">
+                <h4>View Your Skill Level</h4>
+                <p class="card-text">Trickster prides itself on helping wakeboarders progress! This is why we developed the Skill Level system.</p>
+                <p class="card-text">Take our short quiz and mark off some tricks you already know. This lets us gauge your level and reccomend you the next steps to take!</p>
+              </div>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">
+                      <a href="" class="btn btn-outline-info btn-sm">View My Skill Level</a>                     
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        {% else %}
+          <div class="col-sm">
+            <div class="card text-bg-dark mb-3" style="height: 32rem;">
+              <img src="{% static 'trickster/images/My_Skill_Level.png' %}" class="img-fluid rounded" alt="trick cover image">
+              <div class="card-body">
+                <h4>Get Your Skill Level</h4>
+                <p class="card-text">Trickster prides itself on helping wakeboarders progress! This is why we developed the Skill Level system.</p>
+                <p class="card-text">Take our short quiz and mark off some tricks you already know. This lets us gauge your level and reccomend you the next steps to take!</p>
+              </div>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">
+                      {% if request.user.is_authenticated %}
+                        <a href="{%url 'skill-level-quiz' %}" class="btn btn-outline-info btn-sm">Get My Skill Level</a>
+                      {% else %}
+                        <a href="{%url 'login'%}" class="btn btn-outline-info btn-sm">Get My Skill Level</a>
+                      {% endif %}
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
 
         <!--Skill Programmes Card-->
         <div class="col-sm">
           <div class="card text-bg-dark mb-3" style="height: 32rem;">
-            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="trick cover image">
+            <img src="{% static 'trickster/images/Zero_to_Hero.jpg' %}" class="img-fluid rounded" alt="trick cover image">
             <div class="card-body">
               <h4>Trickster Programmes</h4>
               <p class="card-text">Tricksters Skill Programmes are step by step guides on how to elevate your Wakeboarding to the next level! </p>
@@ -69,7 +97,6 @@
               <div class="container">
                 <div class="row">
                   <div class="col-12">
-                    <!-- Save Trick Button -->
                     <a href="{%url 'programme-list'%}" class="btn btn-outline-info btn-sm">Check Them Out</a>
                   </div>
                 </div>
