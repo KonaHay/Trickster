@@ -2,80 +2,60 @@
 {% load static %}
 
 {% block content  %}
-  <!--Try and fix in trickster.scss-->
-  <style>
-    .text-underline-hover {
-      text-decoration: none;
-    }
-
-    .text-underline-hover:hover {
-      text-decoration: underline;
-    }
-
-    a:not([class]) {
-      text-decoration: none;
-    }
-
-    a:not([class]):hover {
-      text-decoration: underline;
-    }
-  </style>
-  <div class="shadow  p-4 mb-5 bg-body rounded">
-    <div class="container-md ">
-      <h2>Trickster Glossary of Specialist Terms: </h2>
-      </br>
-      <div class="col-4">
-        <div class="card text-bg-dark">
-          <div class="card-body">
-            <p class="card-text">Total Glossary Terms: {{ TermCount }}</p>
-          </div>
-        </div>
+  <div class="shadow p-2 mb-4 bg-dark text-white rounded">
+    <div class="text-center">
+      <h2>Trickster Glossary of Specialist Terms:</h2>      
+    </div>
+  </div>
+  <div class="container-md "> 
+    <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+      <div  class="text-center">
+        <h4 class="card-header">Commonly Used Wakeboarding Terms:</h4>    
       </div>
-      <br/>  
-      <div class="card bg-trickstergray">
-        <div class="container-md">
-          <h6 class="card-header">Commonly Used Wakeboarding Terms:</h6>
-          </br>
-          {% for term in CommonTerms %}
-            <div class="accordion" id="GlossaryAccordion">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="{{ term.TermID }}">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ term.slug }}" aria-expanded="false" aria-controls="{{ term.slug }}">
-                    {{ term.KeyWord }}
-                  </button>
-                </h2>
-                <div id="{{ term.slug }}" class="accordion-collapse collapse" aria-labelledby="{{ term.TermID }}" data-bs-parent="#GlossaryAccordion">
-                  <div class="accordion-body">
-                    <strong>{{ term.KeyWord }} - </strong>{{ term.Description }} </div>
-                </div>
-              </div>
-          </div>
-          {% endfor %}
-          </br>
-        </div>
-      </div>
-      </br>
-      <div class="card ">
-        <div class="container-md">
-          <h6 class="card-header">Uncommonly Used Wakeboarding Terms:</h6>
-          </br>
-          {% for term in UncommonTerms %}
-            <div class="accordion" id="GlossaryAccordion">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="{{ term.TermID }}">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ term.slug }}" aria-expanded="false" aria-controls="{{ term.slug }}">
-                    {{ term.KeyWord }}
-                  </button>
-                </h2>
-                <div id="{{ term.slug }}" class="accordion-collapse collapse" aria-labelledby="{{ term.TermID }}" data-bs-parent="#GlossaryAccordion">
-                  <div class="accordion-body">
-                    <strong>{{ term.KeyWord }} - </strong>{{ term.Description }} </div>
-                </div>
+    </div>
+    <div class="shadow p-4 mb-4 bg-body rounded">
+      <div class="container-md">
+        {% for term in CommonTerms %}
+          <div class="accordion" id="GlossaryAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="{{ term.TermID }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ term.slug }}" aria-expanded="false" aria-controls="{{ term.slug }}">
+                  {{ term.KeyWord }}
+                </button>
+              </h2>
+              <div id="{{ term.slug }}" class="accordion-collapse collapse" aria-labelledby="{{ term.TermID }}" data-bs-parent="#GlossaryAccordion">
+                <div class="accordion-body">
+                  <strong>{{ term.KeyWord }} - </strong>{{ term.Description }} </div>
               </div>
             </div>
-          {% endfor %}
-          </br>
-        </div>
+          </div>
+        {% endfor %}
+        </br>
+      </div>
+    </div> 
+    <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+      <div  class="text-center">
+        <h4 class="card-header">Uncommonly Used Wakeboarding Terms:</h4>    
+      </div>
+    </div>
+    <div class="shadow p-4 mb-4 bg-body rounded">
+      <div class="container-md">
+        {% for term in UncommonTerms %}
+          <div class="accordion" id="GlossaryAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="{{ term.TermID }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ term.slug }}" aria-expanded="false" aria-controls="{{ term.slug }}">
+                  {{ term.KeyWord }}
+                </button>
+              </h2>
+              <div id="{{ term.slug }}" class="accordion-collapse collapse" aria-labelledby="{{ term.TermID }}" data-bs-parent="#GlossaryAccordion">
+                <div class="accordion-body">
+                  <strong>{{ term.KeyWord }} - </strong>{{ term.Description }} </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </br>
       </div>
     </div>
   </div>

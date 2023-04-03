@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+  {% if profile in user.user_profile.Follows.all %}
+    <form action="{% url 'unfollow' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <input type="hidden" name="current_page" value="{{ current_page }}"/>
+      <button type="submit", name="profile_id", value="{{profile.User.UserID}}", class="btn btn-outline-danger">Unfollow</button>
+    </form>
+  {% else %}
+    <form action="{% url 'follow' request.user.UserID %}" method="POST">
+      {%  csrf_token %}
+      <input type="hidden" name="current_page" value="{{ current_page }}"/>
+      <button type="submit", name="profile_id", value="{{profile.User.UserID}}", class="btn btn-outline-info">Follow</button>
+    </form>
+  {% endif %}
+{% endif %}

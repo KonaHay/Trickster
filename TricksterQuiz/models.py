@@ -3,7 +3,6 @@ from django.db import models
 from PIL import Image
 import random
 
-
 from TricksterMain.models import Trick, SkillLevel, Glossary_Term
 from Users.models import User_Profile
 
@@ -25,7 +24,6 @@ SECTION_TYPES = (
   ('tricks', 'tricks'),
   ('terms', 'terms'),
 )
-
 class Quiz_Section(models.Model):
   SectionID = models.AutoField(primary_key=True)
   SectionName = models.CharField(max_length=30)
@@ -58,7 +56,6 @@ VALID_VALUES = (
   (16, 16),
   (32, 32),
 )
-
 class Section_Trick(models.Model):
   Trick = models.ForeignKey(Trick, on_delete=models.CASCADE, related_name='section_tricks')
   TrickSection = models.ForeignKey(Quiz_Section, on_delete=models.CASCADE, related_name="questions")

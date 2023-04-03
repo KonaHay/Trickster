@@ -1,53 +1,70 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load embed_video_tags %}
 
 {% block content  %}
-    <!--Move this styling to Static Sass File -->
-    <style>   
-        .imgContainer {
-            max-width: 500px;
-            max-height: 700px;
-            overflow: hidden;
-        }
-        
-        .imgContainer img {
-            width: 100%;
-            min-height: 100%;
-        }
-    </style>
-
-    <div class="container-md">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="container">
-
-                    <!--Trick content and information-->
-                    <h1 class="display-6"><strong>How To {{ trick }}:</strong></h1>
-                    <div class="imgContainer">
-                    {% if trick.TrickImg %}
-                        <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-                    {% else %}    
-                        <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-                    {% endif %}
-                    </div></br>
-                    <p class="h6">Trick Discription: </p>
-                    <p>{{ trick.TrickDiscription|linebreaksbr }}</p>
-                    <p class="h6">Trick How To: </p>
-                    <p>{{ trick.TrickHowTo|linebreaksbr }}</p>
-                    <dl class="row">
-                        <dt class="col-sm-9">Trick Difficulty:</dt>
-                        <dd class="col-sm-3">{{ trick.TrickDifficulty }}</dd>
-                        <dt class="col-sm-9">Reccomended Level for this Trick:</dt>
-                        <dd class="col-sm-3">{{ trick.TrickRecLevel }}</dd>                       
-                    </dl>
-
+  <div class="container-md">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="container">
+          <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+            <h2 class="text-center">How To: {{ trick }}</h2>
+          </div>
+          <div class="shadow p-4 mb-2 bg-light text-dark rounded">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="imgContainer mx-auto">
+                  {% if trick.TrickImg %}
+                    <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
+                  {% else %}    
+                    <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                  {% endif %}
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <div class="shadow p-4 mb-2 bg-dark text-light text-center rounded">
+                    <h4>Rec Level: {{ trick.TrickRecLevel }}</h4> 
+                    <h4>Trick Difficulty: {{ trick.TrickDifficulty }}</h4>
+                  </div>
+                </div>
+              </div>
             </div>
-            <!--Unsure of what will be displayed in the sidebar for now.-->
-            <div class="col-md-3">
-                Sidebar
-            </div>
+            <hr>
+            <h5>Trick How To: </h5>
+            <hr>
+            <p>{{ trick.TrickHowTo|linebreaksbr }}</p>  
+            <hr>
+          </div>
         </div>
+      </div>
+      <div class="col-md-4">
+        {% if submittedByUser %}
+          {% if submittedByUser.UserID == 1 %}
+            <div class="shadow mb-2 bg-dark text-white rounded">
+              <h5 class="text-center p-3">Submitted By: {{ submittedByUser.Username }}</h5>
+            </div>
+          {% else %}
+            <div class="shadow mb-2 bg-dark text-white rounded">
+              <h5 class="text-center p-3">Submitted By: <a href="{%url 'profile' submittedByUser.UserID %}" class="text-reset">{{ submittedByUser.Username }}</a></h5>
+            </div>
+          {% endif %}
+        {% endif %}
+        <div class="shadow p-3 mb-2 bg-dark text-white rounded">
+          <h5 class="text-center p-1">Trick Discription: </h5>
+          <p>{{ trick.TrickDiscription|linebreaksbr }}</p>
+        </div>
+        {% if trick.TrickVideo %}
+        <div class="shadow p-0 mb-2 bg-dark text-white rounded">
+        <h5 class="text-center p-3">Video Tutorial </h5>
+          <div class="container-md text-center">
+            {% video trick.TrickVideo '385x216.56' %}
+          </div>
+          <br>
+        </div>
+        {% endif %}
+      </div>
     </div>
+  </div>
 
 {% endblock %}

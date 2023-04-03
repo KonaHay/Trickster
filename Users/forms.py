@@ -43,13 +43,15 @@ class UserAuthenticationForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
   class Meta:
     model = User_Profile
-    fields = ('ProfilePhoto',)
+    fields = ('ProfilePhoto', 'Bio')
     labels = {
       'ProfilePhoto':'Profile Picture',
+      'Bio':'Update Bio'
     }
 
     widgets = {
         'ProfilePhoto': forms.ClearableFileInput(attrs={'class':'form-control'}),
+        'Bio': forms.Textarea(attrs={'rows': 3, 'cols': 40, 'class':'form-control', 'placeholder':'Add Your Own Personal Bio Here.'}),
     }
 
 class UserUpdateForm(forms.ModelForm):        

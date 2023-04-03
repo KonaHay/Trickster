@@ -3,10 +3,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-tricksterdark">
   <div class="container-fluid">
     <a class="navbar-brand" href="{%url 'home'%}">Trickster</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tricksterNavbar" aria-controls="tricksterNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="tricksterNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- My skills Dropdown Tab -->
         <li class="nav-item dropdown">
@@ -16,13 +16,14 @@
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="mySkillsDropdown">
             {% if request.user.is_authenticated %}
               {% if request.user.user_profile.completed_skill_quiz %}
-                <li><a class="dropdown-item disabled" href="">My Skill Level</a></li>
+                <li><a class="dropdown-item" href="{%url 'my-skill-level' request.user.UserID %}">My Skill Level</a></li>
               {% else %}
                 <li><a class="dropdown-item" href="{%url 'skill-level-quiz' %}">Find My Skill Level</a></li>
               {% endif %}
-              <li><a class="dropdown-item disabled" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
+              <li><a class="dropdown-item" href="{%url 'recommend-trick' request.user.UserID %}">Recommend Tricks</a></li>
               <li><a class="dropdown-item" href="{%url 'my-tricks' request.user.UserID %}">Learned Tricks</a></li>
               <li><a class="dropdown-item" href="{%url 'my-saved-tricks' request.user.UserID %}">Saved Tricks</a></li>
+              <li><a class="dropdown-item" href="{%url 'my-completed-programmes' request.user.UserID %}">Completed Programmes</a></li>
               <li><a class="dropdown-item" href="{%url 'my-saved-programmes' request.user.UserID %}">Saved Programmes</a></li>
             {% else %}
               <li><a class="dropdown-item" href="{%url 'login'%}">Find My Skill Level</a></li>
@@ -82,7 +83,7 @@
         <form class="d-flex" method="POST" action="{% url 'search-trick' %}">
           {% csrf_token %}
           <input class="form-control me-2 input-sm" type="search" placeholder="Search For Tricks" aria-label="Search" name="trick_searched">
-          <button class="btn btn-outline-primary" type="submit">Search</button>
+          <button class="btn btn-outline-info" type="submit">Search</button>
         </form>
         <!-- ========== -->
         <!-- Skill Programs Dropdown Tab -->
@@ -91,7 +92,6 @@
             About
           </a>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="tricksDropdown">
-            <li><a class="dropdown-item disabled" href="">What Is Trickster?</a></li>
             <li><a class="dropdown-item disabled" href="">Services</a></li>
             <li><a class="dropdown-item disabled" href="">Help/FAQ</a></li>
             <li><a class="dropdown-item disabled" href="">Contact Us</a></li>

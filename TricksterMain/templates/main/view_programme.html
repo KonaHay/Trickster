@@ -3,10 +3,40 @@
 {% load embed_video_tags %}
 
 {% block content  %}
-<div class="shadow  p-4 mb-5 bg-body rounded">
-  <h1> {{ Programme.ProgrammeName }} </h1>
-  <br/>
-  <div class="card ">
+<div class="shadow p-2 mb-2 bg-dark text-white rounded">
+  {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-8 text-end">
+        <h1> {{ Programme.ProgrammeName }} </h1>
+      </div>
+      <div class="col-4 text-end">
+        <a href="{% url 'add-programme-success' Programme.ProgrammeID %}" class="btn btn-success">Update Programme</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center">
+      <h1> {{ Programme.ProgrammeName }} </h1>
+    </div>
+  {% endif %}
+</div>
+<div class="shadow p-4 mb-5 bg-white text-dark rounded">
+  <div class="row">
+    <div class="col-7">
+      <h1> {{ Programme.ProgrammeName }} </h1>
+    </div>
+    {% if ProgrammeCreator %}
+      {% if ProgrammeCreator.UserID == 1 %}
+        <div class="col-5 align-items-center">
+          <h3 class="text-end p-3">Created By: {{ ProgrammeCreator.Username }}</h3>
+        </div>
+      {% else %}
+        <div class="col-5 align-items-center">
+          <h3 class="text-end p-3">Created By: <a href="{%url 'profile' ProgrammeCreator.UserID %}" class="text-reset">{{ ProgrammeCreator.Username }}</a></h3>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="card text-dark ">
     <h4 class="card-header">Programme Description:</h4>
     <div class="card-body">
       <p class="card-text">{{ Programme.ProgrammeDiscription|linebreaksbr }}</p>
@@ -15,7 +45,7 @@
   </br>
 
   {% if Lessons %}
-    <div class="card text-center">
+    <div class="card text-center text-dark">
       <div class="card-header">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           {% for lesson in Lessons %}
@@ -32,39 +62,46 @@
       <div class="card-body">
         <div class="tab-content" id="myTabContent">
           {% for lesson in Lessons %}
-
             {% if lesson.LessonNumber == 1 %}
               <div class="tab-pane fade show active" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
             {% else %}
               <div class="tab-pane fade" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
             {% endif %}
-
-              <h5 class="card-text">{{ lesson.LessonName }}</h5>
+              {% if user.is_superuser %}
+                <div class="row">   
+                  <div class="col-7 text-end">
+                    <h5 class="card-text">{{ lesson.LessonName }}</h5>
+                  </div>
+                  <div class="col-5 text-end">
+                    <a href="{% url 'update-lesson' lesson.LessonID %}" class="btn btn-success">Edit Lesson</a>
+                  </div>
+                </div>
+              {% else %}
+                <h5 class="card-text">{{ lesson.LessonName }}</h5>
+              {% endif %}
               <p class="card-text">{{ lesson.LessonLongDesc|linebreaksbr }}</p>
               </br>
-              <div class="container-md">
-              {% video lesson.LessonVideo '640x360' %}
-              </div>
-              </br>
-
+              {% if lesson.LessonVideo %}
+                <div class="container-md">
+                  {% video lesson.LessonVideo '640x360' %}
+                </div>
+              {% endif %}
+              <br>
               {% include 'components/learned_lesson_button.html' with completed_lessons=request.user.user_profile.CompletedLessons user=request.user lesson=lesson programme=Programme %}
-
             </div>
           {% endfor %}
         </div>
       </div>
     </div>
-    </br>
+    <br>
   {% else %}
-    <div class="shadow  p-4 mb-5 bg-body rounded">
+    <div class="shadow  p-4 mb-5 bg-body text-dark rounded">
       <h3>This Programme Has No Lessons</h3>
-
     </div>
   {% endif %}
-
-  <div class="card ">
+  <div class="card text-dark">
     <h4 class="card-header">Tricks Within This Programme:</h4>
-    </br>
+    <br>
     <div class="container-md">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         {% for trick in Programme_Tricks %}

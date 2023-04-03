@@ -28,7 +28,6 @@ class Category (models.Model):
     if self.CategoryImg:
       img = Image.open(self.CategoryImg.path)
       default_size = (960, 540)
-
       resized_img = img.resize(default_size)
       resized_img.format = img.format
       resized_img.save(self.CategoryImg.path)
@@ -41,7 +40,9 @@ class Trick (models.Model):
   TrickRecLevel = models.ForeignKey(SkillLevel, blank=True, null=True, on_delete=models.CASCADE)
   TrickDifficulty = models.PositiveIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   TrickImg = models.ImageField(null=True, blank=True, upload_to="images/")
+  TrickVideo = EmbedVideoField(blank=True)
   TrickCategory = models.ManyToManyField(Category, related_name='trick_category_tags', blank=True)
+  SubmittedByID = models.IntegerField("Submitted By ID", null=True)
   approved = models.BooleanField('Approved', default=False)
 
   def __str__(self):
@@ -52,7 +53,6 @@ class Trick (models.Model):
 
     if self.TrickImg:
       img = Image.open(self.TrickImg.path)
-
       default_size = (960, 540)
       resized_img = img.resize(default_size)
       resized_img.format = img.format
@@ -67,6 +67,7 @@ class Trick_Programme (models.Model):
   ProgrammeDifficulty = models.PositiveIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   ProgrammeImg = models.ImageField(null=True, blank=True, upload_to="images/")
   ProgrammeCategory = models.ManyToManyField(Category, related_name='programme_category_tags', blank=True)
+  ProgrammeCreatorID = models.IntegerField("Programme Creator ID", blank=False, default=1)
 
   def __str__(self):
     return self.ProgrammeName
@@ -76,7 +77,6 @@ class Trick_Programme (models.Model):
 
     if self.ProgrammeImg:
       img = Image.open(self.ProgrammeImg.path)
-
       default_size = (960, 540)
       resized_img = img.resize(default_size)
       resized_img.format = img.format

@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+{% if profile %}
+  <div class="shadow p-4 mb-2 bg-dark text-white rounded">
+    <div class="container text-center">
+      <div class="row">
+        <div  class="col-8 text-end">
+          <h1>{{ profile.User.FirstName }}'s Completed Programmes</h1>      
+        </div>
+        <div  class="col-4 text-end">      
+          {% if profile.ProfilePhoto %}
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{{ profile.ProfilePhoto.url }}" 
+            alt="User Profile Image" 
+            />
+          {% else %}    
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+            alt="Default User Profile Image" 
+            />
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+      
+  <div class="card text-dark bg-light">
+    <div class="card-body">
+      <div class="col-3">
+        <div class="shadow p-1 mb-4 bg-dark text-white rounded">
+          <h5 class="p-2">Total Tricks Programmes: {{ profile.CompletedProgrammes.all.count }}</h5>
+        </div>
+      </div>
+      <div class="container-md">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+          {% for programme in programmes %}
+            <div class="col-sm">
+              <div class="card text-bg-dark mb-3 shadow" style="width: 18rem; height: 22rem;">   
+                {% if programme.ProgrammeImg %}
+                  <img src="{{ programme.ProgrammeImg.url }}" class="img-fluid rounded" alt="programme cover image">
+                {% else %}    
+                  <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="programme cover image">
+                {% endif %}  
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {{ programme }} 
+                </div>
+                <ul class="list-group-dark list-group-flush">
+                  <li class="list-group-item">Recommended Level: {{ programme.ProgrammeRecLevel }}</li>
+                  <li class="list-group-item">Trick Difficulty: {{ programme.ProgrammeDifficulty }}</li>
+                </ul>
+                <div class="card-body-dark text-center gap-3" style="height: 4rem">
+                  <a href="{% url 'view-programme' programme.ProgrammeID %}" class="btn btn-outline-info">View Programme</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

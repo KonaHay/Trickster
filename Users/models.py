@@ -44,7 +44,7 @@ class Trickster_User(AbstractBaseUser, PermissionsMixin):
 
   UserID = models.AutoField(primary_key=True)
   Email = models.EmailField(('Email Address'), unique=True)
-  Username = models.CharField(('Username'),max_length=25, unique=True)
+  Username = models.CharField(('Username'),max_length=16, unique=True)
   FirstName = models.CharField(('First Name'),max_length=25)
   LastName = models.CharField(('Last Name'),max_length=25)
   DateOfJoining = models.DateField(default=timezone.now)
@@ -63,7 +63,7 @@ class User_Profile(models.Model):
 
   User = models.OneToOneField(Trickster_User, on_delete=models.CASCADE)
   ProfilePhoto = models.ImageField(null=True, blank=True, upload_to="images/profile")
-  Bio = models.TextField(blank=True)
+  Bio = models.TextField(max_length=150, blank=True)
   SkillLevel = models.ForeignKey(SkillLevel, default=get_default_skill_level, blank=True, null=True, on_delete=models.CASCADE)
   MasteryLevel = models.PositiveIntegerField(default=1, null=True, validators=[MinValueValidator(1), MaxValueValidator(10)])
   LevelProgress = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])

@@ -1,23 +1,21 @@
 {% extends 'main/base.html' %}
 
 {% block content  %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1> Add a Trick to the database </h1>
+    </div>
+  </div>
   <div class="shadow  p-4 mb-5 bg-body rounded">
-    <h1> Add a Trick to the database </h1>
-    <br/><br/>
     {% if submitted %}
-    </br>
-    <a href="{%url 'add-trick'%}" class="btn btn-primary">Add Another Trick</a>
+      <br>
+      <a href="{%url 'add-trick'%}" class="btn btn-primary">Add Another Trick</a>
     {% else %}
-
       <form action="" method=POST enctype="multipart/form-data">
         {% csrf_token %}
-
         {{ form.as_p  }}
-
         <input type="submit" value="Submit" class="btn btn-primary">
-
       </form>
-
     {% endif %}
   </div>
 {% endblock %}

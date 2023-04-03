@@ -2,21 +2,26 @@
 
 {% block content  %}
   {% load static %}
-  <h1> Welcome to Trickster! </h1>
-  <h2> The Ultimate Wakeboarding Guide!</h2>
-  <p class="text-muted">Warning - Trickster is still currently in development! Please be patient and report any bugs to kona. Thanks!</p>
+  <div class="shadow p-2 mb-5 bg-dark text-white rounded">
+    <div  class="text-center">
+      <h1> Welcome to Trickster! </h1>
+      <h2> The Ultimate Wakeboarding Guide!</h2>
+      <p class="text-muted">Warning - Trickster is still currently in development! Please be patient and report any bugs to kona. Thanks!</p>    
+    </div>
+  </div>
   
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div  class="text-center">
+      <h2>Get started!</h2>    
+    </div>
+  </div>
   <div class="shadow  p-4 mb-5 bg-body rounded">
-    <h2>Get started with some of our handy tools!</h2>
-    </br> 
     <div class="container-md">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3 g-3">
 
-        <!-- Add an IF to check if the User is logged in then change the cards shown here -->
-
         <!--Trick Database Card-->
         <div class="col-sm">
-          <div class="card text-bg-dark mb-3" style="height: 32rem;">
+          <div class="card text-bg-dark mb-3 mx-auto" style="height: 32rem;">
             <img src="{% static 'trickster/images/BacksideIndyGrab.png' %}" class="img-fluid rounded" alt="trick cover image">
             <div class="card-body">
               <h4>Trick Database</h4>
@@ -39,7 +44,7 @@
 
         {% if request.user.user_profile.completed_skill_quiz %}
           <div class="col-sm">
-            <div class="card text-bg-dark mb-3" style="height: 32rem;">
+            <div class="card text-bg-dark mb-3 mx-auto" style="height: 32rem;">
               <img src="{% static 'trickster/images/Wipe_Out.png' %}" class="img-fluid rounded" alt="trick cover image">
               <div class="card-body">
                 <h4>View Your Skill Level</h4>
@@ -59,7 +64,7 @@
           </div>
         {% else %}
           <div class="col-sm">
-            <div class="card text-bg-dark mb-3" style="height: 32rem;">
+            <div class="card text-bg-dark mb-3 mx-auto" style="height: 32rem;">
               <img src="{% static 'trickster/images/My_Skill_Level.png' %}" class="img-fluid rounded" alt="trick cover image">
               <div class="card-body">
                 <h4>Get Your Skill Level</h4>
@@ -86,7 +91,7 @@
 
         <!--Skill Programmes Card-->
         <div class="col-sm">
-          <div class="card text-bg-dark mb-3" style="height: 32rem;">
+          <div class="card text-bg-dark mb-3 mx-auto" style="height: 32rem;">
             <img src="{% static 'trickster/images/Zero_to_Hero.jpg' %}" class="img-fluid rounded" alt="trick cover image">
             <div class="card-body">
               <h4>Trickster Programmes</h4>
@@ -108,40 +113,161 @@
     </div>
   </div>
 
-  <div class="shadow  p-4 mb-5 bg-body rounded">
-    <h2>Heres Some Tricks & Guides To Get Started!</h2>
-    </br> 
+  
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div  class="text-center">
+      <h2>Heres Some Tricks & Guides You Might Find Useful!</h2>    
+    </div>
+  </div>
+  <div class="shadow p-4 mb-5 bg-body rounded">
     <div class="container-md">
       <div class="row">
         <div class="col-md-10 mx-auto">
-          <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+          <div id="homeCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
             <!-- Carousel indicators -->
             <ol class="carousel-indicators">
-              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-              <li data-target="#myCarousel" data-slide-to="1"></li>
-              <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#homeCarousel" data-slide-to="1"></li>
+              <li data-target="#homeCarousel" data-slide-to="2"></li>
             </ol>   
             <!-- Wrapper for carousel items -->
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <div class="row">
                   <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
-                        <div class="img-box">
-                          <img src="{{ beginners_guide.ProgrammeImg.url }}" class="img-fluid" alt="">
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem;">
+                      <div class="img-box">
+                        <img src="{{ beginners_guide.ProgrammeImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>Beginners Guide</h4>
+                          <p class="text-start">{{ beginners_guide.ProgrammeDiscription|truncatechars:220 }}</p>
                         </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>Beginners Guide</h4>
-                            <p>{{ beginners_guide.ProgrammeDiscription|truncatechars:220 }}</p>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'view-programme' beginners_guide.ProgrammeID %}" class="btn btn-outline-info btn-sm">View Programme</a>
+                              </div>
+                            </div>
                           </div>
-                          <div class="card-footer-dark text-center gap-3" style="height: 3rem">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-12">
-                                  <a href="{% url 'view-programme' beginners_guide.ProgrammeID %}" class="btn btn-outline-info btn-sm">View Programme</a>
-                                </div>
+                        </div>
+                      </div>
+                    </div>						
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem">
+                      <div class="img-box">
+                        <img src="{{ how_to_ollie.TrickImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>How To Ollie</h4>
+                          <p class="text-start">{{ how_to_ollie.TrickDiscription|truncatechars:220 }}</p>
+                        </div>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'show-trick' how_to_ollie.TrickID %}" class="btn btn-outline-info btn-sm">Learn How</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>	
+                    </div>				
+                  </div>				
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-sm-6">                    
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem;">
+                      <div class="img-box">
+                        <img src="{{ zero_to_hero.ProgrammeImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>Zero to Hero</h4>
+                          <p class="text-start">{{ zero_to_hero.ProgrammeDiscription|truncatechars:220 }}</p>
+                          <br>
+                        </div>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'view-programme' zero_to_hero.ProgrammeID %}" class="btn btn-outline-info btn-sm">View Programme</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>					                    
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem">
+                      <div class="img-box">
+                        <img src="{{ switch_riding.TrickImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>Swith Riding</h4>
+                          <p class="text-start">{{ switch_riding.TrickDiscription|truncatechars:220 }}</p>
+                        </div>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'show-trick' switch_riding.TrickID %}" class="btn btn-outline-info btn-sm">Learn How</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>	
+                    </div>					
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem;">
+                      <div class="img-box">
+                        <img src="{{ obstical_starter_kit.ProgrammeImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>Obstical Starter Kit</h4>
+                          <p class="text-start">{{ obstical_starter_kit.ProgrammeDiscription|truncatechars:160 }}</p>
+                        </div>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'view-programme' obstical_starter_kit.ProgrammeID %}" class="btn btn-outline-info btn-sm">View Programme</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>					
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card text-bg-dark mb-3 mx-auto" style="width: 16rem; height: 27rem;">
+                      <div class="img-box">
+                        <img src="{{ indy_grab.TrickImg.url }}" class="img-fluid" alt="">
+                      </div>
+                      <div class="thumb-content">
+                        <div class="card-body">
+                          <h4>Indy Grab</h4>
+                          <p class="text-start">{{ indy_grab.TrickDiscription|truncatechars:220 }}</p>
+                        </div>
+                        <div class="card-footer-dark text-center gap-3" style="height: 3rem">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-12">
+                                <a href="{% url 'show-trick' indy_grab.TrickID %}" class="btn btn-outline-info btn-sm">Learn How</a>
                               </div>
                             </div>
                           </div>
@@ -149,110 +275,14 @@
                       </div>						
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem">
-                        <div class="img-box">
-                          <img src="{{ how_to_ollie.TrickImg.url }}" class="img-fluid" alt="">
-                        </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>How To Ollie</h4>
-                            <p>{{ how_to_ollie.TrickDiscription|truncatechars:220 }}</p>
-                          </div>
-                          <div class="card-footer-dark text-center gap-3" style="height: 3rem">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-12">
-                                  <a href="{% url 'show-trick' how_to_ollie.TrickID %}" class="btn btn-outline-info btn-sm">Learn How</a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>	
-                      </div>					
-                    </div>
-                  </div>				
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
-                        <div class="img-box">
-                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
-                        </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>Kuala Lumpur</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam.</p>
-                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
-                          </div>
-                        </div>	
-                      </div>					
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem">
-                        <div class="img-box">
-                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
-                        </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>Agra</h4>
-                            <p>Vivamus fermentum in arcu in aliquam. Quisque aliqua porta odio in fringilla vivamus.</p>
-                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
-                          </div>
-                        </div>	
-                      </div>					
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
-                        <div class="img-box">
-                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
-                        </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>Rio De Janeiro</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sem tempor, varius quam.</p>
-                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
-                          </div>
-                        </div>	
-                      </div>					
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="thumb-wrapper">
-                      <div class="card text-bg-dark mb-3" style="width: 16rem; height: 28rem;">
-                        <div class="img-box">
-                          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid" alt="">
-                        </div>
-                        <div class="thumb-content">
-                          <div class="card-body">
-                            <h4>Giza</h4>
-                            <p>Vivamus fermentum in arcu in aliquam. Quisque aliqua porta odio in fringilla vivamus.</p>
-                            <a href="#" class="btn btn-primary">More <i class="fa fa-angle-right"></i></a>
-                          </div>
-                        </div>		
-                      </div>				
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
             <!-- Carousel controls -->
-            <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+            <a class="carousel-control-prev" href="#homeCarousel" data-slide="prev">
               <i class="fa fa-angle-left"></i>
             </a>
-            <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+            <a class="carousel-control-next" href="#homeCarousel" data-slide="next">
               <i class="fa fa-angle-right"></i>
             </a>
           </div>

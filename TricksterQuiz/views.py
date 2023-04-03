@@ -3,11 +3,11 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
 
 from .models import  Skill_Level_Quiz, Quiz_Section, Section_Trick, Term_Bonus, Bonus_Question, Bonus_Answer, Section_Result
 from TricksterMain.models import Trick, SkillLevel, Glossary_Term
 from Users.models import Trickster_User, User_Profile
-
 
 
 # Function for detexting ajax calls.
@@ -16,13 +16,14 @@ def is_ajax(request):
 
 # ======================================================================================================================================
 
+@login_required(login_url='login')
 def skill_level_quiz(request):
   Skill_Quiz = Skill_Level_Quiz.objects.get(QuizID=1)
-
   return render(request, 'pages/skill_level_quiz.html', {'Skill_Quiz':Skill_Quiz})
 
 # ======================================================================================================================================
 
+@login_required(login_url='login')
 def quiz_underway(request, pk):
   quizSection = Quiz_Section.objects.get(SectionNumber=pk)
   quiz = Skill_Level_Quiz.objects.get(QuizID=quizSection.SectionQuiz.QuizID)
@@ -33,17 +34,14 @@ def quiz_underway(request, pk):
 
 # ======================================================================================================================================
 
-# -- Components -- 
-
 def quiz_data(request, pk):
   quizSection = Quiz_Section.objects.get(SectionNumber=pk)
-  quiz = Skill_Level_Quiz.objects.get(QuizID=quizSection.SectionQuiz.QuizID)
   term_bonus = Term_Bonus.objects.get(BonusSection=quizSection.SectionID)
 
   questions = []
   for q in term_bonus.get_questions():
     answers=[]
-    for a in q.get_answers():
+    for a in q.get_answers().order_by('?'):
       answers.append(a.AnswerText)
     questions.append({str(q.QuestionTerm): answers})
 
@@ -55,12 +53,10 @@ def quiz_data(request, pk):
 
 def quiz_tricks(request, pk):
   quizSection = Quiz_Section.objects.get(SectionNumber=pk)
-  quiz = Skill_Level_Quiz.objects.get(QuizID=quizSection.SectionQuiz.QuizID)
   section_tricks = Section_Trick.objects.filter(TrickSection=quizSection.SectionID).order_by('TrickValue')
 
   tricks = []
   for trick in section_tricks:
-    value = trick.TrickValue
     if trick.Trick.TrickImg:
       img = trick.Trick.TrickImg.url
       tricks.append({str(trick.Trick): img})
@@ -74,7 +70,6 @@ def quiz_tricks(request, pk):
 # ======================================================================================================================================
 
 def next_quiz(request, pk):
-  #print(request.POST)
   if is_ajax(request=request):
     tricks= []
     data = request.POST
@@ -83,9 +78,6 @@ def next_quiz(request, pk):
 
     user = request.user
     profile = User_Profile.objects.get(User_id=user.UserID)
-    quiz = Term_Bonus.objects.get(pk=pk)
-    section = quiz.BonusSection
-
     trickScore = 0
     results = []
 
@@ -95,27 +87,23 @@ def next_quiz(request, pk):
 
       trickName = trick.TrickName
       trickValue = selectedTrick.TrickValue
-
       profile.LearnedTricks.add(trick)
       trickScore += trickValue
 
       results.append({str(trickName): {'Trick': trickName, 'score': trickValue}})
       tricks.append(trick)
-
   return JsonResponse({'score': trickScore, 'results': results})
 
 # ======================================================================================================================================
 
 def quiz_bonus(request, pk):
   quiz = Skill_Level_Quiz.objects.get(QuizID=pk)
-
   current_page = request.path
   return render(request, 'pages/quiz_bonus.html', {'quiz':quiz, 'current_page':current_page})
 
 # ======================================================================================================================================
 
 def save_quiz(request, pk):
-  #print(request.POST)
   if is_ajax(request=request):
 
     questions= []
@@ -128,7 +116,6 @@ def save_quiz(request, pk):
     data_.pop("score")
 
     for key in data_.keys():
-      # Need to pass the TermID not the KeyWord!
       Term = Glossary_Term.objects.get(KeyWord=key)
       question = Bonus_Question.objects.get(QuestionTerm=Term)
       questions.append(question)
@@ -143,7 +130,6 @@ def save_quiz(request, pk):
     correct_answer = None
     for q in questions:
       ans_selected = request.POST.get(str(q.QuestionTerm))
-
       if ans_selected != "":
         question_answers = Bonus_Answer.objects.filter(AnswerQuestion=q)
         for ans in question_answers:
@@ -154,11 +140,12 @@ def save_quiz(request, pk):
           else:
             if ans.AnswerCorrect:
               correct_answer = ans.AnswerText
-        
+
         results.append({str(q.QuestionTerm): {'correct_answer': correct_answer, 'answered': ans_selected}})
       else:
         results.append({str(q.QuestionTerm): 'not answered'})
 
+    #Create the results of current section.
     Section_Result.objects.create(ResultSection=section, ResultBonus=bonusQuiz, ResultUser=profile, TrickScore=trickScore, BonusScore=bonusScore)
     
     sectionID = section.SectionID
@@ -186,7 +173,7 @@ def save_quiz(request, pk):
 
     if finalSection:
       skillLevel, masteryLevel = calculate_skill_level(profile, thisSectionID)
-      
+
       profile.MasteryLevel = masteryLevel
       profile.SkillLevel = skillLevel
       profile.LevelProgress = 10
@@ -195,7 +182,6 @@ def save_quiz(request, pk):
       Section_Result.objects.filter(ResultUser=profile).delete()
 
     elif failedSection:
-      # Take results from last section and assign skill level)
       skillLevel, masteryLevel = calculate_skill_level(profile, previousSectionID)
       
       profile.MasteryLevel = masteryLevel
@@ -205,7 +191,6 @@ def save_quiz(request, pk):
       profile.save()
       Section_Result.objects.filter(ResultUser=profile).delete()
 
-  
   return JsonResponse({'score': trickScore, 'nextSection': nextSectionID})
 
 # ======================================================================================================================================
@@ -237,32 +222,28 @@ def calculate_skill_level(profile, sectionID):
     masteryLevel = masteryLevel +2
   elif sectionBonus == 2:
     masteryLevel = masteryLevel +1
-    
+
   return skillLevel, masteryLevel
 
 # ======================================================================================================================================
 
 def quiz_trick_card(request, pk):
-
   return render(request, 'components/quiz_trick_cards.html', {})
 
 # ======================================================================================================================================
 
+@login_required(login_url='login')
 def quiz_results(request, pk):
 
   if request.user.is_authenticated:
     profile = User_Profile.objects.get(User_id=pk)
-    user = Trickster_User.objects.get(UserID=pk)
-
     skillLevel = profile.SkillLevel
     masteryLevel = profile.MasteryLevel
 
     return render(request, 'pages/quiz_results.html', {'profile':profile, 'skillLevel':skillLevel, 'masteryLevel':masteryLevel})
-
   else:
     messages.error(request, ("You Must Be Logged In To See This Page!"))
     return redirect('home')
-
 
 # ======================================================================================================================================
 

@@ -7,10 +7,9 @@ from .models import SkillLevel, Trick, Trick_Programme, Category, Programme_Less
 #Unregister Groups
 admin.site.unregister(Group)
 
-
 @admin.register(Trick)
 class TrickAdmin(admin.ModelAdmin):
-  fields = ('TrickName', 'TrickRecLevel', 'TrickDifficulty', 'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'approved')
+  fields = ('TrickName', 'TrickRecLevel', 'TrickDifficulty', 'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'TrickVideo', 'SubmittedByID', 'approved')
   list_display = ('TrickName', 'TrickRecLevel', 'TrickDifficulty',)
   ordering = ('TrickRecLevel', 'TrickDifficulty', 'TrickName')
   search_fields = ('TrickName',)
@@ -30,7 +29,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Trick_Programme)
 class TrickProgrammeAdmin(admin.ModelAdmin):
-  fields = ('ProgrammeName', 'ProgrammeRecLevel', 'ProgrammeDifficulty','ProgrammeDiscription', 'ProgrammeTricks', 'ProgrammeImg',)
+  fields = ('ProgrammeName', 'ProgrammeRecLevel', 'ProgrammeDifficulty','ProgrammeDiscription', 'ProgrammeTricks', 'ProgrammeImg', 'ProgrammeCreatorID')
   list_display = ('ProgrammeName', 'ProgrammeRecLevel', 'ProgrammeDifficulty',)
   ordering = ('ProgrammeRecLevel', 'ProgrammeDifficulty', 'ProgrammeName')
   search_fields = ('ProgrammeName',)

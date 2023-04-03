@@ -1,0 +1,39 @@
+{% load static %}
+<div class="col-sm">
+  <div class="card text-bg-dark mb-3 mx-auto" style="width: 18rem; height: 33rem;">    
+    <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
+    <div class="card-body">
+      <h5 class="card-title">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              Trick Not Found
+            </div>
+          </div>
+        </div>
+      </h5>
+      <p class="card-text">You have learned all tricks available in this Skill Level, progress a bit more and check back later for more tricks!</p>
+    </div>
+    <ul class="list-group-dark list-group-flush">
+      <li class="list-group-item">Recommended Level: {{ request.user.user_profile.SkillLevel }}</li>
+      <li class="list-group-item">Trick Difficulty: ?</li>
+    </ul>
+    <div class="card-body-dark text-center gap-3" style="height: 3rem">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <p class="text-muted text-decoration-underline">Learn How</p>
+          </div>
+          <div class="col-6">
+            <!-- Save Trick Button -->
+            <button class="btn btn-primary btn-sm disabled">Save Trick</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Trick Learned Button -->
+    <div class="card-body-dark text-center gap-3" style="height: 3rem">
+      <button class="btn btn-outline-info btn-sm disabled">Mark Trick As Learned</button>
+    </div>
+  </div>
+</div>

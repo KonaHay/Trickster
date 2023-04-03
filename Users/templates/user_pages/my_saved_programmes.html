@@ -2,89 +2,54 @@
 {% load static %}
 
 {% block content  %}
-{% if profile %}
-  <div class="container text-center">
-    <h1>{{ profile.User.FirstName }}'s Saved Programmes</h1>
-    </br>
-    {% if profile.ProfilePhoto %}
-      <img 
-      class="rounded-circle" 
-      height="150" 
-      src="{{ profile.ProfilePhoto.url }}" 
-      alt="User Profile Image" 
-      />
-    {% else %}    
-      <img 
-      class="rounded-circle" 
-      height="150" 
-      src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
-      alt="Default User Profile Image" 
-      />
-    {% endif %}
-    </br></br>
-    <h3>Skill Level: {{ profile.SkillLevel }}</h3>
-    <h3>Mastery Level: {{ profile.UserDifficultyLevel }}</h3>
-    </br>
+{% if request.user.user_profile == profile %}
+  {% if profile %}
+    <div class="shadow p-4 mb-2 bg-dark text-white rounded">
+      <div class="row">
+        <div  class="col-8 text-end">
+          <h1>{{ profile.User.FirstName }}'s Saved Programmes</h1>
+        </div>
+        <div  class="col-4 text-end">           
+          {% if profile.ProfilePhoto %}
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{{ profile.ProfilePhoto.url }}" 
+            alt="User Profile Image" 
+            />
+          {% else %}    
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+            alt="Default User Profile Image" 
+            />
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="card text-dark bg-light">
-      <div class="card-header">
-        {{ profile.User.FirstName }}'s Saved Programmes:
-      </div>
       <div class="card-body">
-        <p class="card-text"><strong>Total Programmes Saved: {{ programme_count }}</strong></p>
-        <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
+        <div class="col-3">
+          <div class="shadow p-1 mb-4 bg-dark text-white rounded">
+            <h5 class="p-2">Total Programmes Saved: {{ programme_count }}</h5>
+          </div>
+        </div>
         <div class="container-md">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-3 g-3">
             {% for programme in profile.SavedProgrammes.all %}
-            <div class="col-md">
-              <div class="card text-bg-dark mb-3" style="width: 22rem; height: 35rem;">
-                {% if programme.ProgrammeImg %}
-                  <img src="{{ programme.ProgrammeImg.url }}" class="img-fluid rounded" alt="programme cover image">
-                {% else %}    
-                  <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default programme cover image">
-                {% endif %}
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-6">
-                          {{ programme }} 
-                        </div>
-                        <div class="col-6">
-                          {% if user.is_superuser %}
-                          <a href="#" class="btn btn-success btn-sm">Edit Programme</a>
-                          {% endif %}
-                        </div>
-                      </div>
-                    </div>
-                  </h5>
-                  <p class="card-text">{{ programme.ProgrammeDiscription|truncatechars:210 }}</p>
-                </div>
-                <ul class="list-group-dark list-group-flush">
-                  <li class="list-group-item">Recommended Level: {{ programme.ProgrammeRecLevel }}</li>
-                  <li class="list-group-item">Trick Difficulty: {{ programme.ProgrammeDifficulty }}</li>
-                </ul>
-                <div class="card-body-dark text-center gap-3" style="height: 3rem">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-6">
-                        <a href="{% url 'view-programme' programme.ProgrammeID %}" class="btn btn-outline-primary btn-sm">View Programme</a>
-                      </div>
-                      <div class="col-6">
-                        <!-- Save Programme Button -->
-                        {% include 'components/save_programme_button.html' with saved_programmes=request.user.user_profile.SavedProgrammes user=request.user programme=programme %}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
+              {% include 'components/programme_cards.html' with programme=programme user=request.user current_page=current_page%}
+            {% endfor %}
+          </div>
         </div>
       </div>
-      <!-- -------------------------------------------------------------------------------------------- -->
+    </div>
+  {% endif %}
+{% else %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1>Page Not Found!</h1>  
     </div>
   </div>
-
 {% endif %}
 {% endblock %}

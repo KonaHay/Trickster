@@ -1,39 +1,37 @@
 {% extends 'main/base.html' %}
 
 {% block content  %}
-  <div class="shadow  p-4 mb-5 bg-body rounded">
-
-    <h1> Login </h1>
-    <br/><br/>
-
-    <form action="" method=POST enctype="multipart/form-data"> 
-      {% csrf_token %}
-      {% for feild in user_login %}
-        <p>
-          {{ feild.label_tag }}
-          {{ feild}}
-
-          {% if feild.help_text %}
-            <small style="color: grey">{{ feild.help_text }}</small>
-          {% endif %}
-
-          <div style="color:red";>
-            <p style="color: red">{{ feild.errors }}</p>
-          </div>
-
-          <div style="color:red";>
-            <p>{{ user_login.non_feild_errors }}</p>
-          </div>
-        </p>
-      {% endfor %}
-      <div class="row">
-        <div class="col-sm-1">
-          <button type="submit" class="btn btn-primary">Login</button>
-        </div>
-        <div class="col-sm-11">
-          Dont have an account? <a href="{% url 'register_user' %}" class="card-link me-md-4">Register Here</a>
-        </div>
-      </div>
-    </form>
+<div class="shadow p-2 mb-2 bg-dark text-white rounded">
+  <div class="text-center">
+    <h1> Login </h1>     
   </div>
+</div>
+<div class="shadow p-4 mb-5 bg-body rounded">
+  <form action="" method=POST enctype="multipart/form-data"> 
+    {% csrf_token %}
+    {% for feild in user_login %}
+      <p>
+        {{ feild.label_tag }}
+        {{ feild}}
+        {% if feild.help_text %}
+          <small style="color: grey">{{ feild.help_text }}</small>
+        {% endif %}
+        <div style="color:red";>
+          <p style="color: red">{{ feild.errors }}</p>
+        </div>
+        <div style="color:red";>
+          <p>{{ user_login.non_feild_errors }}</p>
+        </div>
+      </p>
+    {% endfor %}
+    <div class="row">
+      <div class="col-sm-1">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+      <div class="col-sm-11">
+        Dont have an account? <a href="{% url 'register_user' %}" class="card-link me-md-4">Register Here</a>
+      </div>
+    </div>
+  </form>
+</div>
 {% endblock %}

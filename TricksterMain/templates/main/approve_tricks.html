@@ -2,9 +2,13 @@
 {% load static %}
 
 {% block content  %}
-  <div class="shadow  p-4 mb-5 bg-body rounded">
-    <h1> Trickster Trick Approval Page </h1>
-    <br/>
+{% if request.user.is_superuser %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1> Trickster Trick Approval Page </h1>    
+    </div>
+  </div>
+  <div class="shadow p-4 mb-5 bg-body rounded">
     <div class="col-4">
       <div class="card text-bg-dark">
         <div class="card-body">
@@ -17,11 +21,7 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
         {% for trick in unapproved_tricks %}
         <div class="col-sm">
-          {% if user.is_authenticated %}
-            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-          {% else %}
-            <div class="card text-bg-dark mb-3" style="width: 18rem; height: 30rem;">
-          {% endif %}
+          <div class="card text-bg-dark mb-1" style="width: 18rem; height: 33rem;">
             {% if trick.TrickImg %}
               <img src="{{ trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
               {% if trick in request.user.user_profile.LearnedTricks.all %}
@@ -70,11 +70,22 @@
               <a class="btn btn-outline-info btn-sm disabled" dissabled>Mark Trick As Learned</a>
             </div>
           </div>
-          <a href="{% url 'approve-trick' trick.TrickID %}" class="btn btn-success">Approve Trick</a>
-          <a href="{% url 'delete-unapproved-trick' trick.TrickID %}" class="btn btn-danger">Delete Trick</a>
+          <div class="shadow p-3 mb-2 bg-dark text-white rounded">
+            <div  class="text-center">
+              <a href="{% url 'approve-trick' trick.TrickID %}" class="btn btn-success">Approve Trick</a>
+              <a href="{% url 'delete-unapproved-trick' trick.TrickID %}" class="btn btn-danger">Delete Trick</a>   
+            </div>
+          </div>
         </div>
         {% endfor %}
       </div>
     </div>
   </div>
+{% else %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1>Page Not Found!</h1>  
+    </div>
+  </div>
+{% endif %}
 {% endblock %}

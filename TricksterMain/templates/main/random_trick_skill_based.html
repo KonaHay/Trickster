@@ -2,89 +2,76 @@
 {% load static %}
 
 {% block content  %}
-
-  {% if user.is_authenticated %}
-    {% if random_trick %}
-
-      <h1>Your Random Trick:</h1>
-      <h4>From Your Current Skill Level...</h4>
-      </br>
-      <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
-
-        <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-          {% if random_trick.TrickImg %}
-            <img src="{{ random_trick.TrickImg.url }}" class="img-fluid rounded" alt="trick cover image">
-          {% else %}    
-            <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
-          {% endif %}
+{% if user.is_authenticated %}
+  {% if random_trick %}
+    <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+      <div  class="text-center">
+        <h2>Your Random Trick:</h2>
+        <h5>From Your Current Skill Level</h5>   
+        <p class="text-muted">- Remember to only try tricks you feel ready for and always wear proper safety equiptment!</p>    
+      </div>
+    </div>
+    <div class="shadow p-4 mb-2 bg-white text-dark text-center rounded">
+      {% include 'components/trick_cards.html' with trick=random_trick user=request.user %}
+      <form class="text-center" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
+        {% csrf_token %}
+        <input type="hidden" name="randomise" value="randomise"> 
+        <button class="btn btn-info" value="" type="submit">Randomise Again!</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+      <div  class="text-center">
+        <h2>Get A Random Trick:</h2> 
+        <h5>From Your Current Skill Level</h5> 
+        <p class="text-muted">- Remember to only try tricks you feel ready for and always wear proper safety equiptment!</p>    
+      </div>
+    </div>
+    <div class="shadow p-4 mb-2 bg-white text-dark rounded">
+      <div class="col-sm">
+        <div class="card text-bg-dark mb-3 mx-auto" style="width: 18rem; height: 33rem;">
+          <img src="{% static 'trickster/images/TrickListDefault.png' %}" class="img-fluid rounded" alt="default trick cover image">
           <div class="card-body">
-            <h5 class="card-title">{{ random_trick }}</h5>
-            <p class="card-text">{{ random_trick.TrickDiscription|truncatechars:180 }}</p>
+            <h5 class="card-title">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    Random Trick
+                  </div>
+                </div>
+              </div>
+            </h5>
+            <p class="card-text">Random Trick Description...</p>
           </div>
           <ul class="list-group-dark list-group-flush">
-            <li class="list-group-item">Recommended Level: {{ random_trick.TrickRecLevel }}</li>
-            <li class="list-group-item">Trick Difficulty: {{ random_trick.TrickDifficulty }}</li>
+            <li class="list-group-item">Recommended Level: ?</li>
+            <li class="list-group-item">Trick Difficulty: ?</li>
           </ul>
           <div class="card-body-dark text-center gap-3" style="height: 3rem">
             <div class="container">
               <div class="row">
                 <div class="col-6">
-                  <a href="{% url 'show-trick' random_trick.TrickID %}" class="card-link me-md-4">Learn How</a>
+                  <p class="text-muted text-decoration-underline">Learn How</p>
                 </div>
                 <div class="col-6">
-                  <!-- Save Trick Button -->
-                  {% include 'components/save_trick_button.html' with saved_tricks=request.user.user_profile.SavedTricks user=request.user trick=random_trick %}
+                  <a class="btn btn-primary disabled btn-sm">Save Trick</a>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Trick Learned Button -->
-          {% include 'components/learned_trick_button.html' with learned_tricks=request.user.user_profile.LearnedTricks user=request.user trick=random_trick %}
-        </div>
-
-      <form class="d-flex" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
-        {% csrf_token %}
-        <input type="hidden" name="randomise" value="randomise"> 
-        <button class="btn btn-outline-primary" value="" type="submit">Randomise Again!</button>
-      </form>
-
-    {% else %}
-
-      <h1>Get A Random Trick:</h1>
-      <h4>From Your Current Skill Level...</h4>
-      </br>
-      <div class="card text-bg-dark mb-3" style="width: 18rem; height: 33rem;">
-          <img src="{% static 'trickster/images/RandomTrickImg.png' %}" class="img-fluid rounded" alt="default trick cover image">
-        <div class="card-body">
-          <h5 class="card-title">Random Trick</h5>
-          <p class="card-text">Random Trick Description...</p>
-        </div>
-        <ul class="list-group-dark list-group-flush">
-          <li class="list-group-item">Recommended Level: ?</li>
-          <li class="list-group-item">Trick Difficulty: ?</li>
-        </ul>
-        <div class="card-body-dark text-center gap-3" style="height: 3rem">
-          <div class="container">
-            <div class="row">
-              <div class="col-6">
-                <a href="#" class="card-link disabled me-md-4">Learn How</a>
-              </div>
-              <div class="col-6">
-                <a class="btn btn-primary disabled btn-sm">Save Trick</a>
-              </div>
-            </div>
+          <div class="card-body-dark text-center gap-3" style="height: 3rem">
+            <a class="btn btn-outline-info disabled btn-sm">Trick Learned</a>
           </div>
         </div>
-        <div class="card-body-dark text-center gap-3" style="height: 3rem">
-          <a class="btn btn-outline-info disabled btn-sm">Trick Learned</a>
-        </div>
       </div>
-      <form class="d-flex" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
-        {% csrf_token %}
-        <input type="hidden" name="randomise" value="randomise"> 
-        <button class="btn btn-primary" value="" type="submit">Randomise!</button>
-      </form>
-
-    {% endif %}  
-  {% endif %}
+      <div class="p-2 mb-0 text-center">
+        <form class="justify-content-center" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
+          {% csrf_token %}
+          <input type="hidden" name="randomise" value="randomise"> 
+          <button class="btn btn-info" value="" type="submit">Randomise!</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}  
+{% endif %}
 {% endblock %}

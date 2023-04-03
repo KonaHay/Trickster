@@ -3,52 +3,98 @@
 
 {% block content  %}
 {% if profile %}
-<!--Try and fix in trickster.scss-->
-<style>
-  .text-underline-hover {
-    text-decoration: none;
-  }
-
-  .text-underline-hover:hover {
-      text-decoration: underline;
-  }
-
-  a:not([class]) {
-      text-decoration: none;
-  }
-
-  a:not([class]):hover {
-      text-decoration: underline;
-  }
-</style>
-
   <div class="container text-center">
     <div class="row">
-      <div  class="col-8">
-        <h1>{{ profile.User.FirstName }}'s Profile</h1>
-        </br>
-        {% if profile.ProfilePhoto %}
-          <img 
-          class="rounded-circle" 
-          height="150" 
-          src="{{ profile.ProfilePhoto.url }}" 
-          alt="User Profile Image" 
-          />
-        {% else %}    
-          <img 
-          class="rounded-circle" 
-          height="150" 
-          src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
-          alt="Default User Profile Image" 
-          />
-        {% endif %}
-        </br></br>
-        <h3>Skill Level: {{ profile.SkillLevel }}</h3>
-        <h3>Mastery Level: {{ profile.MasteryLevel }}</h3>
-        </br>
-        <h3>Mastery Progress: {{ profile.LevelProgress }}%</h3>
-        <div class="progress">
-          <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: {{profile.LevelProgress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="col-8">
+        <div class="shadow p-4 mb-4 bg-dark text-white rounded">
+          <div class="row">   
+            <div class="col-3 text-end">
+              <br>
+              <a href="{%url 'followers' profile.User.UserID %}" type="button" class="btn btn-secondary"><h4>Followers:</h4>
+                <h5>{{ profile.followed_by.all.count }}</h5>
+              </a>
+              <br><br>
+              {% if request.user.user_profile != profile  %}
+                {% include 'user_pages/follow_button.html' with profile=profile user=request.user current_page=current_page %}
+              {% endif %}
+            </div>
+            <div class="col-6">
+              <h1>{{ profile.User.Username }}</h1>
+              {% if profile.ProfilePhoto %}
+                <img 
+                class="rounded-circle" 
+                height="120" 
+                src="{{ profile.ProfilePhoto.url }}" 
+                alt="User Profile Image" 
+                />
+              {% else %}    
+                <img 
+                class="rounded-circle" 
+                height="120" 
+                src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+                alt="Default User Profile Image" 
+                />
+              {% endif %}
+            </div>
+            <div class="col-3 text-start">
+              <br>
+              <a href="{%url 'following' profile.User.UserID %}" type="button" class="btn btn-secondary"><h4>Following:</h4>
+              <h5>{{ profile.Follows.all.count }}</h5>
+              </a>
+            </div>
+          </div>
+          <hr>
+          <h4>{{ profile.User.FirstName }} {{ profile.User.LastName }}</h4>
+          <p>{{ profile.Bio|linebreaksbr }}</p>
+          <hr>
+          <h3>Skill Level: {{ profile.SkillLevel }}</h3>
+          <h3>Mastery Level: {{ profile.MasteryLevel }}</h3>
+        </div>
+
+        <div class="shadow p-2 mb-0 bg-dark text-white rounded">
+          <div class="text-center">
+            <h1>{{ profile.User.Username }}'s Posts:</h1>  
+            <p class="text-muted no-p">- These posts are examples for what would be a posting system.</p>    
+          </div>
+        </div>
+        <div class="shadow p-4 mb-2 bg-white text-dark rounded">
+          <div class="container-md">
+            <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-xl-2 g-4">
+              <div class="col-sm">
+                <div class="card text-white bg-dark">
+                  <div class="card-body">
+                    <div class="imgContainer mx-auto">
+                      <img src="{% static 'trickster/images/My_Skill_Level.png' %}" class="img-fluid rounded" alt="trick cover image">
+                    </div>
+                    <hr>
+                    <p class="card-text">I landed my first Rail to Rail today at 313 Wake Park so I thought I'd share it on Trickster!<br>
+                    </p>
+                  </div>
+                  <div class="card-footer p-2">
+                    <p class="text-muted no-p">- Posted 4 days ago</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="card text-white bg-dark">
+                  <div class="card-body">
+                    <div class="imgContainer mx-auto">
+                      <img src="{% static 'trickster/images/Wipe_Out.png' %}" class="img-fluid rounded" alt="trick cover image">
+                      <div class="card-img-overlay d-flex aligns-items-center justify-content-center" style="height: 13rem;">
+                        <img src="{% static 'trickster/images/trickster_play_button.png' %}" class="img-fluid rounded" alt="default trick cover image">
+                      </div>
+                    </div>
+                    <hr>
+                    <p class="card-text">Caught a funny clip trying to do a Backside Boardslide!<br>
+                    </p>
+                  </div>
+                  <div class="card-footer p-2">
+                    <p class="text-muted no-p">- Posted 1 week ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -60,16 +106,36 @@
           <div class="card-body">
             <p class="card-text">Total Tricks Learned: {{ profile.LearnedTricks.all.count }}</p>
             <p class="card-text">
-              {% for trick in profile.LearnedTricks.all %}
-                <a class="text-light text-underline-hover" href="{% url 'show-trick' trick.TrickID %}"> {{ trick.TrickName }}</br>
+              {% for trick in profile.LearnedTricks.all|slice:":10" %}
+                <a class="text-light text-underline-hover" href="{% url 'show-trick' trick.TrickID %}">{{ trick.TrickName }}</br>
               {% endfor %}
+              {% if profile.LearnedTricks.all.count > 10 %}
+                <a class="text-light text-underline-hover" href="{%url 'my-tricks' profile.User.UserID %}">...</br>
+              {% endif %}
             </p>
-            <a href="{%url 'my-tricks' request.user.UserID %}" class="btn btn-primary">All {{ profile.User.FirstName }}'s Tricks</a>
+            <a href="{%url 'my-tricks' profile.User.UserID %}" class="btn btn-outline-info">View All</a>
+          </div>
+        </div>
+        <br>
+        <div class="card text-white bg-dark">
+          <div class="card-header">
+            {{ profile.User.FirstName }}'s Completed Programmes:
+          </div>
+          <div class="card-body">
+            <p class="card-text">Total Programmes Learned: {{ profile.CompletedProgrammes.all.count }}</p>
+            <p class="card-text">
+              {% for programme in profile.CompletedProgrammes.all %}
+                <a class="text-light text-underline-hover" href="{% url 'view-programme' programme.ProgrammeID %}"> {{ programme.ProgrammeName }}</br>
+              {% endfor %}
+              {% if profile.CompletedProgrammes.all.count > 10 %}
+                <a class="text-light text-underline-hover" href="{%url 'my-completed-programmes' profile.User.UserID %}">...</br>
+              {% endif %}
+            </p>
+            <a href="{%url 'my-completed-programmes' profile.User.UserID %}" class="btn btn-outline-info">View All</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 {% endif %}
 {% endblock %}

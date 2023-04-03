@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    #Main Page & Trick URL's
     path('', views.home, name="home"),
     path('home', views.home, name="home"),
     path('trick_list', views.trick_list, name="trick-list"),
@@ -22,7 +23,6 @@ urlpatterns = [
     path('random_trick', views.random_trick, name='random-trick'),
     path('random_trick_skill_based/<int:pk>', views.random_trick_skill_based, name='random-trick-skill-based'),
     path('random_trick_learned/<int:pk>', views.random_trick_learned, name='random-trick-learned'),
-    path('trick_card', views.trick_card, name='trick-card'),
     path('add_category', views.add_category, name='add-category'),
     path('category_list', views.category_list, name="category-list"),
     path('glossary', views.glossary, name="glossary"),
@@ -43,11 +43,16 @@ urlpatterns = [
     path('unsave_programme/<int:pk>', views.unsave_programme, name='unsave-programme'),
     path('save_programme/<int:pk>', views.save_programme, name='save-programme'),
     path('update_programme/<programme_id>', views.update_programme, name='update-programme'),
+    path('update_lesson/<lesson_id>', views.update_lesson, name='update-lesson'),
     path('delete_programme/<programme_id>', views.delete_programme, name='delete-programme'),
-    path('learned_lesson/<int:pk>', views.learned_lesson, name='learned-lesson'),
+    path('delete_lesson/<lesson_id>', views.delete_lesson, name='delete-lesson'),
+    path('unsave_programme/<int:pk>', views.unsave_programme, name='unsave-programme'),
     path('unlearn_lesson/<int:pk>', views.unlearn_lesson, name='unlearn-lesson'),
-
-    path('carousel_test', views.carousel_test, name='carousel-test'),
+    path('learned-lesson/<int:pk>', views.learned_lesson, name='learned-lesson'),
+    
+    #Component URL's
+    path('trick_card', views.trick_card, name='trick-card'),
+    path('programme_card', views.programme_card, name='programme-card'),
 
     #Admin URL's
     path('admin_db', views.admin_db, name='admin-db'),

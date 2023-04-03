@@ -2,45 +2,55 @@
 {% load static %}
 
 {% block content  %}
-{% if profile %}
-  <div class="container text-center">
-    <h1>{{ profile.User.FirstName }}'s Saved Tricks</h1>
-    </br>
-    {% if profile.ProfilePhoto %}
-      <img 
-      class="rounded-circle" 
-      height="150" 
-      src="{{ profile.ProfilePhoto.url }}" 
-      alt="User Profile Image" 
-      />
-    {% else %}    
-      <img 
-      class="rounded-circle" 
-      height="150" 
-      src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
-      alt="Default User Profile Image" 
-      />
-    {% endif %}
-    </br></br>
-    <h3>Skill Level: {{ profile.SkillLevel }}</h3>
-    <h3>Mastery Level: {{ profile.UserDifficultyLevel }}</h3>
-    </br>
-    </div>
-    <div class="card text-dark bg-light">
-      <div class="card-header">
-        {{ profile.User.FirstName }}'s Saved Tricks:
+{% if request.user.user_profile == profile %}
+  {% if profile %}
+    <div class="shadow p-4 mb-2 bg-dark text-white rounded">
+      <div class="row">
+        <div  class="col-8 text-end">
+          <h1>{{ profile.User.FirstName }}'s Saved Tricks</h1>
+        </div>
+        <div  class="col-4 text-end">           
+          {% if profile.ProfilePhoto %}
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{{ profile.ProfilePhoto.url }}" 
+            alt="User Profile Image" 
+            />
+          {% else %}    
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+            alt="Default User Profile Image" 
+            />
+          {% endif %}
+        </div>
       </div>
+    </div>
+
+    <div class="card text-dark bg-light">
       <div class="card-body">
-        <p class="card-text"><strong>Total Tricks Saved: {{ trick_count }}</strong></p>
+        <div class="col-3">
+          <div class="shadow p-1 mb-4 bg-dark text-white rounded">
+            <h5 class="p-2">Total Tricks Saved: {{ trick_count }}</h5>
+          </div>
+        </div>
         <div class="container-md">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
             {% for trick in profile.SavedTricks.all %}
               {% include 'components/trick_cards.html' with trick=trick user=request.user current_page=current_page %}
             {% endfor %}
+          </div>
         </div>
       </div>
     </div>
+  {% endif %}
+{% else %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1>Page Not Found!</h1>  
+    </div>
   </div>
-
 {% endif %}
 {% endblock %}

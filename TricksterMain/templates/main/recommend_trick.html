@@ -2,21 +2,86 @@
 {% load static %}
 
 {% block content  %}
-
-  {% if profile %}
-    <h1>Tricks Recommended For {{ profile.User }}:</h1>
-    </br></br></br></br></br></br></br></br></br></br></br></br>
-    <p>{{user_learned_tricks}}</p>
-    <h1>Other Tricks In Your Current Skill Level:</h1>
-    </br>
-    <!-- I will aim to put this section of code into its own function as it's also used in search_trick & recommended Trick -->
-    <div class="container-md">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
-        {% for trick in recommend_tricks %}
-          {% include 'components/trick_cards.html' with trick=trick user=request.user %}
-        {% endfor %}
+{% if request.user.user_profile == profile %}
+  <div class="shadow p-4 mb-2 bg-dark text-white rounded">
+    <div class="row">
+      <div class="col-9 text-end">
+        <h1 class="p-no">Recommended Tricks For {{ profile.User.Username }}</h1>
+        <p class="text-muted p-no">- Remember to only try tricks you feel ready for and always wear proper safety equiptment!</p>
+      </div>
+      <div class="col-3 text-end">           
+        {% if profile.ProfilePhoto %}
+          <img 
+          class="rounded-circle" 
+          height="60" 
+          src="{{ profile.ProfilePhoto.url }}" 
+          alt="User Profile Image" 
+          />
+        {% else %}    
+          <img 
+          class="rounded-circle" 
+          height="60" 
+          src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+          alt="Default User Profile Image" 
+          />
+        {% endif %}
       </div>
     </div>
+  </div>
 
-  {% endif %}
+  <div class="shadow p-4 mb-4 bg-body rounded">
+    <div class="text-center">
+      <h4>Next Tricks To Learn:</h4>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-4">
+        <strong><h4 class="text-center">Take It Easy:</h4></strong>
+        {% if mastery_below_trick %}
+          {% include 'components/trick_cards.html' with trick=mastery_below_trick user=request.user %}
+        {% else %}
+          {% include 'components/trick_not_found.html' %}
+        {% endif %}
+      </div>
+      <div class="col-4">
+        <strong><h4 class="text-center">Give It A Go:</h4></strong>
+        {% if mastery_trick %}
+          {% include 'components/trick_cards.html' with trick=mastery_trick user=request.user %}
+        {% else %}
+          {% include 'components/trick_not_found.html' %}
+        {% endif %}
+      </div>
+      <div class="col-4">
+        <strong><h4 class="text-center">To Push Yourself:</h4></strong>
+        {% if mastery_above_trick %}
+          {% include 'components/trick_cards.html' with trick=mastery_above_trick user=request.user %}
+        {% else %}
+          {% include 'components/trick_not_found.html' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="shadow p-4 mb-4 bg-body rounded">
+    <h4 class="text-center">Other Tricks In Your Current Skill Level:</h4>
+    <hr>
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-4">
+        {% if other_tricks %}
+          {% for trick in other_tricks|slice:":4" %}
+            {% include 'components/trick_cards.html' with trick=trick user=request.user %}
+          {% endfor %}
+        {% else %}
+          {% include 'components/trick_not_found.html' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1>Page Not Found!</h1>  
+    </div>
+  </div>
+{% endif %}
 {% endblock %}

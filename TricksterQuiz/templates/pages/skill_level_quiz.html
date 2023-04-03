@@ -2,47 +2,53 @@
 {% load static %}
 
 {% block content  %}
-<div class="shadow  p-4 mb-5 bg-body rounded">
-  <h1> {{ Skill_Quiz.QuizTitle }} </h1>
-  <br/>
-  <div class="col-8">
-    <div class="card text-bg-dark">
-      <div class="card-body">
-        <p class="card-text">{{ Skill_Quiz.QuizDiscription|linebreaksbr }}</p>
-      </div>
-    </div>
-  </div>
-  <br/>
-
-  <button 
-    class="btn btn-info modal-button" 
-    data-pk="{{Skill_Quiz.QuizID}}"
-    data-quiz="{{Skill_Quiz.QuizTitle}}"
-    data-sections="{{Skill_Quiz.QuizNoOfSections}}"
-    data-imgURL="{{Skill_Quiz.QuizImg}}"
-    data-bs-toggle="modal"
-    data-bs-target="#quizStartModal">
-    Take The Test!
-  </button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="quizStartModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="quizStartModal">Ready To Start?</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modal-body-confirm"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-          <button type="button" id="start-button" class="btn btn-info">Lets Go!</button>
+{% if request.user.user_profile.completed_skill_quiz == False %}
+  <div class="shadow  p-4 mb-5 bg-body rounded">
+    <h1> {{ Skill_Quiz.QuizTitle }} </h1>
+    <br/>
+    <div class="col-8">
+      <div class="card text-bg-dark">
+        <div class="card-body">
+          <p class="card-text">{{ Skill_Quiz.QuizDiscription|linebreaksbr }}</p>
         </div>
       </div>
     </div>
-  </div>
+    <br/>
 
-</div>
+    <button 
+      class="btn btn-info modal-button" 
+      data-pk="{{Skill_Quiz.QuizID}}"
+      data-quiz="{{Skill_Quiz.QuizTitle}}"
+      data-sections="{{Skill_Quiz.QuizNoOfSections}}"
+      data-imgURL="{{Skill_Quiz.QuizImg}}"
+      data-bs-toggle="modal"
+      data-bs-target="#quizStartModal">
+      Take The Test!
+    </button>
+
+    <div class="modal fade" id="quizStartModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="quizStartModal">Ready To Start?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modal-body-confirm"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+            <button type="button" id="start-button" class="btn btn-info">Lets Go!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="shadow p-2 mb-2 bg-dark text-white rounded">
+    <div class="text-center">
+      <h1>Your Skill Level Has Already Been Assigned!</h1>  
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}

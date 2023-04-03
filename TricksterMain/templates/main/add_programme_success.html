@@ -1,25 +1,131 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% load embed_video_tags %}
 
 {% block content  %}
-  <div class="shadow  p-4 mb-5 bg-body rounded">
-
+<div class="shadow p-2 mb-2 bg-dark text-white rounded">
+  <div class="text-center">
     <h2>The Programme "{{ Programme.ProgrammeName }}" Has Been Created!</h2>
-    <h3>Skill Level: {{ Programme.ProgrammeRecLevel }}</h3>
-    <h3>Difficulty: {{ Programme.ProgrammeDifficulty }}</h3>
-    </br>
+  </div>
+</div>
+<div class="shadow  p-4 mb-5 bg-body rounded">
+  <h3>Skill Level: {{ Programme.ProgrammeRecLevel }}</h3>
+  <h3>Difficulty: {{ Programme.ProgrammeDifficulty }}</h3>
+  </br>
 
-    <div class="container-md">
-      <div class="row">
-        <div class="col-md-9">
-          <a href="{% url 'add-programme-lessons' Programme.ProgrammeID %}" class="btn btn-warning">Add Lessons To Programme</a>
-          <a href="{% url 'add-programme-tricks-list' Programme.ProgrammeID %}" class="btn btn-warning">Add Tricks To Programme</a>
-        </div>
-        <div class="col-md-3">
-          <div class="container align-end">
-            <a href="{%url 'programme-list'%}" class="btn btn-success">Create Programme</a>
-          </div>
+  <div class="container-md">
+    <div class="row">
+      <div class="col-md-9">
+        <a href="{% url 'add-programme-lessons' Programme.ProgrammeID %}" class="btn btn-warning">Add Lessons</a>
+        <a href="{% url 'add-programme-tricks-list' Programme.ProgrammeID %}" class="btn btn-warning">Add Tricks</a>
+        <a href="{% url 'update-programme' Programme.ProgrammeID %}" class="btn btn-warning">Edit Programme</a>
+      </div>
+      <div class="col-md-3">
+        <div class="container text-end ">
+          <a href="{%url 'programme-list'%}" class="btn btn-success">Update Programme</a>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div class="shadow p-2 mb-3 bg-dark text-white rounded">
+  <div class="text-center">
+    <h2>"{{ Programme.ProgrammeName }}" Demo:</h2>
+  </div>
+</div>
+<div class="shadow p-4 mb-5 bg-white text-dark rounded">
+  <div class="row">
+    <div class="col-7">
+      <h1> {{ Programme.ProgrammeName }} </h1>
+    </div>
+    {% if ProgrammeCreator %}
+      {% if ProgrammeCreator.UserID == 1 %}
+        <div class="col-5 align-items-center">
+          <h3 class="text-end p-3">Created By: {{ ProgrammeCreator.Username }}</h3>
+        </div>
+      {% else %}
+        <div class="col-5 align-items-center">
+          <h3 class="text-end p-3">Created By: <a href="{%url 'profile' ProgrammeCreator.UserID %}" class="text-reset">{{ ProgrammeCreator.Username }}</a></h3>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="card text-dark ">
+    <h4 class="card-header">Programme Description:</h4>
+    <div class="card-body">
+      <p class="card-text">{{ Programme.ProgrammeDiscription|linebreaksbr }}</p>
+    </div>
+  </div>
+  </br>
+
+  {% if Lessons %}
+    <div class="card text-center text-dark">
+      <div class="card-header">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          {% for lesson in Lessons %}
+            <li class="nav-item" role="presentation">
+              {% if lesson.LessonNumber == 1 %}
+                <button class="nav-link active" id="{{ Lessons.LessonID }}" data-bs-toggle="tab" data-bs-target="#{{ lesson.LessonNumber }}" type="button" role="tab" aria-controls="{{ lesson.LessonNumber }}" aria-selected="true">{{ lesson.LessonName }}</button>
+              {% else %}
+                <button class="nav-link" id="{{ Lessons.LessonID }}" data-bs-toggle="tab" data-bs-target="#{{ lesson.LessonNumber }}" type="button" role="tab" aria-controls="{{ lesson.LessonNumber }}" aria-selected="true">{{ lesson.LessonName }}</button>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+          {% for lesson in Lessons %}
+            {% if lesson.LessonNumber == 1 %}
+              <div class="tab-pane fade show active" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
+            {% else %}
+              <div class="tab-pane fade" id="{{ lesson.LessonNumber }}" role="tabpanel" aria-labelledby="{{ Lessons.LessonID }}">
+            {% endif %}
+              {% if user.is_superuser %}
+                <div class="row">   
+                  <div class="col-7 text-end">
+                    <h5 class="card-text">{{ lesson.LessonName }}</h5>
+                  </div>
+                  <div class="col-5 text-end">
+                    <a href="{% url 'update-lesson' lesson.LessonID %}" class="btn btn-warning">Edit Lesson</a>
+                  </div>
+                </div>
+              {% else %}
+                <h5 class="card-text">{{ lesson.LessonName }}</h5>
+              {% endif %}
+              <p class="card-text">{{ lesson.LessonLongDesc|linebreaksbr }}</p>
+              </br>
+              {% if lesson.LessonVideo %}
+                <div class="container-md">
+                  {% video lesson.LessonVideo '640x360' %}
+                </div>
+              {% endif %}
+              <br>
+              <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                <a name="lesson_id", value="", class="btn btn-outline-info btn-sm disabled">Mark Lesson As Learned</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <br>
+  {% else %}
+    <div class="shadow  p-4 mb-5 bg-body text-dark rounded">
+      <h3>This Programme Has No Lessons</h3>
+    </div>
+  {% endif %}
+  <div class="card text-dark">
+    <h4 class="card-header">Tricks Within This Programme:</h4>
+    <br>
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+        {% for trick in Programme_Tricks %}
+          {% include 'components/trick_cards.html' with trick=trick user=request.user current_page=current_page %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

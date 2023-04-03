@@ -5,7 +5,7 @@ from .models import Trick, Trick_Programme, Category, Programme_Lesson, Glossary
 class TrickForm(ModelForm):
   class Meta:
     model = Trick
-    fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'approved')
+    fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'TrickVideo', 'approved')
     labels = {
       'TrickName': 'Enter the Trick Name:',
       'TrickRecLevel':'Reccomended Level for this Trick:',
@@ -14,6 +14,7 @@ class TrickForm(ModelForm):
       'TrickHowTo':'Enter a How To for this trick:',
       'TrickCategory':'Select a Category for the new Trick (CTRL Click to Add Multiple):',
       'TrickImg':'Upload a cover image for this trick:',
+      'TrickVideo':'Add a link to the Trick Video:',
       'approved':'Approved:'
     }
       
@@ -26,13 +27,14 @@ class TrickForm(ModelForm):
       #Fix select multiple feild.
       #'TrickCategory':forms.CheckboxSelectMultiple(attrs={'class':'form-check-input', 'type':'checkbox'}),
       'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
+      'TrickVideo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter Video URL'}),
       'approved': forms.CheckboxInput(attrs={"class": "form-check-input"}),
     }
 
 class SubmitTrickForm(ModelForm):
   class Meta:
     model = Trick
-    fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg')
+    fields = ('TrickName', 'TrickRecLevel',  'TrickDifficulty',  'TrickDiscription', 'TrickHowTo', 'TrickCategory', 'TrickImg', 'TrickVideo')
     labels = {
       'TrickName': 'Enter the Trick Name:',
       'TrickRecLevel':'Reccomended Level for this Trick:',
@@ -41,6 +43,7 @@ class SubmitTrickForm(ModelForm):
       'TrickHowTo':'Enter a How To for this trick:',
       'TrickCategory':'Select a Category for the new Trick (CTRL Click to Add Multiple):',
       'TrickImg':'Upload a cover image for this trick:',
+      'TrickVideo':'Add a link to the Trick Video:',
     }
       
     widgets = {
@@ -49,9 +52,8 @@ class SubmitTrickForm(ModelForm):
       'TrickDifficulty': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
       'TrickDiscription': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter discription here.'}),
       'TrickHowTo': forms.Textarea(attrs={'rows': 5, 'cols': 40, 'class':'form-control', 'placeholder':'Enter How To here.'}),
-      #Fix select multiple feild.
-      #'TrickCategory':forms.CheckboxSelectMultiple(attrs={'class':'form-check-input', 'type':'checkbox'}),
       'TrickImg': forms.ClearableFileInput(attrs={'class':'form-control'}),
+      'TrickVideo': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter Video URL'}),
     }
 
 class CategoryForm(ModelForm):

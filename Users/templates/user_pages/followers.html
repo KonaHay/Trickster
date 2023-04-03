@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content  %}
+{% if profile %}
+  <div class="shadow p-4 mb-2 bg-dark text-white rounded">
+    <div class="container text-center">
+      <div class="row">
+        <div  class="col-8 text-end">
+          <h1>{{ profile.User.FirstName }}'s Followers:</h1>      
+        </div>
+        <div  class="col-4 text-end">      
+          {% if profile.ProfilePhoto %}
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{{ profile.ProfilePhoto.url }}" 
+            alt="User Profile Image" 
+            />
+          {% else %}    
+            <img 
+            class="rounded-circle" 
+            height="60" 
+            src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+            alt="Default User Profile Image" 
+            />
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+      
+  <div class="card text-dark bg-light">
+    <div class="card-body">
+      <div class="col-3">
+        <div class="shadow p-1 mb-4 bg-dark text-white rounded">
+          <h5 class="p-2">Followers: {{ profile.followed_by.all.count }}</h5>
+        </div>
+      </div>
+      <div class="container-md">
+        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+          {% for profile in profile.followed_by.all %}
+            <div class="col-sm">
+              <div class="card text-bg-dark p-2 mb-3 shadow" style="width: 12rem; height: 15rem;">   
+                <div class="text-center">
+                  {% if profile.ProfilePhoto %}
+                    <img 
+                    class="rounded-circle" 
+                    height="150" 
+                    width="150"
+                    src="{{ profile.ProfilePhoto.url }}" 
+                    alt="User Profile Image" 
+                    />
+                  {% else %}    
+                    <img 
+                    class="rounded-circle" 
+                    height="150" 
+                    width="150"
+                    src="{% static 'trickster/images/ProfileImgDefault.png' %}" 
+                    alt="Default User Profile Image" 
+                    />
+                  {% endif %}
+                </div>
+                <div class="card-body-dark text-center gap-3" style="height: 3rem">
+                  <h5 class="text-center">{{ profile.User.Username }}</h5>
+                  <a href="{%url 'profile' profile.User.UserID %}" class="btn btn-outline-info">View Profile</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

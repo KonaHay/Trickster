@@ -16,10 +16,7 @@
       <li class="list-group-item">Trick Difficulty: {{ trick.TrickDifficulty }}</li>
     </ul>
     <div class="card-body-dark text-center gap-3" style="height: 3rem">
-
-      <!-- Change this to custom Learned Trick button that tracks the scores for the quiz! -->
       {% include 'components/learned_trick_button.html' with learned_tricks=profile.LearnedTricks user=user trick=trick current_page=current_page %}
-    
     </div>
   </div>
 </div>
