@@ -82,7 +82,7 @@
         <!-- Search Bar -->
         <form class="d-flex" method="POST" action="{% url 'search-trick' %}">
           {% csrf_token %}
-          <input class="form-control me-2 input-sm" type="search" placeholder="Search For Tricks" aria-label="Search" name="trick_searched">
+          <input class="form-control me-2 input-sm" type="search" placeholder="Search Here" aria-label="Search" name="trick_searched">
           <button class="btn btn-outline-info" type="submit">Search</button>
         </form>
         <!-- ========== -->
