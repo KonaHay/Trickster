@@ -81,8 +81,11 @@ def recommend_trick(request, pk):
     ability_filters &= models.Q(TrickRecLevel=user_skill) & models.Q(TrickDifficulty=user_mastery)
     other_tricks = Trick.objects.filter(ability_filters).exclude(TrickID__in=profile.LearnedTricks.all()).order_by('?')
 
-    mastery_trick = other_tricks[0]
-    other_tricks = other_tricks[1:]
+    mastery_trick = []
+    if other_tricks:
+      mastery_trick = other_tricks[0]
+      other_tricks = other_tricks[1:]
+
 
     return render(request, 'main/recommend_trick.html', {'other_tricks': other_tricks, 'mastery_trick':mastery_trick, 'mastery_below_trick':mastery_below_trick, 'mastery_above_trick':mastery_above_trick, 'profile': profile, 'current_page':current_page})
   else:
