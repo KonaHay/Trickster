@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-b(83c-s#4yg6#m*04e(^)2imb+d+jg5o3#ekhd*-j8z8)v=m9k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'Kona10.pythonanywhere.com']
+ALLOWED_HOSTS = ['Kona10.pythonanywhere.com','trickster.uk', 'www.trickster.uk']
 
 
 # Application definition
@@ -65,9 +65,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Trickster.wsgi.application'
-
-
-# Database - Controlled within views.py through PyMongo
 
 DATABASES = {
     'default': {
