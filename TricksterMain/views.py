@@ -114,10 +114,13 @@ def random_trick_skill_based(request, pk):
 
       profile = User_Profile.objects.get(User_id=pk)
       user_skill_level = profile.SkillLevel
-      user_ability = profile.MasteryLevel
+      user_mastery = profile.MasteryLevel
+
+      mastery_lower = user_mastery-2
+      mastery_upper = user_mastery+2
 
       filters = models.Q()
-      filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty=user_ability)
+      filters &= models.Q(TrickRecLevel=user_skill_level) & models.Q(TrickDifficulty__range=(mastery_lower,mastery_upper))
       filters &= models.Q(approved=True)
 
       random_trick = Trick.objects.filter(filters).order_by('?').first()

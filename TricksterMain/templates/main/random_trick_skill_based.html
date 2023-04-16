@@ -11,7 +11,7 @@
         <p class="text-muted">- Remember to only try tricks you feel ready for and always wear proper safety equiptment!</p>    
       </div>
     </div>
-    <div class="shadow p-4 mb-2 bg-white text-dark text-center rounded">
+    <div class="shadow p-4 mb-2 bg-white text-dark rounded">
       {% include 'components/trick_cards.html' with trick=random_trick user=request.user %}
       <form class="text-center" method="POST" action="{% url 'random-trick-skill-based' request.user.UserID %}">
         {% csrf_token %}

@@ -12,7 +12,7 @@ modalBtns.forEach(modalBtn=> modalBtn.addEventListener('click', ()=>{
   const imgURL = modalBtn.getAttribute('data-imgURL')
 
   modalBody.innerHTML = `
-    <div class="h5 mb-3">Ready To Start? "<b>${quiz}</b>"?</div>
+    <div class="h5 mb-3">Are you ready to begin "<b>${quiz}</b>"?</div>
 
   `
 
